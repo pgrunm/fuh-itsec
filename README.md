@@ -1,5 +1,9 @@
 # Team Repo for the FUH IT-Sec Course
 
+## List of Tools
+
+- Taskfile
+
 ## Important URLs/Documents
 
 - [Kanban Board](https://cryptpad.fr/kanban/#/2/kanban/edit/DXBcY-Gkxe+b1ulqFfx3WWLW/)
