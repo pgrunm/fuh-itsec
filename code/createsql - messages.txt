@@ -1,0 +1,1 @@
+CREATE TABLE messagestorage ( timestamp TIMESTAMP, message TEXT );
