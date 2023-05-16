@@ -2,3 +2,6 @@
 docs/augs/
 docs/doku.synctex.gz
 docs/doku.pdf
+
+# Python
+.venv/
