@@ -1,0 +1,46 @@
+\usepackage[ngerman]{babel}			% deutsche Namen/Umlaute
+\usepackage[utf8]{inputenc}			% Zeichensatzkodierung
+\usepackage{graphicx}				% Einbinden von Bildern
+\usepackage{color}					% Farben wenn es sein muß
+\usepackage[hidelinks]{hyperref}    % Klickbare Verweise und \autoref{label}
+\usepackage{bookmark}
+\newcommand*{\email}[1]{            % Klickbare eMail-Adressen
+    \normalsize\href{mailto:#1}{#1}\par
+}
+\usepackage{booktabs}				% "Schöne" Tabellen
+\usepackage{amsmath}				% Mathematischer Formelsatz AMS
+\usepackage{amsfonts}
+\usepackage{csquotes}               % Empfohlener Import für babel/polyglossia
+\usepackage{blindtext}              % Einfügen von Blindtext möglich
+
+\usepackage[
+    printonlyused                   % nur verwendete Abkürzungen ins Verzeichnis
+]{acronym}                          % Abkürzungen
+\usepackage[section]{placeins}      % Bilder bleiben im Abschnitt
+% \usepackage{scrpage2}
+% \usepackage{scrlayer-scrpage}       % Neuere Version von scrpage2
+\usepackage[automark,headsepline,singlespacing=true]{scrlayer-scrpage}
+\pagestyle{scrheadings}
+
+% Neuer Befehl
+% \clearmainofpairofpagestyles
+
+% Aufzählungen anpassen wie hier beschrieben: https://www.latex-tutorial.com/tutorials/lists/
+\usepackage{enumitem}
+
+% Abkürzungen
+\usepackage[acronym]{glossaries}
+
+% Silbentrennung wie hier beschrieben: https://tex.stackexchange.com/a/119514
+\usepackage[T1]{fontenc}
+
+% Quellcode für Python
+% \usepackage{minted}
+% \input{format/code_python.tex}
+% \input{format/code_powershell.tex}
+
+% Positionierung von Bilder, s. https://www.overleaf.com/learn/latex/Positioning_images_and_tables#Positioning_images
+\usepackage[export]{adjustbox}
+
+% 1.5facher Zeilenabstand.
+\linespread{1.5}\selectfont

@@ -1,0 +1,66 @@
+\documentclass[12pt,a4paper]{scrartcl}
+
+% Grundlegende Einstellungen
+\input{format/format.tex}
+
+	
+\begin{document}
+% Hier wird der Titel-Bereich formatiert
+% Die zuvor definierten Textbausteine werden hier verwendet.
+\input{format/title.tex}
+\maketitle
+\thispagestyle{empty} % lässt die Seitennummer auf der Titelseite verschwinden
+\pagenumbering{Roman} % Römische Seitenzahlen für die Verzeichnisse
+
+\begin{abstract}
+    Dieses Dokument dient zur Dokumentation der Serverhärtung der Webserver des vServers der \enquote{Fernuni Inc.}. Für die Umsetzung der Aufgabenstellung sind dabei verschiedenste Aufgaben zu lösen, darunter der Betrieb eines Webservers für verschiedene Domains, die Installation eines Datenbankservers sowie die Absicherung des Systems.
+    
+    Inhalt des Berichts sind die verschiedenen Aufgabengebiete, die für das Fachpraktikum relevant sind.
+\end{abstract}
+
+\cleardoublepage
+
+\tableofcontents			% Inhaltsverzeichnis ... nicht für kurze Dokumente!
+\cleardoublepage
+
+% Wichtig, muss enthalten sein! Siehe https://tex.stackexchange.com/a/48511
+\phantomsection
+
+% \addcontentsline{toc}{section}{\listfigurename}
+% \listoffigures				% Abbildungsverzeichnis ... nicht für kurze Dokumente
+% \cleardoublepage
+\addcontentsline{toc}{section}{\listtablename}
+\listoftables               % Tabellenverzeichnis ... ggf. auskommentieren
+% \cleardoublepage
+\input{abkuerzungen.tex}   % Abkürzungsverzeichnis ... ggf. auskommentieren
+
+% Quellcode Listings, ggf auskommentieren!
+% \renewcommand\listoflistingscaption{Liste des enthaltenen Quellcodes}
+% \listoflistings
+
+\cleardoublepage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% Vorschlag: Für jedes Kapitel eine eigene .tex Datei anlegen, dann ist die Aufteilung leichter.
+\input{kapitel/1_kapitel1.tex}
+
+
+% --------------------------------------------------------------------
+% Hier die entsprechende .bib-Datei eintragen
+% --------------------------------------------------------------------
+% !BIB program = biblatex
+% \addbibresource{literature/seminar-lit.bib}
+
+% Warnung vermeiden
+% \BiblatexSplitbibDefernumbersWarningOff
+
+% Ggf. heading= usw. entfernen, um aus dem Inhaltsverzeichnis zu entfernen.
+% \printbibliography[nottype=online, heading=bibintoc]
+% \printbibliography[type=online, heading=bibintoc, title={Internetquellen}]
+
+
+% \cleardoublepage
+% \input{ee.tex}
+\end{document}

@@ -1,0 +1,41 @@
+% ------------------------------------------------------------------
+
+\newcommand\svthema{Projektdokumentation: Serverhärtung}
+\newcommand\svperson{Gruppe 2}
+% \newcommand{\svcompany}{Fernuni Inc.} % Nur für einen eventuellen Sperrvermerk
+% \newcommand\svmatriculation{123456}
+% \newcommand\svcontact{\email{hello@example.com}}
+\newcommand\svdatum{\today} % \today für das aktuelle Datum, sonst als Text eintragen
+\newcommand\lvname{Fachpraktikum 1599 IT-Sicherheit}
+\newcommand\lvtyp{SoSe 2023}
+\newcommand\lvinst{Fernuniversität Hagen}
+\newcommand\lvprof{Prof. Dr. Norbert Netzwerk}
+
+% Thema und Author in die Meta-Daten der PDF
+\hypersetup{ 
+    pdftitle={Tätigkeitsbericht \svperson} 
+    pdfauthor={\svperson}
+}
+
+\title{ \huge\textbf{\svthema} }
+
+% --------------------------------------------------------------------
+% Für einen Autor folgendes verwenden:
+% --------------------------------------------------------------------
+% \author{ \textsl{\svperson} \\ \textsl{\footnotesize\svmatriculation} \\ \textsl{\footnotesize\svcontact}\\
+% \\\textsc{"`\lvname"'} \\ {\lvtyp} · {\lvinst} \\ Vorgelegt bei: {\lvprof} \\ Abgabedatum: {\svdatum}}
+
+% \author{ \\ \textsl{\svperson}\\ Matrikelnummer: 3900215  \\ \textsl{\footnotesize\svcontact}\\
+% {\lvinst} \\ \\ Abgabedatum:}
+
+% --------------------------------------------------------------------
+% Für mehrere Autoren folgendes verwenden:
+% --------------------------------------------------------------------
+\author{ 
+\begin{tabular}{ccc}
+Peter Lustig & Captain Picard & Santa Claus \\
+123456 & 654321 & 98765\\
+\email{hello@web.de} & \email{hello@web.de} & \email{hello@web.de}
+\end{tabular}}
+
+\date{ \textsc{"`\lvname"'} \\ {\lvtyp} · {\lvinst} \\ Vorgelegt bei: {\lvprof} \\ Abgabedatum: {\svdatum} }
