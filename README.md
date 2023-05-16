@@ -2,7 +2,9 @@
 
 ## List of Tools
 
-- Taskfile
+- [Taskfile](https://taskfile.dev/).
+- [Vagrant](https://developer.hashicorp.com/vagrant/tutorials/getting-started) and [Virtualbox](https://www.virtualbox.org/).
+- [Latex](https://miktex.org/).
 
 ## Important URLs/Documents
 
