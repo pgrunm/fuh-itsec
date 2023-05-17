@@ -41,7 +41,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/pgrunm/fuh-itsec
+            ghcr.io/pgrunm/fuh-itsec-hello
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
@@ -84,7 +84,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/pgrunm/fuh-itsec
+            ghcr.io/pgrunm/fuh-itsec-messages
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
