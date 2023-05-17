@@ -9,3 +9,6 @@ docs/_minted-doku
 
 # Ignore Latex temporary files:
 doku.*
+
+# Ignore binary files
+resources/
