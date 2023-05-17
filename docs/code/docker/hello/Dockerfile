@@ -10,4 +10,6 @@ RUN pip install --no-cache-dir flask
 
 COPY . .
 
+# Listen on TCP port 8080
+EXPOSE 8080
 CMD [ "python", "./hello.fernuni.py" ]

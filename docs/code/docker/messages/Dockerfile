@@ -16,4 +16,6 @@ RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb; apt rem
 
 COPY . .
 
+# Listen on TCP port 8080
+EXPOSE 8080
 CMD [ "python", "./messages.fernuni.py" ]
