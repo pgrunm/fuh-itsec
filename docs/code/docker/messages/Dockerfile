@@ -6,12 +6,12 @@ LABEL org.opencontainers.image.description="FUH messages container image"
 WORKDIR /usr/src/app
 
 # Look for any new updates, install them and install wget.
-RUN apt update && apt install -y wget
+RUN apt update && apt install -y wget gcc
 
 # Install Mariadb connector, as it's required.
-RUN wget https://dlm.mariadb.com/2862620/Connectors/c/connector-c-3.3.4/mariadb-connector-c-3.3.4-debian-bullseye-amd64.tar.gz -O - | tar -zxf - --strip-components=1 -C /usr; apt remove wget -y
+RUN wget https://dlm.mariadb.com/2862620/Connectors/c/connector-c-3.3.4/mariadb-connector-c-3.3.4-debian-bullseye-amd64.tar.gz -O - | tar -zxf - --strip-components=1 -C /usr
 
-RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb
+RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb; apt remove wget gcc -y
 
 COPY . .
 
