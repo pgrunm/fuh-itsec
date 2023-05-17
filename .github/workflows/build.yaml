@@ -47,14 +47,12 @@ jobs:
           # context: .
           file: docs/code/docker/hello/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: fuh/hello:latest
 
       - name: Build and push Docker messages image
         uses: docker/build-push-action@v4
         with:
           # context: .
-          file: docs/code/docker/hello/Dockerfile
+          file: docs/code/docker/messages/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: fuh/messages:latest
