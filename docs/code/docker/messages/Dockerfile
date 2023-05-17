@@ -9,6 +9,7 @@ WORKDIR /usr/src/app
 RUN apt update && apt install -y wget gcc
 
 # Install Mariadb connector, as it's required.
+# Source: https://stackoverflow.com/a/74452637
 RUN wget https://dlm.mariadb.com/2862620/Connectors/c/connector-c-3.3.4/mariadb-connector-c-3.3.4-debian-bullseye-amd64.tar.gz -O - | tar -zxf - --strip-components=1 -C /usr
 
 RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb; apt remove wget gcc -y
