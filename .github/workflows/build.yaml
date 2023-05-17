@@ -45,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           # context: .
-          file: docs\code\docker\hello\Dockerfile
+          file: docs/code/docker/hello/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -54,7 +54,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           # context: .
-          file: docs\code\docker\hello\Dockerfile
+          file: docs/code/docker/hello/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
