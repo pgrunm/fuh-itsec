@@ -2,6 +2,10 @@
 docs/augs/
 docs/doku.synctex.gz
 docs/doku.pdf
+docs/_minted-doku
 
 # Python
 .venv/
+
+# Ignore Latex temporary files:
+doku.*
