@@ -15,7 +15,7 @@ jobs:
         with:
           root_file: docs/doku.tex
           latexmk_shell_escape: true
-          working_directory: docs
+          work_in_root_file_dir: true
           
       # Upload PDF to the workflow tab.
       - uses: actions/upload-artifact@v2
