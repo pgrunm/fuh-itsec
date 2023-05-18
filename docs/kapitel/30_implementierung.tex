@@ -16,6 +16,22 @@ Einrichtung von Apache als Webserver wie hier im Quellcode beschrieben:
 
 \subsubsection{Konfiguration der lokalen Firewall}
 
+
+\begin{table}[!ht]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+
+    \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+        \hline
+            Nr. & Protokoll & Quell-IP & Quell-Port & Ziel-IP & Ziel-Port & Interface & -m State & Aktion \\ \hline
+            1 & TCP & Internal & ANY & 192.168.2.80 & 22 & eth0 & NEW,ESTABLISHED & ALLOW \\ \hline
+            2 & TCP & ANY & ANY & 192.168.2.80 & 80/443 & eth0 & NEW,ESTABLISHED & ALLOW \\ \hline
+            3 & TCP & ANY & ANY & 192.168.2.80 & Wireguard & eth0 & NEW,ESTABLISHED & ALLOW \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Firewall Tabelle für eingehenden Verkehr}
+    \label{regeln_fw_incoming}
+\end{table}
 Tabelle erstellen: \url{https://tableconvert.com/latex-generator}
 
 \subsubsection{Härtung des Systems}
