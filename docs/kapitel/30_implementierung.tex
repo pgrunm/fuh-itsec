@@ -14,6 +14,10 @@ Einrichtung von Apache als Webserver wie hier im Quellcode beschrieben:
 
 \subsubsection{Umsetzung der Mandatory Access Control mittels AppArmor}
 
+Mittels AppArmor ist die Zuweisung von Profilen zu einer Anwendung möglich. Ein Profil besteht dabei aus Regeln, die z. B. lesenden oder schreibenden Zugriff zu einer Datei oder einem Verzeichnis oder sogar Netzwerkzugang ermöglichen. Im Falle einer Kompromittierung kann AppArmor somit des Gesamtsystem schützen.
+
+Im Fokus der Betrachtung stehen insbesondere Anwendungen mit Netzwerkzugriff, da diese auch aus der Ferne angreifbar sind. Im Falle einer Rechteausweitung mittels Privilege Escalation begrenzt AppArmor den potenziellen Schaden\cite{hutchinsIntelligenceDrivenComputerNetwork}.
+
 \subsubsection{Konfiguration der lokalen Firewall}
 
 
