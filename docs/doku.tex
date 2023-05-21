@@ -3,6 +3,14 @@
 % Grundlegende Einstellungen
 \input{format/format.tex}
 
+% Einstellungen zum Zitieren.
+\input{format/zitieren.tex}
+
+% --------------------------------------------------------------------
+% Hier die entsprechende .bib-Datei eintragen
+% --------------------------------------------------------------------
+% !BIB program = biblatex
+\addbibresource{literatur/literatur.bib}
 	
 \begin{document}
 % Hier wird der Titel-Bereich formatiert
@@ -51,19 +59,13 @@
 \input{kapitel/30_implementierung.tex}
 \newpage
 \input{kapitel/40_fazit.tex}
-% --------------------------------------------------------------------
-% Hier die entsprechende .bib-Datei eintragen
-% --------------------------------------------------------------------
-% !BIB program = biblatex
-% \addbibresource{literature/seminar-lit.bib}
 
 % Warnung vermeiden
 % \BiblatexSplitbibDefernumbersWarningOff
 
 % Ggf. heading= usw. entfernen, um aus dem Inhaltsverzeichnis zu entfernen.
-% \printbibliography[nottype=online, heading=bibintoc]
-% \printbibliography[type=online, heading=bibintoc, title={Internetquellen}]
-
+\printbibliography[nottype=online, heading=bibintoc]
+\printbibliography[type=online, heading=bibintoc, title={Internetquellen}]
 
 % \cleardoublepage
 % \input{ee.tex}
