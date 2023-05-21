@@ -7,6 +7,9 @@ docs/_minted-doku
 # Python
 .venv/
 
+# Vagrant
+.vagrant
+
 # Ignore Latex temporary files:
 doku.*
 
