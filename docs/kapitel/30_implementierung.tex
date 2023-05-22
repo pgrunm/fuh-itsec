@@ -4,7 +4,88 @@
 
 \subsubsection{Apache als Webserver}
 
-Einrichtung von Apache als Webserver wie hier im Quellcode beschrieben:
+Installation eines Webservers für zwei Webseiten auf Ubuntu System.
+Der Webserver soll zwei separate Webseiten, "hello.fernuni" und "messages.fernuni", bedienen. Beide Webseiten sind in der Programmiersprache Python geschrieben. Die Dokumentation erläutert die Gründe hinter jedem Schritt und gibt detaillierte Anweisungen zur Durchführung der Installation.
+
+Als Team 3 haben wir uns für den Apache Webserver entschieden, denn Apache ist ein weit verbreiteter und zuverlässiger Webserver, der auf vielen Plattformen eingesetzt wird. Die Installation erfolgt mithilfe des Paketmanagers von Ubuntu.
+
+Apache installieren.
+Um den Apache-Webserver zu installieren, führen wir folgenden Befehl aus:
+sudo apt-get install apache2
+
+Flask installieren
+Um Flask, ein Python-Framework für Webanwendungen, zu installieren, verwenden wir den folgenden Befehl:
+sudo apt install python3-flask
+Flask ermöglicht die Entwicklung von Webanwendungen mit Python. In diesem Fall wird Flask verwendet, um die Webseiten "hello.fernuni" und "messages.fernuni" zu implementieren.
+
+Hostdatei ändern
+Die Hostdatei muss angepasst werden, um die lokal gehosteten Webseiten zu erreichen. Die "hosts"-Datei befindet sich in /etc/hosts. Wir öffenen die "hosts"-Datei mit einem Texteditor (z. B. Nano oder Vim) und fügen die folgenden Zeilen hinzu:
+127.0.0.1 	hello.fernuni
+127.0.0.1 	messages.fernuni
+Durch das Hinzufügen der entsprechenden Einträge in der "hosts"-Datei kann der Webbrowser die lokal gehosteten Webseiten unter den angegebenen Domains finden.
+
+Proxy-Modul aktivieren
+Das Proxy-Modul ermöglicht die Weiterleitung von HTTP-Anfragen an andere Webserver. Es wird benötigt, um die Anfragen für die Webseiten "hello.fernuni" und "messages.fernuni" an die entsprechenden Python-Server weiterzuleiten.
+Das Proxy-Modul in Apache wird mit den folgenden Befehlen aktiviert:
+sudo a2enmod proxy
+sudo a2enmod proxy_html
+sudo a2enmod proxy_http
+
+Modul mod_wsgi installieren
+Das mod_wsgi-Modul ermöglicht die Ausführung von Python-Anwendungen innerhalb des Apache-Webservers. Es wird verwendet, um die Flask-Anwendungen für die Webseiten zu integrieren.
+Wir installieren das Python-Paket mod_wsgi mit dem folgenden Befehl:
+sudo apt-get install libapache2-mod-wsgi-py3
+
+
+Python-Dateien ablegen
+Apache verwendet standardmäßig das Verzeichnis "/var/www/html" als den Wurzelordner für gehostete Webinhalte. Durch das Ablegen der Python-Dateien in diesem Verzeichnis können sie vom Webserver erkannt und ausgeführt werden.
+Aus diesem Grund legen wir die Python-Dateien für die Webseiten "hello.fernuni" und "messages.fernuni" im Verzeichnis "/var/www/html/hello"  bzw. "/var/www/html/messages" ab. 
+
+Konfigurationsdateien erstellen
+Der Webserver benötigt für das bedienen von Webseiten Konfigurationsdateien.
+Durch das Erstellen von separaten Konfigurationsdateien für jede Webseite können die spezifischen Einstellungen und Proxy-Weiterleitungen für jede Seite festgelegt werden.
+Dafür erstellen wir für jede Webseite eine separate Konfigurationsdatei im Verzeichnis "/etc/apache2/sites-enabled". 
+Dabei hat die Datei "hello.fernuni.config" folgenden Inhalt:
+<VirtualHost *:80> 
+    ProxyPreserveHost On
+    ProxyRequest Off
+    ServerName hello.fernuni 
+    ServerAlias www.hello.fernuni 
+    DocumentRoot /var/www/html/hello
+    ProxyPass / http://localhost:8080
+    ProxyPassReverse / http://localhost:8080
+    ErrorLog ${APACHE_LOG_DIR}/hello.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/hello.fernuni_access.log combined
+</VirtualHost>
+
+Analog hat die Datei "messages.fernuni.config" folgenden Inhalt:
+<VirtualHost *:80> 
+    ProxyPreserveHost On
+    ProxyRequest Off
+    ServerName messages.fernuni 
+    ServerAlias www.messages.fernuni 
+    DocumentRoot /var/www/html/messages
+    ProxyPass / http://localhost:7500
+    ProxyPassReverse / http://localhost:7500
+    ErrorLog ${APACHE_LOG_DIR}/messages.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/messagesfernuni_access.log combined
+</VirtualHost>
+
+Virtuelle Hosts aktivieren
+Durch die Aktivierung der virtuellen Hosts werden die Konfigurationsdateien mit dem Verzeichnis "/etc/apache2/sites-enabled" verknüpft. Dadurch kann Apache die entsprechenden Webseiten bedienen.
+Wir aktivieren die virtuellen Hosts, indem wir die Befehle "a2ensite" für jede Konfigurationsdatei ausführen.
+sudo a2ensite hello.fernuni.config
+sudo a2ensite messages.fernuni.config
+
+Apache-Webserver neu starten
+Um die Konfigurationsänderungen zu übernehmen, muss der Apache-Webserver neugestartet werden:
+sudo service apache2 restart
+
+Starten der Python-Server
+Damit die Webseiten "hello.fernuni" und "messages.fernuni" durch den Apache-Webserver bedienbar sind, müssen diese gestartet werden. Dies kann man mit folgenden Befehlen in den jeweiligen Ordnern erreichen:
+python3 hello.fernuni.py
+python3 messages.fernuni.py
+
 
 \begin{listing}[ht]{}
     \shellcode{code/shell/webserver_installieren.sh}
