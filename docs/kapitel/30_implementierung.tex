@@ -27,14 +27,14 @@ Durch das Hinzufügen der entsprechenden Einträge in der \enquote{hosts}-Datei 
 Proxy-Modul aktivieren
 Das Proxy-Modul ermöglicht die Weiterleitung von HTTP-Anfragen an andere Webserver. Es wird benötigt, um die Anfragen für die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} an die entsprechenden Python-Server weiterzuleiten.
 Das Proxy-Modul in Apache wird mit den folgenden Befehlen aktiviert:
-sudo a2enmod proxy
-sudo a2enmod proxy_html
-sudo a2enmod proxy_http
+\verb+sudo a2enmod proxy+
+\verb+sudo a2enmod proxy_html+
+\verb+sudo a2enmod proxy_http+
 
-Modul mod_wsgi installieren
-Das mod_wsgi-Modul ermöglicht die Ausführung von Python-Anwendungen innerhalb des Apache-Webservers. Es wird verwendet, um die Flask-Anwendungen für die Webseiten zu integrieren.
-Wir installieren das Python-Paket mod_wsgi mit dem folgenden Befehl:
-sudo apt-get install libapache2-mod-wsgi-py3
+Modul \verb+mod_wsgi+ installieren
+Das \verb+mod_wsgi-Modul+ ermöglicht die Ausführung von Python-Anwendungen innerhalb des Apache-Webservers. Es wird verwendet, um die Flask-Anwendungen für die Webseiten zu integrieren.
+Wir installieren das Python-Paket \verb+mod_wsgi+ mit dem folgenden Befehl:
+\verb+sudo apt-get install libapache2-mod-wsgi-py3+
 
 
 Python-Dateien ablegen
@@ -46,6 +46,7 @@ Der Webserver benötigt für das bedienen von Webseiten Konfigurationsdateien.
 Durch das Erstellen von separaten Konfigurationsdateien für jede Webseite können die spezifischen Einstellungen und Proxy-Weiterleitungen für jede Seite festgelegt werden.
 Dafür erstellen wir für jede Webseite eine separate Konfigurationsdatei im Verzeichnis \enquote{/etc/apache2/sites-enabled}. 
 Dabei hat die Datei \enquote{hello.fernuni.config} folgenden Inhalt:
+\begin{verbatim}
 <VirtualHost *:80> 
     ProxyPreserveHost On
     ProxyRequest Off
@@ -57,8 +58,10 @@ Dabei hat die Datei \enquote{hello.fernuni.config} folgenden Inhalt:
     ErrorLog ${APACHE_LOG_DIR}/hello.fernuni_error.log
     CustomLog ${APACHE_LOG_DIR}/hello.fernuni_access.log combined
 </VirtualHost>
+\end{verbatim}
 
 Analog hat die Datei \enquote{messages.fernuni.config} folgenden Inhalt:
+\begin{verbatim}
 <VirtualHost *:80> 
     ProxyPreserveHost On
     ProxyRequest Off
@@ -70,6 +73,7 @@ Analog hat die Datei \enquote{messages.fernuni.config} folgenden Inhalt:
     ErrorLog ${APACHE_LOG_DIR}/messages.fernuni_error.log
     CustomLog ${APACHE_LOG_DIR}/messagesfernuni_access.log combined
 </VirtualHost>
+\end{verbatim}
 
 Virtuelle Hosts aktivieren
 Durch die Aktivierung der virtuellen Hosts werden die Konfigurationsdateien mit dem Verzeichnis \enquote{/etc/apache2/sites-enabled} verknüpft. Dadurch kann Apache die entsprechenden Webseiten bedienen.
