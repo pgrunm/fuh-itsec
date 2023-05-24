@@ -11,7 +11,8 @@ Als Team 3 haben wir uns für den Apache Webserver entschieden, denn Apache ist 
 
 Apache installieren.
 Um den Apache-Webserver zu installieren, führen wir folgenden Befehl aus:
-sudo apt-get install apache2
+
+\mint{shell}|sudo apt-get install apache2|
 
 Flask installieren
 Um Flask, ein Python-Framework für Webanwendungen, zu installieren, verwenden wir den folgenden Befehl:
@@ -89,17 +90,24 @@ Analog hat die Datei \enquote{messages.fernuni.config} folgenden Inhalt:
 Virtuelle Hosts aktivieren
 Durch die Aktivierung der virtuellen Hosts werden die Konfigurationsdateien mit dem Verzeichnis \enquote{/etc/apache2/sites-enabled} verknüpft. Dadurch kann Apache die entsprechenden Webseiten bedienen.
 Wir aktivieren die virtuellen Hosts, indem wir die Befehle \enquote{a2ensite} für jede Konfigurationsdatei ausführen.
+
+\begin{minted}{shell}
 sudo a2ensite hello.fernuni.config
 sudo a2ensite messages.fernuni.config
+\end{minted}
 
 Apache-Webserver neu starten
 Um die Konfigurationsänderungen zu übernehmen, muss der Apache-Webserver neugestartet werden:
-sudo service apache2 restart
+\mint{shell}|sudo service apache2 restart|
 
-Starten der Python-Server
+Starten des Python-Servers
+
 Damit die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} durch den Apache-Webserver bedienbar sind, müssen diese gestartet werden. Dies kann man mit folgenden Befehlen in den jeweiligen Ordnern erreichen:
-python3 hello.fernuni.py
-python3 messages.fernuni.py
+
+\begin{minted}{shell}
+    python3 hello.fernuni.py
+    python3 messages.fernuni.py
+\end{minted}
 
 Umstellung des Webservers auf HTTPS 
 Der Zweck dieser Umstellung besteht darin, die Kommunikation zwischen den Benutzern und dem Webserver zu verschlüsseln, um die Sicherheit und Vertraulichkeit der übertragenen Daten zu gewährleisten. Der Apache Webserver bedient zwei Webseiten: \enquote{hello.fernuni} und \enquote{messages.fernuni}. Für jede Webseite wird ein eigenes \verb+SSL/TLS-Zertifikat+ benötigt.
@@ -118,10 +126,7 @@ Während des Zertifikatgenerierungsprozesses wird man nach Informationen gefragt
 Aktivierung des \verb+Apache-SSL-Moduls+
 
 Um SSL für den \verb+Apache-Webserver+ zu aktivieren, führt man den folgenden Befehl aus:
-
-\begin{minted}{shell}
-    sudo a2enmod ssl
-\end{minted}
+\mint{shell}|sudo a2enmod ssl|
 
 Anpassung der Konfigurationsdatei \enquote{hello.fernuni.conf}.
 
@@ -193,18 +198,20 @@ Im Fokus der Betrachtung stehen insbesondere Anwendungen mit Netzwerkzugriff, da
 
 Dies betrifft insbesondere die Dienste \ac{SSH}, \ac{HTTP} bzw. \ac{HTTPS} sowie Wireguard. Auf Github existieren mehrere Projekte, die fertige Profile für AppArmor anbieten, insbesondere das \enquote{apparmor.d}-Projekt, welches nach eigenen Angaben etwa 1400 Profile bereitstellt. Dabei werden auch Dienste erfasst, welche unter dem \enquote{root} Benutzer ausgeführt werden und folglich besonders anfällig für eine Rechteausweitung sind.
 
+% Begründen, warum ausgerechnet apparmor.d
+Das \enquote{apparmor.d}-Projekt eignet sich am ehesten zur Umsetzung umfassender AppArmor Profile, weil dies sowohl aktiv weiterentwickelt wird als auch über eine umfassende Dokumentation verfügt. Es existieren zwar noch andere Projekt, dies ist nach der Anzahl der Beitragenden sowie Commits am weitesten entwickelt.
+
 % Installation kurz beschreiben
 Die konkrete Installation der AppArmor Profile ist im Anhang in \autoref{listing:installation_apparmor} beschrieben. In der Dokumentation des Projekts wird explizit darauf hingewiesen, zunächst die Lauffähigkeit des Systems zuprüfen, bevor der Enforce Mode aktiviert.
 
 % Auf Tests eingehen.
 Die Überprüfung möglicher Probleme bei der Durchsetzung der Profile erfolgt über den Befehl \mint{shell}|sudo aa-log|
-und zeigt dabei sowohl blockierte als auch erlaubte Aktionen an, wie in der folgenden Ausgabe erkennbar ist:
+und zeigt dabei sowohl blockierte als auch erlaubte Aktionen an, wie in der folgenden Ausgabe anhand des Docker Daemons erkennbar ist:
 
 \begin{minted}[breaklines=true]{shell}
 vagrant@ubuntu-jammy:~$ sudo aa-log 
-ALLOWED sfdisk open /sys/devices/pci0000:00/0000:00:14.0/host2/target2:0:0/2:0:0:0/model comm=sfdisk requested_mask=r denied_mask=r
-ALLOWED run-parts exec /usr/share/landscape/landscape-sysinfo.wrapper comm=run-parts requested_mask=x denied_mask=x
-ALLOWED run-parts//null-/usr/share/landscape/landscape-sysinfo.wrapper file_inherit /dev/null comm=50-landscape-sy requested_mask=wr denied_mask=wr
+ALLOWED dockerd mount /var/lib/docker/check-overlayfs-support2956447284/merged/ info="failed mntpnt match" comm=dockerd fstype=overlay srcname=overlay error=-13
+ALLOWED dockerd umount /var/lib/docker/check-overlayfs-support2956447284/merged/ comm=dockerd
 \end{minted}
 
 \subsubsection{Konfiguration der lokalen Firewall}
