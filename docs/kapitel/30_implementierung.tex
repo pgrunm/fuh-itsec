@@ -191,6 +191,22 @@ Mittels AppArmor ist die Zuweisung von Profilen zu einer Anwendung möglich. Ein
 
 Im Fokus der Betrachtung stehen insbesondere Anwendungen mit Netzwerkzugriff, da diese auch aus der Ferne angreifbar sind. Im Falle einer Rechteausweitung mittels Privilege Escalation begrenzt AppArmor den potenziellen Schaden\cite{hutchinsIntelligenceDrivenComputerNetwork}.
 
+Dies betrifft insbesondere die Dienste \ac{SSH}, \ac{HTTP} bzw. \ac{HTTPS} sowie Wireguard. Auf Github existieren mehrere Projekte, die fertige Profile für AppArmor anbieten, insbesondere das \enquote{apparmor.d}-Projekt, welches nach eigenen Angaben etwa 1400 Profile bereitstellt. Dabei werden auch Dienste erfasst, welche unter dem \enquote{root} Benutzer ausgeführt werden und folglich besonders anfällig für eine Rechteausweitung sind.
+
+% Installation kurz beschreiben
+Die konkrete Installation der AppArmor Profile ist im Anhang in \autoref{listing:installation_apparmor} beschrieben. In der Dokumentation des Projekts wird explizit darauf hingewiesen, zunächst die Lauffähigkeit des Systems zuprüfen, bevor der Enforce Mode aktiviert.
+
+% Auf Tests eingehen.
+Die Überprüfung möglicher Probleme bei der Durchsetzung der Profile erfolgt über den Befehl \mint{shell}|sudo aa-log|
+und zeigt dabei sowohl blockierte als auch erlaubte Aktionen an, wie in der folgenden Ausgabe erkennbar ist:
+
+\begin{minted}[breaklines=true]{shell}
+vagrant@ubuntu-jammy:~$ sudo aa-log 
+ALLOWED sfdisk open /sys/devices/pci0000:00/0000:00:14.0/host2/target2:0:0/2:0:0:0/model comm=sfdisk requested_mask=r denied_mask=r
+ALLOWED run-parts exec /usr/share/landscape/landscape-sysinfo.wrapper comm=run-parts requested_mask=x denied_mask=x
+ALLOWED run-parts//null-/usr/share/landscape/landscape-sysinfo.wrapper file_inherit /dev/null comm=50-landscape-sy requested_mask=wr denied_mask=wr
+\end{minted}
+
 \subsubsection{Konfiguration der lokalen Firewall}
 
 
