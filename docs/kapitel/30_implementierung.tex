@@ -90,6 +90,75 @@ Damit die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} durch
 python3 hello.fernuni.py
 python3 messages.fernuni.py
 
+Umstellung des Webservers auf HTTPS 
+Der Zweck dieser Umstellung besteht darin, die Kommunikation zwischen den Benutzern und dem Webserver zu verschlüsseln, um die Sicherheit und Vertraulichkeit der übertragenen Daten zu gewährleisten. Der Apache Webserver bedient zwei Webseiten: \enquote{hello.fernuni} und \enquote{messages.fernuni}. Für jede Webseite wird ein eigenes \verb+SSL/TLS-Zertifikat+ benötigt.
+
+Zertifikatgenerierung für \enquote{hello.fernuni}.
+Um ein gültiges \verb+SSL/TLS-Zertifikat+ für die Website \enquote{hello.fernuni} zu generieren, geht man wie folgt vor.
+Man navigiert zum Verzeichnis \enquote{/var/www/html/hello}, wo sich die \verb+Website-Dateien+ befinden und man gibt den folgenden Befehl im Terminal ein, um ein selbstsigniertes Zertifikat zu generieren:
+\verb+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout helloprivatkey.key -out hellocert.crt+
+Während des Zertifikatgenerierungsprozesses wird man nach Informationen gefragt. Man kann die meisten Felder unausgefüllt lassen, aber man muss sicherstellen, dass der Domainname \enquote{hello.fernuni} im Feld \enquote{Common Name} angegeben wird.
+
+Aktivierung des \verb+Apache-SSL-Moduls+
+Um SSL für den \verb+Apache-Webserver+ zu aktivieren, führt man den folgenden Befehl aus:
+sudo a2enmod ssl
+
+Anpassung der Konfigurationsdatei \enquote{hello.fernuni.conf}.
+Die Konfigurationsdatei \enquote{hello.fernuni.conf} muss entsprechend angepasst werden, um HTTPS zu ermöglichen. Zuerst ersetzen wir in die Portnummer von 80 auf 443. Die Portnummer 443 ist die Standartportnummer für HTTPS anfragen auf Apache. Zudem werden die Pfadangaben zum Zertifikat und zum privaten Schlüssel angegeben.
+Um sicherzustellen, dass Benutzer automatisch von HTTP auf HTTPS umgeleitet werden, fügen wir noch einen Umleitungsabschnitt zur \enquote{hello.fernuni.conf} hinzu. Die angepasste Konfigurationsdatei sieht folgendermaßen aus:
+\begin{verbatim}
+<VirtualHost *:443>
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ServerName hello.fernuni
+    ServerAlias www.hello.fernuni
+    DocumentRoot /var/www/html/hello
+    ProxyPass / http://localhost:8080
+    ProxyPassReverse / http://localhost:8080
+    ErrorLog ${APACHE_LOG_DIR}/hello.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/hello.fernuni_access.log combined
+    SSLEngine on
+    SSLCertificateFile /var/www/html/hello/hellocert.crt
+    SSLCertificateKeyFile /var/www/html/hello/helloprivatkey.key
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName hello.fernuni
+    Redirect / https://hello.fernuni/
+</VirtualHost>
+\end{verbatim}
+
+Analog zur diesen Vorgehensweise werden die gleichen Schritte für \enquote{messages.fernuni} durchgeführt. Man erstellt ein separates Zertifikat und passt die Konfigurationsdatei \enquote{messages.fernuni.conf} an:
+\begin{verbatim}
+<VirtualHost *:443>
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ServerName messages.fernuni
+    ServerAlias www.messages.fernuni
+    DocumentRoot /var/www/html/messages
+    ProxyPass / http://localhost:7500
+    ProxyPassReverse / http://localhost:7500
+    ErrorLog ${APACHE_LOG_DIR}/messages.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/messages.fernuni_access.log combined
+    SSLEngine on
+    SSLCertificateFile /var/www/html/messages/messagescert.crt
+    SSLCertificateKeyFile /var/www/html/messages/messagesprivatkey.key
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName messages.fernuni
+    Redirect / https://messages.fernuni/
+</VirtualHost>
+\end{verbatim}
+
+Neustart des \verb+Apache-Webservers+
+Nachdem die Konfigurationsänderungen durchgeführt sind, startet man den \verb+Apache-Webserver+ neu:
+sudo service apache2 restart
+
+Nun sind die Websites \enquote{hello.fernuni} und \enquote{messages.fernuni} auf HTTPS umgestellt. Benutzer können sicher auf die Websites zugreifen, und die Kommunikation zwischen den Benutzern und dem Webserver ist verschlüsselt.
+Zu beachten ist, dass die in dieser Dokumentation verwendeten Zertifikate selbstsigniert sind, weshalb Warnmeldungen im Webbrowser angezeigt werden. Würden Zertifikate von vertrauenswürdigen Zertifizierungsstellen verwendet, wären diese Warnungen nicht vorhanden.
+
+
 
 \begin{listing}[ht]{}
     \shellcode{code/shell/webserver_installieren.sh}
