@@ -20,24 +20,35 @@ Flask ermöglicht die Entwicklung von Webanwendungen mit Python. In diesem Fall 
 
 Hostdatei ändern
 Die Hostdatei muss angepasst werden, um die lokal gehosteten Webseiten zu erreichen. Die \enquote{hosts}-Datei befindet sich in /etc/hosts. Wir öffenen die \enquote{hosts}-Datei mit einem Texteditor (z. B. Nano oder Vim) und fügen die folgenden Zeilen hinzu:
-127.0.0.1 	hello.fernuni
-127.0.0.1 	messages.fernuni
+
+\begin{minted}{shell}
+    127.0.0.1 	hello.fernuni
+    127.0.0.1 	messages.fernuni
+\end{minted}
+
 Durch das Hinzufügen der entsprechenden Einträge in der \enquote{hosts}-Datei kann der Webbrowser die lokal gehosteten Webseiten unter den angegebenen Domains finden.
 
 Proxy-Modul aktivieren
 Das Proxy-Modul ermöglicht die Weiterleitung von HTTP-Anfragen an andere Webserver. Es wird benötigt, um die Anfragen für die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} an die entsprechenden Python-Server weiterzuleiten.
 Das Proxy-Modul in Apache wird mit den folgenden Befehlen aktiviert:
-\verb+sudo a2enmod proxy+
-\verb+sudo a2enmod proxy_html+
-\verb+sudo a2enmod proxy_http+
+
+\begin{minted}{shell}
+    sudo a2enmod proxy
+    sudo a2enmod proxy_html
+    sudo a2enmod proxy_http
+\end{minted}
 
 Modul \verb+mod_wsgi+ installieren
+
 Das \verb+mod_wsgi-Modul+ ermöglicht die Ausführung von Python-Anwendungen innerhalb des Apache-Webservers. Es wird verwendet, um die Flask-Anwendungen für die Webseiten zu integrieren.
 Wir installieren das Python-Paket \verb+mod_wsgi+ mit dem folgenden Befehl:
-\verb+sudo apt-get install libapache2-mod-wsgi-py3+
 
+\begin{minted}{shell}
+    sudo apt-get install libapache2-mod-wsgi-py3
+\end{minted}
 
 Python-Dateien ablegen
+
 Apache verwendet standardmäßig das Verzeichnis \enquote{/var/www/html} als den Wurzelordner für gehostete Webinhalte. Durch das Ablegen der Python-Dateien in diesem Verzeichnis können sie vom Webserver erkannt und ausgeführt werden.
 Aus diesem Grund legen wir die Python-Dateien für die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} im Verzeichnis \enquote{/var/www/html/hello}  bzw. \enquote{/var/www/html/messages} ab. 
 
@@ -96,14 +107,24 @@ Der Zweck dieser Umstellung besteht darin, die Kommunikation zwischen den Benutz
 Zertifikatgenerierung für \enquote{hello.fernuni}.
 Um ein gültiges \verb+SSL/TLS-Zertifikat+ für die Website \enquote{hello.fernuni} zu generieren, geht man wie folgt vor.
 Man navigiert zum Verzeichnis \enquote{/var/www/html/hello}, wo sich die \verb+Website-Dateien+ befinden und man gibt den folgenden Befehl im Terminal ein, um ein selbstsigniertes Zertifikat zu generieren:
-\verb+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout helloprivatkey.key -out hellocert.crt+
+
+\begin{minted}{shell}
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout helloprivatkey.key -out hellocert.crt
+\end{minted}
+
 Während des Zertifikatgenerierungsprozesses wird man nach Informationen gefragt. Man kann die meisten Felder unausgefüllt lassen, aber man muss sicherstellen, dass der Domainname \enquote{hello.fernuni} im Feld \enquote{Common Name} angegeben wird.
 
 Aktivierung des \verb+Apache-SSL-Moduls+
+
 Um SSL für den \verb+Apache-Webserver+ zu aktivieren, führt man den folgenden Befehl aus:
-sudo a2enmod ssl
+
+\begin{minted}{shell}
+    sudo a2enmod ssl
+\end{minted}
 
 Anpassung der Konfigurationsdatei \enquote{hello.fernuni.conf}.
+
 Die Konfigurationsdatei \enquote{hello.fernuni.conf} muss entsprechend angepasst werden, um HTTPS zu ermöglichen. Zuerst ersetzen wir in die Portnummer von 80 auf 443. Die Portnummer 443 ist die Standartportnummer für HTTPS anfragen auf Apache. Zudem werden die Pfadangaben zum Zertifikat und zum privaten Schlüssel angegeben.
 Um sicherzustellen, dass Benutzer automatisch von HTTP auf HTTPS umgeleitet werden, fügen wir noch einen Umleitungsabschnitt zur \enquote{hello.fernuni.conf} hinzu. Die angepasste Konfigurationsdatei sieht folgendermaßen aus:
 \begin{verbatim}
@@ -158,8 +179,6 @@ sudo service apache2 restart
 Nun sind die Websites \enquote{hello.fernuni} und \enquote{messages.fernuni} auf HTTPS umgestellt. Benutzer können sicher auf die Websites zugreifen, und die Kommunikation zwischen den Benutzern und dem Webserver ist verschlüsselt.
 Zu beachten ist, dass die in dieser Dokumentation verwendeten Zertifikate selbstsigniert sind, weshalb Warnmeldungen im Webbrowser angezeigt werden. Würden Zertifikate von vertrauenswürdigen Zertifizierungsstellen verwendet, wären diese Warnungen nicht vorhanden.
 
-
-
 \begin{listing}[ht]{}
     \shellcode{code/shell/webserver_installieren.sh}
     \caption{Installation des Apache Webservers}
@@ -190,7 +209,7 @@ Im Fokus der Betrachtung stehen insbesondere Anwendungen mit Netzwerkzugriff, da
     \caption{Firewall Tabelle für eingehenden Verkehr}
     \label{regeln_fw_incoming}
 \end{table}
-Tabelle erstellen: \url{https://tableconvert.com/latex-generator}
+% Tabelle erstellen: \url{https://tableconvert.com/latex-generator}
 
 \subsubsection{Härtung des Systems}
 
