@@ -203,7 +203,7 @@ sudo service mysql status
 
 Nachdem der \verb+MySQL-Server+ gestartet ist, wird eine Datenbank und ein Benutzerkonto auf dem \verb+MySQL-Server+ eingerichtet. Die benötigten Informationen für das Erstellen der Datenbank und des Benutzers werden dem Quellcode der \enquote{messages.fernuni.py} entnommen.
 Um eine Datenbank zu erstellen und einen Benutzer anzulegen, wird der \verb+MySQL-Client+ verwendet. Dieser kann mit folgendem Befehl aufgerufen werden:
-sudo mysql -u root
+\verb+sudo mysql -u root+
 
 Anschließend befinden wir uns in der \verb+MySQL-Shell+. Hier führen wir die folgenden Befehle aus, um die Datenbank und den Benutzer anzulegen:
 \verb+CREATE DATABASE messages;+
@@ -225,13 +225,13 @@ Erstellen eines automatischen Backups der \verb+MySQL-Datenbank+.
 
 Das automatische Backup gewährleistet den Schutz wichtiger Daten und ermöglicht die Wiederherstellung im Falle eines Datenverlusts oder eines Systemfehlers. Die folgenden Schritte erläutern die Einrichtung des automatischen Backups für unsere Datenbank.
 Erstellen einer Skriptdatei für das Backup.
-Durch das Erstellen einer Skriptdatei können wir den Backup-Prozess automatisieren und die Ausführungsschritte zentralisieren.
-Im Verzeichnis /etc/mysql erstellt man eine Skriptdatei namens mysql_backup.sh mit dem folgenden Inhalt:
+Durch das Erstellen einer Skriptdatei können wir den \verb+Backup-Prozess+ automatisieren und die Ausführungsschritte zentralisieren.
+Im Verzeichnis \enquote{/etc/mysql} erstellt man eine Skriptdatei namens \verb+mysql_backup.sh+ mit dem folgenden Inhalt:
 
-#!/bin/bash
-sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql
+\verb+#!/bin/bash+
+\verb+sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql+
 
-Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie der Datenbank \enquote{messages} zu erstellen. Die \verb+Backup-Datei+ wird im Verzeichnis /etc/mysql/backup/ mit dem Namen \enquote{backup_messages.sql} gespeichert.
+Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie der Datenbank \enquote{messages} zu erstellen. Die \verb+Backup-Datei+ wird im Verzeichnis \enquote{/etc/mysql/backup/} mit dem Namen \enquote{backup_messages.sql} gespeichert.
 Ausführbarkeit der Skriptdatei gewährleisten
 Um die Skriptdatei ausführbar zu machen, gibt man den folgenden Befehl ein:
 \verb+sudo chmod +x mysql_backup.sh+
