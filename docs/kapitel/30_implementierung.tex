@@ -228,34 +228,38 @@ Erstellen einer Skriptdatei für das Backup.
 Durch das Erstellen einer Skriptdatei können wir den Backup-Prozess automatisieren und die Ausführungsschritte zentralisieren.
 Im Verzeichnis \enquote{/etc/mysql} erstellt man eine Skriptdatei namens \verb+mysql_backup.sh+ mit dem folgenden Inhalt:
 
-\verb+#!/bin/bash+
-\verb+sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql+
+\begin{minted}[breaklines=true]{shell}
+    #!/bin/bash
+    sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql
+\end{minted}
 
 Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie der Datenbank \enquote{messages} zu erstellen. 
 Die Backup-Datei wird im Verzeichnis /etc/mysql/backup/ mit dem Namen \verb+backup_messages.sql+ gespeichert.
+
 Ausführbarkeit der Skriptdatei gewährleisten
+
 Um die Skriptdatei ausführbar zu machen, gibt man den folgenden Befehl ein:
 \begin{verbatim} sudo chmod +x mysql_backup.sh \end{verbatim}
 Dadurch wird die Ausführungsberechtigung für die Skriptdatei aktiviert.
 Ausführen des Skripts im Terminal, um sicherzustellen, dass es ordnungsgemäß funktioniert:
-\verb+sudo ./mysql_backup.sh+
-Nach dem Ausführen des Skriptes wird ein Backup der Datenbank \enquote{messages} erstellt.
+\mint{shell}|sudo ./mysql_backup.sh|
 
 Einrichten eines regelmäßigen automatischen Updates.
+
 Dazu gibt man den folgenden Befehl ein, um den Crontab-Editor zu öffnen:
-sudo crontab -e
+\mint{shell}|sudo crontab -e|
 Die Verwendung des Crontab-Dienstes ermöglicht es uns, den \verb+Backup-Job+ regelmäßig auszuführen. Durch das Hinzufügen einer Zeile zur Crontab geben wir an, wann und wie oft das Backup-Skript ausgeführt werden soll. 
 
-Hinzufügen der Befehlszeile Zeile zum Crontab.
-\begin{verbatim} 0 18 * * * /etc/mysql/mysql_backup.sh \end{verbatim}
-Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Skript \verb+/etc/mysql/mysql_backup.sh+ jeden Tag um 18:00 Uhr ausgeführt.
+\begin{verbatim}0 18 * * * /etc/mysql/mysql_backup.sh\end{verbatim}
+
+Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Backup Skript täglich um 18:00 Uhr ausgeführt.
 
 
-\begin{listing}[ht]{}
-    \shellcode{code/shell/webserver_installieren.sh}
-    \caption{Installation des Apache Webservers}
-    \label{listing:installation_apache}
-\end{listing}
+% \begin{listing}[ht]{}
+%     \shellcode{code/shell/webserver_installieren.sh}
+%     \caption{Installation des Apache Webservers}
+%     \label{listing:installation_apache}
+% \end{listing}
 
 \subsubsection{Umsetzung der Mandatory Access Control mittels AppArmor}
 
