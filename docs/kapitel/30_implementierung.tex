@@ -185,69 +185,70 @@ Nun sind die Websites \enquote{hello.fernuni} und \enquote{messages.fernuni} auf
 Zu beachten ist, dass die in dieser Dokumentation verwendeten Zertifikate selbstsigniert sind, weshalb Warnmeldungen im Webbrowser angezeigt werden. Würden Zertifikate von vertrauenswürdigen Zertifizierungsstellen verwendet, wären diese Warnungen nicht vorhanden.
 
 Aufsetzen einer Datenbank auf Ubuntu
-Die Webseite \enquote{messages.fernuni} erfordert eine Datenbank. Zur Erfüllung dieser Aufgabe wird eine \verb+MySQL-Datenbank+ aufgesetzt. Dabei werden die erforderlichen Installationsschritte für MySQL, \verb+Python-Pakete+ und die Konfiguration der Datenbank beschrieben und durchgeführt.
-Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der \verb+MySQL-Server+ installiert, gefolgt von den erforderlichen \verb+Python-Paketen+ für die Datenbankverbindung. Die benötigten Befehle sind folgende:
+Die Webseite \enquote{messages.fernuni} erfordert eine Datenbank. Zur Erfüllung dieser Aufgabe wird eine MySQL-Datenbank aufgesetzt. Dabei werden die erforderlichen Installationsschritte für MySQL, Python-Pakete und die Konfiguration der Datenbank beschrieben und durchgeführt.
+Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der MySQL-Server installiert, gefolgt von den erforderlichen Python-Paketen für die Datenbankverbindung. Die benötigten Befehle sind folgende:
 
-\verb+sudo apt-get install mysql-server+
-\verb+sudo apt install python3-pip+
-\verb+sudo pip install mysql-connector+
-\verb+sudo pip install mysql-connector-python+
-\verb+sudo apt-get install libmariadb-dev+
+sudo apt-get install mysql-server
+sudo apt install python3-pip
+sudo pip install mysql-connector
+sudo pip install mysql-connector-python
+sudo apt-get install libmariadb-dev
 sudo pip install mariadb
 
-Nach der Installation kann der \verb+MySQL-Server+ mit folgendem Befehl gestartet werden:
+Nach der Installation kann der MySQL-Server mit folgendem Befehl gestartet werden:
 sudo service mysql start
 
-Der Status des \verb+MySQL-Servers+ kann mit folgendem Befehl abgerufen werden:
+Der Status des MySQL-Servers kann mit folgendem Befehl abgerufen werden:
 sudo service mysql status
 
-Nachdem der \verb+MySQL-Server+ gestartet ist, wird eine Datenbank und ein Benutzerkonto auf dem \verb+MySQL-Server+ eingerichtet. Die benötigten Informationen für das Erstellen der Datenbank und des Benutzers werden dem Quellcode der \enquote{messages.fernuni.py} entnommen.
+Nachdem der MySQL-Server gestartet ist, wird eine Datenbank und ein Benutzerkonto auf dem MySQL-Server eingerichtet. Die benötigten Informationen für das Erstellen der Datenbank und des Benutzers werden dem Quellcode der \enquote{messages.fernuni.py} entnommen.
 Um eine Datenbank zu erstellen und einen Benutzer anzulegen, wird der \verb+MySQL-Client+ verwendet. Dieser kann mit folgendem Befehl aufgerufen werden:
-\verb+sudo mysql -u root+
+sudo mysql -u root
 
-Anschließend befinden wir uns in der \verb+MySQL-Shell+. Hier führen wir die folgenden Befehle aus, um die Datenbank und den Benutzer anzulegen:
+Anschließend befinden wir uns in der MySQL-Shell. Hier führen wir die folgenden Befehle aus, um die Datenbank und den Benutzer anzulegen:
 \verb+CREATE DATABASE messages;+
 \verb+CREATE USER 'testuser'@'localhost' IDENTIFIED BY '58tqxEJxqf123';+
 \verb+GRANT ALL PRIVILEGES ON messages.* TO 'testuser'@'localhost';+
 
 Um eine Tabelle in der Datenbank zu erstellen, verwenden wir erneut den \verb+MySQL-Client+ und \verb+MySQL-Shell+.
 Als Erstes wechseln wir zur Datenbank \enquote{messages} und erstellen dort die Tabelle \enquote{messagestorage} mit der Spalte \enquote{timestamp}:
-\verb+USE messages;+
-\verb+CREATE TABLE messagestorage (message TEXT);+
-\verb+ALTER TABLE messagestorage ADD COLUMN timestamp TIMESTAMP;+
+USE messages;
+CREATE TABLE messagestorage (message TEXT);
+ALTER TABLE messagestorage ADD COLUMN timestamp TIMESTAMP;
 
-Falls erforderlich, kann der \verb+MySQL-Server+ mit dem folgenden Befehl neu gestartet werden:
+Falls erforderlich, kann der MySQL-Server mit dem folgenden Befehl neu gestartet werden:
 sudo service mysql restart
 
 Nun ist die Datenbank, die für \enquote{messages.fernuni} erforderlich ist, aufgesetzt und die Funktionalität der Webseite ist gewährleistet.
 
-Erstellen eines automatischen Backups der \verb+MySQL-Datenbank+.
+Erstellen eines automatischen Backups der MySQL-Datenbank.
 
 Das automatische Backup gewährleistet den Schutz wichtiger Daten und ermöglicht die Wiederherstellung im Falle eines Datenverlusts oder eines Systemfehlers. Die folgenden Schritte erläutern die Einrichtung des automatischen Backups für unsere Datenbank.
 Erstellen einer Skriptdatei für das Backup.
-Durch das Erstellen einer Skriptdatei können wir den \verb+Backup-Prozess+ automatisieren und die Ausführungsschritte zentralisieren.
+Durch das Erstellen einer Skriptdatei können wir den Backup-Prozess automatisieren und die Ausführungsschritte zentralisieren.
 Im Verzeichnis \enquote{/etc/mysql} erstellt man eine Skriptdatei namens \verb+mysql_backup.sh+ mit dem folgenden Inhalt:
 
 \verb+#!/bin/bash+
 \verb+sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql+
 
-Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie der Datenbank \enquote{messages} zu erstellen. Die \verb+Backup-Datei+ wird im Verzeichnis \enquote{/etc/mysql/backup/} mit dem Namen \enquote{backup_messages.sql} gespeichert.
+Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie der Datenbank \enquote{messages} zu erstellen. 
+Die Backup-Datei wird im Verzeichnis /etc/mysql/backup/ mit dem Namen \verb+backup_messages.sql+ gespeichert.
 Ausführbarkeit der Skriptdatei gewährleisten
 Um die Skriptdatei ausführbar zu machen, gibt man den folgenden Befehl ein:
-\verb+sudo chmod +x mysql_backup.sh+
+\begin{verbatim} sudo chmod +x mysql_backup.sh \end{verbatim}
 Dadurch wird die Ausführungsberechtigung für die Skriptdatei aktiviert.
 Ausführen des Skripts im Terminal, um sicherzustellen, dass es ordnungsgemäß funktioniert:
 \verb+sudo ./mysql_backup.sh+
 Nach dem Ausführen des Skriptes wird ein Backup der Datenbank \enquote{messages} erstellt.
 
 Einrichten eines regelmäßigen automatischen Updates.
-Dazu gibt man den folgenden Befehl ein, um den \verb+Crontab-Editor+ zu öffnen:
-\verb+sudo crontab -e+
-Die Verwendung des \verb+Crontab-Dienstes+ ermöglicht es uns, den \verb+Backup-Job+ regelmäßig auszuführen. Durch das Hinzufügen einer Zeile zur Crontab geben wir an, wann und wie oft das Backup-Skript ausgeführt werden soll. 
+Dazu gibt man den folgenden Befehl ein, um den Crontab-Editor zu öffnen:
+sudo crontab -e
+Die Verwendung des Crontab-Dienstes ermöglicht es uns, den \verb+Backup-Job+ regelmäßig auszuführen. Durch das Hinzufügen einer Zeile zur Crontab geben wir an, wann und wie oft das Backup-Skript ausgeführt werden soll. 
 
 Hinzufügen der Befehlszeile Zeile zum Crontab.
-\verb+0 18 * * * /etc/mysql/mysql_backup.sh+
-Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Skript \enquote{/etc/mysql/mysql_backup.sh} jeden Tag um 18:00 Uhr ausgeführt.
+\begin{verbatim} 0 18 * * * /etc/mysql/mysql_backup.sh \end{verbatim}
+Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Skript \verb+/etc/mysql/mysql_backup.sh+ jeden Tag um 18:00 Uhr ausgeführt.
 
 
 \begin{listing}[ht]{}
@@ -309,3 +310,6 @@ ALLOWED dockerd umount /var/lib/docker/check-overlayfs-support2956447284/merged/
 \subsubsection{Einrichtung eines Intrusion Detection Systems}
 
 OSSEC, Einrichtung via Ansible.
+
+
+

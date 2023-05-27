@@ -1,0 +1,71 @@
+\newpage
+\subsubsection{Wireguard}
+
+Bei Wireguard handelt es sich um eine schlanke L\"osung um ein Virtual Private Network (VPN) zu betreiben. Im Vergleich zur Anwendung openVPN mit ca. 70.000 Zeilen Code kommt die Anwendung Wireguard mit weniger als 4.000 Zeilen Code aus. 
+%Quelle einf\"ugen 1. https://www.wireguard.com/papers/wireguard.pdf 2. https://openvpn.net/blog/what-is-cloudflare-vpn/
+Damit ist der Quellcode von openVPN anf\"alliger f\"ur Implementierungsfehler. W\"ahrend f\"ur die meisten VPN-Verbindungen der bew\"ahrte symmetrische Algorithmus AES256 verwendet wird, Verwendet Wireguard den relativ neuen ChaCha20 Algorithmus. Damit besteht die M\"oglichkeit, dass zuk\"unftig noch unentdeckte Fehler in der Verschl\"usselung gefunden werden. Vom Bundesamt f\"ur Sicherheit in der Informationstechnik gibt es aktuell noch keine Empfehlung zu ChaCha20 wogegen AES256 derzeit noch als sicher eingestuft ist.  
+Durch den schlanken Quelcode und dem k\"urzeren Schl\"ussel zeigt sich Wireguard jedoch performanter als andere VPN-Technologien.   
+
+\begin{center}
+Verschl\"usselungen im Vergleich
+\begin{tabular}{lc}\toprule
+\textbf{Protokoll}	&\textbf{Konfiguration} \\ 	
+openVPN		& 256-bit ChaCha20, 128-bit Poly1305 \\
+IPsec 	& 256-bit ChaCha20, 128-bit Poly1305 \\
+IPsec	& 256-bit AES, 128-bit GCM \\
+Wireguard		& 256-bit AES, HMAC-SHA2-256, UDP mode \\
+\end{tabular}
+\end{center}
+
+\noindent F\"ur die \"Ubertragung des symmetrischen Schl\"ussels wird ein assymetrisches Schl\"usselpaar ben\"otigt. W\"ahrend der \"Ubertragung werden wechselnde Schl\"ussel verwendet und gew\"ahrleisten so eine Perfect Forward Secrecy \verb+(PFS)+. Das Schl\"usselpar vom Typ 256 Bit Curve25519 wird mit dem Befehl 
+\begin{minted}{shell}
+wg genkey | tee server_private.key | wg pubkey > server_public.key
+\end{minted}
+in die zwei Schl\"usseldateien mit den Namen \verb+server_private.key+ und \verb+server_public.key+ abgelegt.\\
+\newpage
+\noindent Die Konfiguration des Server:
+\begin{minted}{shell}
+[Interface]
+Address = 10.0.2.1/24
+ListenPort = 51820
+
+PrivateKey = 'insert Key'
+
+PostUp = iptables -A FORWARD -i %i -j ACCEPT; 
+iptables -A FORWARD -o %i -j ACCEPT; 
+iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
+
+PostDown = iptables -D FORWARD -i %i -j ACCEPT; 
+iptables -D FORWARD -o %i -j ACCEPT; 
+iptables -t nat -D POSTROUTING -o enp0s3 -j MASQUERADE
+
+[Peer]  
+PublicKey = 'insert Key'
+AllowedIPs = 10.0.2.15/24
+\end{minted}
+\vspace{0.5cm}
+\noindent Die Konfiguration des Clients:
+\begin{minted}{shell}
+[Interface]
+Address = 10.0.2.15/24
+PrivateKey = 'insert Key'
+
+[Peer]  
+PublicKey = 'insert Key'
+Endpoint = 10.0.2.1:51820
+AllowedIPs = 0.0.0.0/0
+PersistentKeepAlive = 25
+\end{minted}
+
+\newpage
+\noindent Die Konfigurationsdateien sind jeweils im Verzeichnis /etc/wireguard abzulegen. Um die darin befindlichen Schl\"ussel vor unberechtigten Einblicken zu sch\"utzen, m\"ussen die Berechtigungen des Verzeichnisses entsprechen gew\"ahlt werden. \\
+
+\noindent Leider bietet Wireguard nicht selbst die M\"oglichkeit der Zwei-Faktor-Authentisierung (2FA). Diese kann nur \"uber Umwege mit Wireguard verwendet werden.  
+
+
+
+
+
+
+
+  
