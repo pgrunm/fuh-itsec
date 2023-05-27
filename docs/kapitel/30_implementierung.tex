@@ -188,27 +188,34 @@ Aufsetzen einer Datenbank auf Ubuntu
 Die Webseite \enquote{messages.fernuni} erfordert eine Datenbank. Zur Erfüllung dieser Aufgabe wird eine MySQL-Datenbank aufgesetzt. Dabei werden die erforderlichen Installationsschritte für MySQL, Python-Pakete und die Konfiguration der Datenbank beschrieben und durchgeführt.
 Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der MySQL-Server installiert, gefolgt von den erforderlichen Python-Paketen für die Datenbankverbindung. Die benötigten Befehle sind folgende:
 
-sudo apt-get install mysql-server
-sudo apt install python3-pip
-sudo pip install mysql-connector
-sudo pip install mysql-connector-python
-sudo apt-get install libmariadb-dev
-sudo pip install mariadb
+\begin{minted}{shell}
+    sudo apt-get install mysql-server
+    sudo apt install python3-pip
+    sudo pip install mysql-connector
+    sudo pip install mysql-connector-python
+    sudo apt-get install libmariadb-dev
+    sudo pip install mariadb
+\end{minted}
 
 Nach der Installation kann der MySQL-Server mit folgendem Befehl gestartet werden:
-sudo service mysql start
+
+\mint{shell}|sudo service mysql start|
 
 Der Status des MySQL-Servers kann mit folgendem Befehl abgerufen werden:
-sudo service mysql status
+
+\mint{shell}|sudo service mysql status|
 
 Nachdem der MySQL-Server gestartet ist, wird eine Datenbank und ein Benutzerkonto auf dem MySQL-Server eingerichtet. Die benötigten Informationen für das Erstellen der Datenbank und des Benutzers werden dem Quellcode der \enquote{messages.fernuni.py} entnommen.
 Um eine Datenbank zu erstellen und einen Benutzer anzulegen, wird der \verb+MySQL-Client+ verwendet. Dieser kann mit folgendem Befehl aufgerufen werden:
-sudo mysql -u root
+\mint{shell}|sudo mysql -u root|
 
 Anschließend befinden wir uns in der MySQL-Shell. Hier führen wir die folgenden Befehle aus, um die Datenbank und den Benutzer anzulegen:
-\verb+CREATE DATABASE messages;+
-\verb+CREATE USER 'testuser'@'localhost' IDENTIFIED BY '58tqxEJxqf123';+
-\verb+GRANT ALL PRIVILEGES ON messages.* TO 'testuser'@'localhost';+
+
+\begin{minted}{sql}
+    CREATE DATABASE messages;
+    CREATE USER 'testuser'@'localhost' IDENTIFIED BY '58tqxEJxqf123';
+    GRANT ALL PRIVILEGES ON messages.* TO 'testuser'@'localhost';
+\end{minted}
 
 Um eine Tabelle in der Datenbank zu erstellen, verwenden wir erneut den \verb+MySQL-Client+ und \verb+MySQL-Shell+.
 Als Erstes wechseln wir zur Datenbank \enquote{messages} und erstellen dort die Tabelle \enquote{messagestorage} mit der Spalte \enquote{timestamp}:
@@ -217,9 +224,10 @@ CREATE TABLE messagestorage (message TEXT);
 ALTER TABLE messagestorage ADD COLUMN timestamp TIMESTAMP;
 
 Falls erforderlich, kann der MySQL-Server mit dem folgenden Befehl neu gestartet werden:
-sudo service mysql restart
 
-Nun ist die Datenbank, die für \enquote{messages.fernuni} erforderlich ist, aufgesetzt und die Funktionalität der Webseite ist gewährleistet.
+\mint{shell}|sudo service mysql restart|
+
+Nun ist die Datenbank, die für \enquote{messages.fernuni} erforderlich ist, aufgesetzt und die Funktionalität der Webseite gewährleistet.
 
 Erstellen eines automatischen Backups der MySQL-Datenbank.
 
