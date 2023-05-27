@@ -1,0 +1,45 @@
+---
+
+- hosts: all
+  become: true
+
+  vars:
+    backup_dir: "/etc/mysql/backup"
+    backup_file: "{{backup_dir}}/backup-{{ansible_date_time.date}}-{{ansible_date_time.hour}}.sql"
+
+  tasks:
+  - name: Update apt cache and upgrade packages
+    apt:
+      update_cache: yes
+      upgrade: yes
+
+  - name: Install AppArmor, Mariadb and Apache2
+    apt:
+      name: ['apparmor', 'mariadb-server', 'apache2']
+      state: present
+
+  - name: Create backup directory
+    file:
+      path: "{{backup_dir}}"
+      state: directory
+      mode: '0761'
+
+  - name: Setup MySQL backup
+    mysql_db:
+      state: dump
+      name: dbname
+      login_password: password
+      target: "{{backup_file}}"
+
+  - name: Create cron job for MySQL backups
+    cron:
+      name: "Backup MySQL database"
+      minute: "0"
+      hour: "*"
+      user: root
+      job: "/usr/bin/mysql --user=root --password=password dbname < {{backup_file}}" 
+
+  - name: Restart Apache2
+    systemd:
+      name: apache2
+      state: restarted
