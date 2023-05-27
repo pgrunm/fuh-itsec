@@ -102,7 +102,7 @@ Um die Konfigurationsänderungen zu übernehmen, muss der Apache-Webserver neuge
 
 Starten des Python-Servers
 
-Damit die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} durch den Apache-Webserver bedienbar sind, müssen diese gestartet werden. Dies kann man mit folgenden Befehlen in den jeweiligen Ordnern erreichen:
+Damit die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} durch den Apache Webserver bedienbar sind, müssen diese gestartet werden. Dies kann man mit folgenden Befehlen in den jeweiligen Ordnern erreichen:
 
 \begin{minted}{shell}
     python3 hello.fernuni.py
@@ -217,11 +217,14 @@ Anschließend befinden wir uns in der MySQL-Shell. Hier führen wir die folgende
     GRANT ALL PRIVILEGES ON messages.* TO 'testuser'@'localhost';
 \end{minted}
 
-Um eine Tabelle in der Datenbank zu erstellen, verwenden wir erneut den \verb+MySQL-Client+ und \verb+MySQL-Shell+.
+Um eine Tabelle in der Datenbank zu erstellen, verwenden wir erneut die \verb+MySQL Shell+.
 Als Erstes wechseln wir zur Datenbank \enquote{messages} und erstellen dort die Tabelle \enquote{messagestorage} mit der Spalte \enquote{timestamp}:
-USE messages;
-CREATE TABLE messagestorage (message TEXT);
-ALTER TABLE messagestorage ADD COLUMN timestamp TIMESTAMP;
+
+\begin{minted}{sql}
+    USE messages;
+    CREATE TABLE messagestorage (message TEXT);
+    ALTER TABLE messagestorage ADD COLUMN timestamp TIMESTAMP;
+\end{minted}
 
 Falls erforderlich, kann der MySQL-Server mit dem folgenden Befehl neu gestartet werden:
 
