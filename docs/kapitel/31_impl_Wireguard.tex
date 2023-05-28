@@ -17,7 +17,7 @@ Wireguard		& 256-bit AES, HMAC-SHA2-256, UDP mode \\
 \end{tabular}
 \end{center}
 
-\noindent F\"ur die \"Ubertragung des symmetrischen Schl\"ussels wird ein assymetrisches Schl\"usselpaar ben\"otigt. W\"ahrend der \"Ubertragung werden wechselnde Schl\"ussel verwendet und gew\"ahrleisten so eine Perfect Forward Secrecy \verb+(PFS)+. Das Schl\"usselpar vom Typ 256 Bit Curve25519 wird mit dem Befehl 
+\noindent F\"ur die \"Ubertragung des symmetrischen Schl\"ussels wird ein assymetrisches Schl\"usselpaar ben\"otigt. W\"ahrend der \"Ubertragung werden wechselnde Schl\"ussel verwendet und gew\"ahrleisten so \ac{PFS}. Das Schl\"usselpar vom Typ 256 Bit Curve25519 wird mit dem Befehl 
 \begin{minted}{shell}
 wg genkey | tee server_private.key | wg pubkey > server_public.key
 \end{minted}
