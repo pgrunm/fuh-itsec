@@ -15,7 +15,7 @@
 
   - name: Install AppArmor, Mariadb and Apache2
     apt:
-      name: ['apparmor', 'mariadb-server', 'apache2']
+      name: ['apparmor', 'mariadb-server', 'apache2', 'python3-pip', "libmariadb-dev"]
       state: present
 
   - name: Create backup directory
@@ -23,22 +23,38 @@
       path: "{{backup_dir}}"
       state: directory
       mode: '0761'
+  
+  - name: Upload the local sql file
+    copy:
+      src: docs/code/fuh/createsql.sql
+      dest: "{{backup_dir}}/createsql.sql"
+      # owner: "{{ansible_ssh_user}}"
+
+  # Watch out, this is NOT idempotent and will recreate the database every time, the playbook will run!
+  - name: Create MySQL database messages
+    community.mysql.mysql_db:
+      name: messages
+      state: import
+      target: "{{backup_dir}}/createsql.sql"
+      # Maybe required to ignore errors, as the statements only creates the database if its NOT existing.
+      force: true
 
   - name: Setup MySQL backup
     mysql_db:
       state: dump
-      name: dbname
-      login_password: password
+      name: messages
+      login_password: super_secret_password
       target: "{{backup_file}}"
 
-  - name: Create cron job for MySQL backups
+  - name: Create cron job for MySQL backups to run every hour.
     cron:
       name: "Backup MySQL database"
       minute: "0"
       hour: "*"
       user: root
-      job: "/usr/bin/mysql --user=root --password=password dbname < {{backup_file}}" 
+      job: "/usr/bin/mysql --user=root --password=super_secret_password messages > {{backup_file}}" 
 
+  # TODO: Create Apache configuration.
   - name: Restart Apache2
     systemd:
       name: apache2

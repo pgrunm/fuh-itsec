@@ -184,17 +184,14 @@ sudo service apache2 restart
 Nun sind die Websites \enquote{hello.fernuni} und \enquote{messages.fernuni} auf HTTPS umgestellt. Benutzer können sicher auf die Websites zugreifen, und die Kommunikation zwischen den Benutzern und dem Webserver ist verschlüsselt.
 Zu beachten ist, dass die in dieser Dokumentation verwendeten Zertifikate selbstsigniert sind, weshalb Warnmeldungen im Webbrowser angezeigt werden. Würden Zertifikate von vertrauenswürdigen Zertifizierungsstellen verwendet, wären diese Warnungen nicht vorhanden.
 
-Aufsetzen einer Datenbank auf Ubuntu
+\subsubsection*{ Aufsetzen einer Datenbank auf Ubuntu}
+
 Die Webseite \enquote{messages.fernuni} erfordert eine Datenbank. Zur Erfüllung dieser Aufgabe wird eine MySQL-Datenbank aufgesetzt. Dabei werden die erforderlichen Installationsschritte für MySQL, Python-Pakete und die Konfiguration der Datenbank beschrieben und durchgeführt.
 Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der MySQL-Server installiert, gefolgt von den erforderlichen Python-Paketen für die Datenbankverbindung. Die benötigten Befehle sind folgende:
 
 \begin{minted}{shell}
-    sudo apt-get install mysql-server
-    sudo apt install python3-pip
-    sudo pip install mysql-connector
-    sudo pip install mysql-connector-python
-    sudo apt-get install libmariadb-dev
-    sudo pip install mariadb
+    sudo apt install mysql-server python3-pip libmariadb-dev
+    sudo pip install mysql-connector mysql-connector-python mariadb
 \end{minted}
 
 Nach der Installation kann der MySQL-Server mit folgendem Befehl gestartet werden:
