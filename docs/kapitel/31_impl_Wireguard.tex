@@ -60,8 +60,27 @@ PersistentKeepAlive = 25
 \newpage
 \noindent Die Konfigurationsdateien sind jeweils im Verzeichnis /etc/wireguard abzulegen. Um die darin befindlichen Schl\"ussel vor unberechtigten Einblicken zu sch\"utzen, m\"ussen die Berechtigungen des Verzeichnisses entsprechen gew\"ahlt werden. \\
 
-\noindent Leider bietet Wireguard nicht selbst die M\"oglichkeit der Zwei-Faktor-Authentisierung (2FA). Diese kann nur \"uber Umwege mit Wireguard verwendet werden.  
+\noindent Leider bietet Wireguard nicht selbst die M\"oglichkeit der Zwei-Faktor-Authentisierung (2FA). Diese kann nur \"uber Umwege mit Wireguard verwendet werden. Folgende M\"oglichkeiten stehen zur Verf\"ugung:
+   \begin{itemize}
+      \item Verwendung eines Passwortspeichers zur Ablage des private key
+      \item Verschl\"usselung des private key auf einem Datentr\"ager
+			\item Verwendung eines PIV-Slots auf einem Yubikey
+   \end{itemize}
 
+\paragraph{Passwortspeicher} 
+\noindent \\Der private Key kann in einem Passwortspeicher gesichert werden, welcher beim \"offnen ein Passwort vom Benutzer abfr\"agt. Dies bietet zum Faktor "`Besitz"' des private Key den weiteren Faktor "`Wissen"' durch eingabe des zus\"atzlichen Kennwortes beim \"Offnen des Passwortspeichers. Hierzu bietet sich der Passwortspeicher "`Pass"' an, welcher wie Wireguard ebenfalls von Jason A. Donenfeld entwickelt wurde. Beim initialisieren des Passwortspeichers wird dieser mit einem GPG-Zertifikat verknüpft. Das Zertifikat ist wiederum durch eine Passphrase gesch\"utz welche zum Entschlüssle eingegeben werden muss.
+Ein GPG-Zertifikat kann durch Eingabe des Befehls \mint{shell}|gpg --full-generate-key| erzeugt werden. Beim initialisieren des Passwortspeichers mit dem Befehl \mint{shell}|pass init zuvor-erstellter-gpg-key| wird im entsprechenden Verzeichnis ein Unterverzeichnis \enquote{ .password-store } erstellt. In der Wireguard-Konfiguration kann nun der zuvor gespeicherte private Key beispielsweise mit \mint{shell}|PostUp = wg set wg0 private-key <(sudo -u Benutzer pass wireguard/private-keys/wg0)| ausgelesen werden.
+
+\paragraph{Verschl\"usselung des private key auf einem Datentr\"ager}
+\noindent \\Wie zuvor kann der private Key auch in einer verschl\"usselten Datei auf einem Datentr\"ager gesichert werden. Hierfür eignet sich beispielsweise die Verschl\"usselung mit GPG. In der Wireguard-Konfiguration kann nun der verschl\"usselte private Key mit \mint{shell}|PostUp = wg set wg0 private-key <(sudo -u Benutzer gpg -d /home/justin/.config/wireguard/wg0.key.gpg| ausgelesen werden. Auch hierbei wird die Passphrase des GPG-Zertifikats abgefragt. 
+
+\paragraph{Verwendung eines PIV-Slots auf einem Yubikey}
+\noindent \\Bei einem Yubikey handelt es sich um ein Security-Token, welcher an Schnittstellen wie Lightning oder USB verwendet wird. Ein Yubikey unterst\"utzt mehrere Protokolle zur Identifizierung und Authentifizierung von Benutzern. Auf einem Yubikey stehen so genante Personal Identity Verification Solts (PIV-Slots) zur Verf\"ugung, in denen private Schl\"ussel abgelegt werden k\"onnen. Hierf\"ur wird das Yubikey Command Line Interface ben\"otigt, welches mit \mint{shell}|sudo apt-get install yubikey-manager| installiert werden kann. Mit den Befehlen 
+\begin{minted}{shell}
+ gpg --encrypt --recipient 0x1234567890ABCDEF wg0.key
+ ykman piv objects import 5f0000 wg0.key.gpg
+\end{minted}
+wird ein key wg0.key mit dem Zertifikat 0x1234567890ABCDEF verschl\"usselt und in den PIV-Slot 5f0000 geschrieben. In der Wireguard-Konfiguration kann nun mit \mint{shell}|PostUp = wg set wg0 private-key <(ykman piv objects export 5f0000 - | sudo -u Benutzer gpg -d)| der Schl\"ussel aus dem Slot gelesen und entschl\"usselt werden. Der entschl\"usselte private Key für wg0 wird nun nach dem Start der Schnittstelle gesetzt  und zu Aufbau der Verbindung verwendet. 
 
 
 
