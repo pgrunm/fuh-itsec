@@ -133,7 +133,7 @@ Anpassung der Konfigurationsdatei \enquote{hello.fernuni.conf}.
 
 Die Konfigurationsdatei \enquote{hello.fernuni.conf} muss entsprechend angepasst werden, um HTTPS zu ermöglichen. Zuerst ersetzen wir in die Portnummer von 80 auf 443. Die Portnummer 443 ist die Standartportnummer für HTTPS anfragen auf Apache. Zudem werden die Pfadangaben zum Zertifikat und zum privaten Schlüssel angegeben.
 Um sicherzustellen, dass Benutzer automatisch von HTTP auf HTTPS umgeleitet werden, fügen wir noch einen Umleitungsabschnitt zur \enquote{hello.fernuni.conf} hinzu. Die angepasste Konfigurationsdatei sieht folgendermaßen aus:
-\begin{verbatim}
+\begin{minted}{apache}
 <VirtualHost *:443>
     ProxyPreserveHost On
     ProxyRequests Off
@@ -153,11 +153,12 @@ Um sicherzustellen, dass Benutzer automatisch von HTTP auf HTTPS umgeleitet werd
     ServerName hello.fernuni
     Redirect / https://hello.fernuni/
 </VirtualHost>
-\end{verbatim}
+\end{minted}
 
 Analog zur diesen Vorgehensweise werden die gleichen Schritte für \enquote{messages.fernuni} durchgeführt. Man erstellt ein separates Zertifikat und passt die Konfigurationsdatei \enquote{messages.fernuni.conf} an:
-\begin{verbatim}
-<VirtualHost *:443>
+
+\begin{minted}{apache}
+    <VirtualHost *:443>
     ProxyPreserveHost On
     ProxyRequests Off
     ServerName messages.fernuni
@@ -170,13 +171,13 @@ Analog zur diesen Vorgehensweise werden die gleichen Schritte für \enquote{mess
     SSLEngine on
     SSLCertificateFile /var/www/html/messages/messagescert.crt
     SSLCertificateKeyFile /var/www/html/messages/messagesprivatkey.key
-</VirtualHost>
-
-<VirtualHost *:80>
+    </VirtualHost>
+    
+    <VirtualHost *:80>
     ServerName messages.fernuni
     Redirect / https://messages.fernuni/
-</VirtualHost>
-\end{verbatim}
+    </VirtualHost>
+\end{minted}
 
 Neustart des \verb+Apache-Webservers+
 Nachdem die Konfigurationsänderungen durchgeführt sind, startet man den \verb+Apache-Webserver+ neu:
