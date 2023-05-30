@@ -4,7 +4,7 @@
 
 - [Taskfile](https://taskfile.dev/).
 - [Vagrant](https://developer.hashicorp.com/vagrant/tutorials/getting-started) and [Virtualbox](https://www.virtualbox.org/).
-- [Latex](https://miktex.org/).
+- [Latex](https://miktex.org/) and [Pygments](https://pygments.org/languages/).
 
 ## Important URLs/Documents
 
