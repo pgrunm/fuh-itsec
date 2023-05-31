@@ -10,3 +10,9 @@ tasks:
     cmds:
       - echo "{{.GREETING}}"
     silent: true
+
+  lint:
+    desc: Lints the given Ansible playbook.
+    cmds:
+      - source /home/pascal/Dokumente/Entwicklung/FUH/fuh-itsec/.venv/bin/activate
+      - ansible-lint docs/code/ansible/playbook.yaml
