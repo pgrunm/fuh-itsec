@@ -9,25 +9,26 @@
 
   tasks:
   - name: Update apt cache and upgrade packages
-    apt:
-      update_cache: yes
-      upgrade: yes
+    ansible.builtin.apt:
+      update_cache: true
+      upgrade: true
 
   - name: Install AppArmor, Mariadb and Apache2
-    apt:
+    ansible.builtin.apt:
       name: ['apparmor', 'mariadb-server', 'apache2', 'python3-pip', "libmariadb-dev"]
       state: present
 
   - name: Create backup directory
-    file:
-      path: "{{backup_dir}}"
+    ansible.builtin.file:
+      path: "{{ backup_dir }}"
       state: directory
-      mode: '0761'
-  
+      mode: "0761"
+
   - name: Upload the local sql file
-    copy:
+    ansible.builtin.copy:
       src: docs/code/fuh/createsql.sql
-      dest: "{{backup_dir}}/createsql.sql"
+      dest: "{{ backup_dir }}/createsql.sql"
+      mode: "700"
       # owner: "{{ansible_ssh_user}}"
 
   # Watch out, this is NOT idempotent and will recreate the database every time, the playbook will run!
@@ -47,15 +48,27 @@
       target: "{{backup_file}}"
 
   - name: Create cron job for MySQL backups to run every hour.
-    cron:
+    ansible.builtin.cron:
       name: "Backup MySQL database"
       minute: "0"
       hour: "*"
       user: root
-      job: "/usr/bin/mysql --user=root --password=super_secret_password messages > {{backup_file}}" 
+      job: "/usr/bin/mysql --user=root --password=super_secret_password messages > {{ backup_file }}"
 
   # TODO: Create Apache configuration.
   - name: Restart Apache2
-    systemd:
+    ansible.builtin.systemd:
       name: apache2
       state: restarted
+  # UFW part
+  ## Allow list
+  - name: Allow SSH
+    community.general.ufw:
+      rule: allow
+      name: OpenSSH
+
+  - name: Limit SSH
+    community.general.ufw:
+      rule: limit
+      port: ssh
+      proto: tcp
