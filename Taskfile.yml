@@ -24,3 +24,4 @@ tasks:
       USER: vagrant
     cmds:
       - ansible-playbook docs/code/ansible/playbook.yaml -u {{.USER}} -i {{.INVENTORY}} --private-key {{.PK}} {{.CLI_ARGS}}
+      - ansible-playbook docs/code/ansible/hardening.yaml -u {{.USER}} -i {{.INVENTORY}} --private-key {{.PK}} {{.CLI_ARGS}}
