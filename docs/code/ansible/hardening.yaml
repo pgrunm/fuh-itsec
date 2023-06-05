@@ -1,0 +1,7 @@
+---
+
+- hosts: infra
+  collections:
+    - devsec.hardening
+  roles:
+    - ssh_hardening
