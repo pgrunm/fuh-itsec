@@ -1,6 +1,6 @@
 ---
 
-- hosts: all
+- hosts: infra
   become: true
 
   vars:
@@ -26,10 +26,19 @@
 
   - name: Upload the local sql file
     ansible.builtin.copy:
-      src: docs/code/fuh/createsql.sql
+      src: createsql.sql
       dest: "{{ backup_dir }}/createsql.sql"
       mode: "700"
       # owner: "{{ansible_ssh_user}}"
+
+  - name: Install Ansible/Python requirements
+    ansible.builtin.pip:
+      name: PyMySQL
+
+  - name: Collect all possible information using passwordless root access
+    community.mysql.mysql_info:
+      login_user: root
+      login_unix_socket: /run/mysqld/mysqld.sock
 
   # Watch out, this is NOT idempotent and will recreate the database every time, the playbook will run!
   - name: Create MySQL database messages
@@ -39,12 +48,16 @@
       target: "{{backup_dir}}/createsql.sql"
       # Maybe required to ignore errors, as the statements only creates the database if its NOT existing.
       force: true
+      login_user: root
+      login_unix_socket: /run/mysqld/mysqld.sock
+
 
   - name: Setup MySQL backup
-    mysql_db:
+    community.mysql.mysql_db:
       state: dump
       name: messages
-      login_password: super_secret_password
+      login_user: root
+      login_unix_socket: /run/mysqld/mysqld.sock
       target: "{{backup_file}}"
 
   - name: Create cron job for MySQL backups to run every hour.
