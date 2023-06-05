@@ -104,3 +104,7 @@
       rule: limit
       port: ssh
       proto: tcp
+
+  - name: Enable UFW to block not allowed connections.
+    community.general.ufw:
+      state: enabled
