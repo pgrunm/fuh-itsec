@@ -16,3 +16,11 @@ tasks:
     cmds:
       - source /home/pascal/Dokumente/Entwicklung/FUH/fuh-itsec/.venv/bin/activate
       - ansible-lint docs/code/ansible/playbook.yaml
+  ansible:
+    desc: Runs the Ansible playbook.
+    vars:
+      INVENTORY: docs/code/ansible/hosts.ini
+      PK: .vagrant/machines/default/virtualbox/private_key
+      USER: vagrant
+    cmds:
+      - ansible-playbook docs/code/ansible/playbook.yaml -u {{.USER}} -i {{.INVENTORY}} --private-key {{.PK}} {{.CLI_ARGS}}
