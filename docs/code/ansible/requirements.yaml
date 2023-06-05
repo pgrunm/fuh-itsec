@@ -3,3 +3,5 @@
 - name: community.mysql
 - name: ansible.posix
 - name: devsec.hardening
+# https://galaxy.ansible.com/hifis/unattended_upgrades
+- name: hifis.unattended_upgrades
