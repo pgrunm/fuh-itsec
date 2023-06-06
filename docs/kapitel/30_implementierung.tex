@@ -40,7 +40,7 @@ Das Proxy-Modul in Apache wird mit den folgenden Befehlen aktiviert:
     sudo a2enmod proxy_http
 \end{minted}
 
-\subsubsection*{Modul \verb+mod_wsgi+ installieren.}
+\subsubsection*{Modul \enquote{mod\_wsgi} installieren}
 
 Das \verb+mod_wsgi-Modul+ ermöglicht die Ausführung von Python-Anwendungen innerhalb des Apache-Webservers. Es wird verwendet, um die Flask-Anwendungen für die Webseiten zu integrieren.
 Wir installieren das Python-Paket \verb+mod_wsgi+ mit dem folgenden Befehl:
@@ -125,7 +125,7 @@ Man navigiert zum Verzeichnis \enquote{/var/www/html/hello}, wo sich die \verb+W
 
 Während des Zertifikatgenerierungsprozesses wird man nach Informationen gefragt. Man kann die meisten Felder unausgefüllt lassen, aber man muss sicherstellen, dass der Domainname \enquote{hello.fernuni} im Feld \enquote{Common Name} angegeben wird.
 
-\subsubsection*{Aktivierung des \verb+Apache-SSL-Moduls+.}
+\subsubsection*{Aktivierung des \enquote{Apache-SSL-Moduls}}
 
 Um SSL für den \verb+Apache-Webserver+ zu aktivieren, führt man den folgenden Befehl aus:
 \mint{shell}|sudo a2enmod ssl|
@@ -180,8 +180,8 @@ Analog zur diesen Vorgehensweise werden die gleichen Schritte für \enquote{mess
     </VirtualHost>
 \end{minted}
 
-\subsubsection*{Neustart des \verb+Apache-Webservers+.}
-Nachdem die Konfigurationsänderungen durchgeführt sind, startet man den \verb+Apache-Webserver+ neu:
+\subsubsection*{Neustart des \enquote{Apache-Webservers}}
+Nachdem die Konfigurationsänderungen durchgeführt sind, startet man den \enquote{Apache-Webserver} neu:
 
 \mint{shell}|sudo service apache2 restart|
 
