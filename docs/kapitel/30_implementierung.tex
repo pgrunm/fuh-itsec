@@ -4,22 +4,23 @@
 
 \subsubsection{Apache als Webserver}
 
-Installation eines Webservers für zwei Webseiten auf Ubuntu System.
-Der Webserver soll zwei separate Webseiten, \enquote{hello.fernuni} und \enquote{messages.fernuni}, bedienen. Beide Webseiten sind in der Programmiersprache Python geschrieben. Die Dokumentation erläutert die Gründe hinter jedem Schritt und gibt detaillierte Anweisungen zur Durchführung der Installation.
+Der Webserver (auf Ubuntu System) soll zwei separate Webseiten, \enquote{hello.fernuni} und \enquote{messages.fernuni}, bedienen. Beide Webseiten sind in der Programmiersprache Python geschrieben. Diese Dokumentation erläutert die Gründe hinter jedem Schritt und gibt detaillierte Anweisungen zur Durchführung der Installation.
 
 Als Team 3 haben wir uns für den Apache Webserver entschieden, denn Apache ist ein weit verbreiteter und zuverlässiger Webserver, der auf vielen Plattformen eingesetzt wird. Die Installation erfolgt mithilfe des Paketmanagers von Ubuntu.
 
-Apache installieren.
+\subsubsection*{Apache installieren.}
 Um den Apache-Webserver zu installieren, führen wir folgenden Befehl aus:
 
 \mint{shell}|sudo apt-get install apache2|
 
-Flask installieren
+\subsubsection*{Flask installieren.}
 Um Flask, ein Python-Framework für Webanwendungen, zu installieren, verwenden wir den folgenden Befehl:
-sudo apt install python3-flask
+
+\mint{shell}|sudo apt install python3-flask|
+
 Flask ermöglicht die Entwicklung von Webanwendungen mit Python. In diesem Fall wird Flask verwendet, um die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} zu implementieren.
 
-Hostdatei ändern
+\subsubsection*{Hostdatei ändern.}
 Die Hostdatei muss angepasst werden, um die lokal gehosteten Webseiten zu erreichen. Die \enquote{hosts}-Datei befindet sich in /etc/hosts. Wir öffenen die \enquote{hosts}-Datei mit einem Texteditor (z. B. Nano oder Vim) und fügen die folgenden Zeilen hinzu:
 
 \begin{minted}{shell}
@@ -29,7 +30,7 @@ Die Hostdatei muss angepasst werden, um die lokal gehosteten Webseiten zu erreic
 
 Durch das Hinzufügen der entsprechenden Einträge in der \enquote{hosts}-Datei kann der Webbrowser die lokal gehosteten Webseiten unter den angegebenen Domains finden.
 
-Proxy-Modul aktivieren
+\subsubsection*{Proxy-Modul aktivieren.}
 Das Proxy-Modul ermöglicht die Weiterleitung von HTTP-Anfragen an andere Webserver. Es wird benötigt, um die Anfragen für die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} an die entsprechenden Python-Server weiterzuleiten.
 Das Proxy-Modul in Apache wird mit den folgenden Befehlen aktiviert:
 
@@ -39,7 +40,7 @@ Das Proxy-Modul in Apache wird mit den folgenden Befehlen aktiviert:
     sudo a2enmod proxy_http
 \end{minted}
 
-Modul \verb+mod_wsgi+ installieren
+\subsubsection*{Modul \verb+mod_wsgi+ installieren.}
 
 Das \verb+mod_wsgi-Modul+ ermöglicht die Ausführung von Python-Anwendungen innerhalb des Apache-Webservers. Es wird verwendet, um die Flask-Anwendungen für die Webseiten zu integrieren.
 Wir installieren das Python-Paket \verb+mod_wsgi+ mit dem folgenden Befehl:
@@ -48,12 +49,12 @@ Wir installieren das Python-Paket \verb+mod_wsgi+ mit dem folgenden Befehl:
     sudo apt-get install libapache2-mod-wsgi-py3
 \end{minted}
 
-Python-Dateien ablegen
+\subsubsection*{Python-Dateien ablegen.}
 
 Apache verwendet standardmäßig das Verzeichnis \enquote{/var/www/html} als den Wurzelordner für gehostete Webinhalte. Durch das Ablegen der Python-Dateien in diesem Verzeichnis können sie vom Webserver erkannt und ausgeführt werden.
 Aus diesem Grund legen wir die Python-Dateien für die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} im Verzeichnis \enquote{/var/www/html/hello}  bzw. \enquote{/var/www/html/messages} ab. 
 
-\subsubsection*{Konfigurationsdateien erstellen}
+\subsubsection*{Konfigurationsdateien erstellen.}
 
 Der Webserver benötigt für das bedienen von Webseiten Konfigurationsdateien.
 Durch das Erstellen von separaten Konfigurationsdateien für jede Webseite können die spezifischen Einstellungen und Proxy-Weiterleitungen für jede Seite festgelegt werden.
@@ -88,7 +89,7 @@ Analog hat die Datei \enquote{messages.fernuni.config} folgenden Inhalt:
 </VirtualHost>
 \end{verbatim}
 
-Virtuelle Hosts aktivieren
+\subsubsection*{Virtuelle Hosts aktivieren.}
 Durch die Aktivierung der virtuellen Hosts werden die Konfigurationsdateien mit dem Verzeichnis \enquote{/etc/apache2/sites-enabled} verknüpft. Dadurch kann Apache die entsprechenden Webseiten bedienen.
 Wir aktivieren die virtuellen Hosts, indem wir die Befehle \enquote{a2ensite} für jede Konfigurationsdatei ausführen.
 
@@ -97,11 +98,11 @@ sudo a2ensite hello.fernuni.config
 sudo a2ensite messages.fernuni.config
 \end{minted}
 
-Apache-Webserver neu starten
+\subsubsection*{Apache-Webserver neu starten.}
 Um die Konfigurationsänderungen zu übernehmen, muss der Apache-Webserver neugestartet werden:
 \mint{shell}|sudo service apache2 restart|
 
-Starten des Python-Servers
+\subsubsection*{Starten des Python-Servers.}
 
 Damit die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} durch den Apache Webserver bedienbar sind, müssen diese gestartet werden. Dies kann man mit folgenden Befehlen in den jeweiligen Ordnern erreichen:
 
@@ -110,10 +111,10 @@ Damit die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} durch
     python3 messages.fernuni.py
 \end{minted}
 
-Umstellung des Webservers auf HTTPS 
+\subsubsection*{Umstellung des Webservers auf HTTPS.}
 Der Zweck dieser Umstellung besteht darin, die Kommunikation zwischen den Benutzern und dem Webserver zu verschlüsseln, um die Sicherheit und Vertraulichkeit der übertragenen Daten zu gewährleisten. Der Apache Webserver bedient zwei Webseiten: \enquote{hello.fernuni} und \enquote{messages.fernuni}. Für jede Webseite wird ein eigenes \verb+SSL/TLS-Zertifikat+ benötigt.
 
-Zertifikatgenerierung für \enquote{hello.fernuni}.
+\subsubsection*{Zertifikatgenerierung für \enquote{hello.fernuni}.}
 Um ein gültiges \verb+SSL/TLS-Zertifikat+ für die Website \enquote{hello.fernuni} zu generieren, geht man wie folgt vor.
 Man navigiert zum Verzeichnis \enquote{/var/www/html/hello}, wo sich die \verb+Website-Dateien+ befinden und man gibt den folgenden Befehl im Terminal ein, um ein selbstsigniertes Zertifikat zu generieren:
 
@@ -124,14 +125,14 @@ Man navigiert zum Verzeichnis \enquote{/var/www/html/hello}, wo sich die \verb+W
 
 Während des Zertifikatgenerierungsprozesses wird man nach Informationen gefragt. Man kann die meisten Felder unausgefüllt lassen, aber man muss sicherstellen, dass der Domainname \enquote{hello.fernuni} im Feld \enquote{Common Name} angegeben wird.
 
-Aktivierung des \verb+Apache-SSL-Moduls+
+\subsubsection*{Aktivierung des \verb+Apache-SSL-Moduls+.}
 
 Um SSL für den \verb+Apache-Webserver+ zu aktivieren, führt man den folgenden Befehl aus:
 \mint{shell}|sudo a2enmod ssl|
 
-Anpassung der Konfigurationsdatei \enquote{hello.fernuni.conf}.
+\subsubsection*{Anpassung der Konfigurationsdatei \enquote{hello.fernuni.conf}.}
 
-Die Konfigurationsdatei \enquote{hello.fernuni.conf} muss entsprechend angepasst werden, um HTTPS zu ermöglichen. Zuerst ersetzen wir in die Portnummer von 80 auf 443. Die Portnummer 443 ist die Standartportnummer für HTTPS anfragen auf Apache. Zudem werden die Pfadangaben zum Zertifikat und zum privaten Schlüssel angegeben.
+Die Konfigurationsdatei \enquote{hello.fernuni.conf} muss entsprechend angepasst werden, um HTTPS zu ermöglichen. Zuerst ersetzen wir die Portnummer von 80 auf 443. Die Portnummer 443 ist die Standartportnummer für HTTPS anfragen auf Apache. Zudem werden die Pfadangaben zum Zertifikat und zum privaten Schlüssel angegeben.
 Um sicherzustellen, dass Benutzer automatisch von HTTP auf HTTPS umgeleitet werden, fügen wir noch einen Umleitungsabschnitt zur \enquote{hello.fernuni.conf} hinzu. Die angepasste Konfigurationsdatei sieht folgendermaßen aus:
 \begin{minted}{apache}
 <VirtualHost *:443>
@@ -179,9 +180,10 @@ Analog zur diesen Vorgehensweise werden die gleichen Schritte für \enquote{mess
     </VirtualHost>
 \end{minted}
 
-Neustart des \verb+Apache-Webservers+
+\subsubsection*{Neustart des \verb+Apache-Webservers+.}
 Nachdem die Konfigurationsänderungen durchgeführt sind, startet man den \verb+Apache-Webserver+ neu:
-sudo service apache2 restart
+
+\mint{shell}|sudo service apache2 restart|
 
 Nun sind die Websites \enquote{hello.fernuni} und \enquote{messages.fernuni} auf HTTPS umgestellt. Benutzer können sicher auf die Websites zugreifen, und die Kommunikation zwischen den Benutzern und dem Webserver ist verschlüsselt.
 Zu beachten ist, dass die in dieser Dokumentation verwendeten Zertifikate selbstsigniert sind, weshalb Warnmeldungen im Webbrowser angezeigt werden. Würden Zertifikate von vertrauenswürdigen Zertifizierungsstellen verwendet, wären diese Warnungen nicht vorhanden.
