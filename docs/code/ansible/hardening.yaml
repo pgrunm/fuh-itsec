@@ -1,7 +1,10 @@
 ---
 
 - hosts: infra
+  become: true
   collections:
     - devsec.hardening
+    - hifis.unattended_upgrades
   roles:
     - ssh_hardening
+    - hifis.unattended_upgrades
