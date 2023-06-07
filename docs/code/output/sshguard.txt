@@ -1,0 +1,42 @@
+Jun  7 20:02:51 ubuntu-jammy sshd[10253]: Connection from 10.0.2.2 port 52506 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:02:52 ubuntu-jammy sshd[10253]: Connection closed by authenticating user vagrant 10.0.2.2 port 52506 [preauth]
+Jun  7 20:02:52 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:20 ubuntu-jammy sshd[10255]: Connection from 10.0.2.2 port 49014 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:20 ubuntu-jammy sshd[10255]: Connection closed by authenticating user vagrant 10.0.2.2 port 49014 [preauth]
+Jun  7 20:03:20 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:22 ubuntu-jammy sshd[10257]: Connection from 10.0.2.2 port 49022 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:22 ubuntu-jammy sshd[10257]: Connection closed by authenticating user vagrant 10.0.2.2 port 49022 [preauth]
+Jun  7 20:03:22 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:23 ubuntu-jammy sshd[10259]: Connection from 10.0.2.2 port 49034 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:23 ubuntu-jammy sshd[10259]: Connection closed by authenticating user vagrant 10.0.2.2 port 49034 [preauth]
+Jun  7 20:03:23 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:29 ubuntu-jammy sshd[10261]: Connection from 10.0.2.2 port 56970 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:29 ubuntu-jammy sshd[10261]: Connection closed by authenticating user vagrant 10.0.2.2 port 56970 [preauth]
+Jun  7 20:03:30 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:31 ubuntu-jammy sshd[10263]: Connection from 10.0.2.2 port 56972 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:32 ubuntu-jammy sshd[10263]: Connection closed by authenticating user vagrant 10.0.2.2 port 56972 [preauth]
+Jun  7 20:03:32 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:34 ubuntu-jammy sshd[10265]: Connection from 10.0.2.2 port 56976 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:34 ubuntu-jammy sshd[10265]: Connection closed by authenticating user vagrant 10.0.2.2 port 56976 [preauth]
+Jun  7 20:03:34 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:36 ubuntu-jammy sshd[10267]: Connection from 10.0.2.2 port 49166 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:36 ubuntu-jammy sshd[10267]: Connection closed by authenticating user vagrant 10.0.2.2 port 49166 [preauth]
+Jun  7 20:03:36 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:38 ubuntu-jammy sshd[10269]: Connection from 10.0.2.2 port 49178 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:38 ubuntu-jammy sshd[10269]: Connection closed by authenticating user vagrant 10.0.2.2 port 49178 [preauth]
+Jun  7 20:03:38 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:40 ubuntu-jammy sshd[10271]: Connection from 10.0.2.2 port 49188 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:40 ubuntu-jammy sshd[10271]: Connection closed by authenticating user vagrant 10.0.2.2 port 49188 [preauth]
+Jun  7 20:03:40 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:42 ubuntu-jammy sshd[10273]: Connection from 10.0.2.2 port 49202 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:42 ubuntu-jammy sshd[10273]: Connection closed by authenticating user vagrant 10.0.2.2 port 49202 [preauth]
+Jun  7 20:03:43 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:45 ubuntu-jammy sshd[10275]: Connection from 10.0.2.2 port 37886 on 10.0.2.15 port 22 rdomain ""
+Jun  7 20:03:45 ubuntu-jammy sshd[10275]: Connection closed by authenticating user vagrant 10.0.2.2 port 37886 [preauth]
+Jun  7 20:03:45 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:03:45 ubuntu-jammy sshguard[6393]: Blocking "10.0.2.2/32" for 120 secs (15 attacks in 104 secs, after 1 abuses over 104 secs.)
+Jun  7 20:03:45 ubuntu-jammy sshguard[6393]: Attack from "10.0.2.2" on service SSH with danger 2.
+Jun  7 20:06:08 ubuntu-jammy sshguard[6393]: 10.0.2.2: unblocking after 143 secs
+Jun  7 20:06:16 ubuntu-jammy sudo: pam_unix(sudo:session): session closed for user root
+Jun  7 20:06:27 ubuntu-jammy sudo:  vagrant : TTY=pts/0 ; PWD=/home/vagrant ; USER=root ; COMMAND=/usr/bin/tail -f /var/log/auth.log
+Jun  7 20:06:27 ubuntu-jammy sudo: pam_unix(sudo:session): session opened for user root(uid=0) by vagrant(uid=1000)
