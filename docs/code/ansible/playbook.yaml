@@ -15,7 +15,7 @@
 
   - name: Install AppArmor, Mariadb and Apache2
     ansible.builtin.apt:
-      name: ['apparmor', 'mariadb-server', 'apache2', 'python3-pip', "libmariadb-dev"]
+      name: ['apparmor', 'mariadb-server', 'apache2', 'python3-pip', "libmariadb-dev", "sshguard"]
       state: present
 
   - name: Create backup directory
