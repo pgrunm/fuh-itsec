@@ -1,0 +1,69 @@
+root@ubuntu-jammy:/etc/apt/apt.conf.d# cat 90-ansible-unattended-upgrades 
+//
+// Ansible managed
+//
+
+// Erase unattended-upgrades configuration tree
+#clear Acquire::http::Dl-Limit;
+#clear APT::Periodic::Update-Package-Lists;
+#clear APT::Periodic::Unattended-Upgrade;
+#clear Unattended-Upgrade;
+#clear Unattended-Upgrade::Allow-downgrade;
+#clear Unattended-Upgrade::Allowed-Origins;
+#clear Unattended-Upgrade::Allow-APT-Mark-Fallback;
+#clear Unattended-Upgrade::AutoFixInterruptedDpkg;
+#clear Unattended-Upgrade::Automatic-Reboot;
+#clear Unattended-Upgrade::Automatic-Reboot-Time;
+#clear Unattended-Upgrade::Automatic-Reboot-WithUsers;
+#clear Unattended-Upgrade::Debug;
+#clear Unattended-Upgrade::DevRelease;
+#clear Unattended-Upgrade::InstallOnShutdown;
+#clear Unattended-Upgrade::Keep-Debs-After-Install;
+#clear Unattended-Upgrade::Mail;
+#clear Unattended-Upgrade::MailReport;
+#clear Unattended-Upgrade::MinimalSteps;
+#clear Unattended-Upgrade::OnlyOnACPower;
+#clear Unattended-Upgrade::Origins-Pattern;
+#clear Unattended-Upgrade::Package-Blacklist;
+#clear Unattended-Upgrade::Package-Whitelist;
+#clear Unattended-Upgrade::Package-Whitelist-Strict;
+#clear Unattended-Upgrade::Remove-New-Unused-Dependencies;
+#clear Unattended-Upgrade::Remove-Unused-Dependencies;
+#clear Unattended-Upgrade::Remove-Unused-Kernel-Packages;
+#clear Unattended-Upgrade::Sender;
+#clear Unattended-Upgrade::Skip-Updates-On-Metered-Connections;
+#clear Unattended-Upgrade::SyslogEnable;
+#clear Unattended-Upgrade::SyslogFacility;
+#clear Unattended-Upgrade::Update-Days;
+#clear Unattended-Upgrade::Verbose;
+
+// Overrides for `20auto-upgrades`. //////////////////////////////////////////
+
+APT::Periodic::Unattended-Upgrade "1";
+
+APT::Periodic::Update-Package-Lists "1";
+
+APT::Periodic::AutocleanInterval "7";
+
+
+// Overrides for `50unattended-upgrades`. ////////////////////////////////////
+
+// Unattended-Upgrade::Origins-Pattern controls which packages are
+// upgraded.
+Unattended-Upgrade::Origins-Pattern {
+    "origin=Ubuntu,archive=${distro_codename}-security,label=Ubuntu";
+};
+
+// List of packages to not update (regexp are supported)
+Unattended-Upgrade::Package-Blacklist {
+};
+
+// Split the upgrade into the smallest possible chunks so that
+// they can be interrupted with SIGUSR1. This makes the upgrade
+// a bit slower but it has the benefit that shutdown while a upgrade
+// is running is possible (with a small delay)
+Unattended-Upgrade::MinimalSteps "true";
+
+// Download and install upgrades only on AC power
+// (i.e. skip or gracefully stop updates on battery)
+Unattended-Upgrade::OnlyOnACPower "false";
