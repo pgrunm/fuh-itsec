@@ -1,7 +1,9 @@
+---
 # Installed with ansible-galaxy collection install -r requirements.yml
-- name: community.general
-- name: community.mysql
-- name: ansible.posix
-- name: devsec.hardening
-# https://galaxy.ansible.com/hifis/unattended_upgrades
-- name: hifis.unattended_upgrades
+collections:
+  - community.general
+  - community.mysql
+  - ansible.posix
+  - devsec.hardening
+  # https://galaxy.ansible.com/hifis/unattended_upgrades
+  - hifis.unattended_upgrades
