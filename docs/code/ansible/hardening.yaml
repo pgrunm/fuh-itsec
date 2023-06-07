@@ -8,3 +8,25 @@
   roles:
     - ssh_hardening
     - hifis.unattended_upgrades
+  tasks:
+    # SSH Guard setup
+    - name: Update SSHguard whitelist file
+      ansible.builtin.copy:
+        src: sshguard_whitelist
+        dest: /etc/sshguard/whitelist
+        mode: "644"
+
+    - name: Add require UFW lines
+      ansible.builtin.lineinfile:
+        insertafter: '^-A ufw-before-output -o lo -j ACCEPT$'
+        path: /etc/ufw/before.rules
+        line: |
+          # Ensure SSHguard is controlling incoming SSH traffic.
+          :sshguard - [0:0]
+          -A ufw-before-input -p tcp --dport 22 -j sshguard
+    
+    - name: Restart ufw
+      ansible.builtin.systemd:
+        name: ufw
+        state: restarted
+    
