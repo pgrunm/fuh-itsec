@@ -11,6 +11,14 @@ tasks:
       - echo "{{.GREETING}}"
     silent: true
 
+  up:
+    cmds:
+      - vagrant up
+    desc: Starts the Vagrant machine
+  down:
+    cmds:
+      - vagrant halt
+    desc: Stops the Vagrant machine.
   lint:
     desc: Lints the given Ansible playbook.
     cmds:
