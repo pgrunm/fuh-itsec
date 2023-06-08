@@ -6,6 +6,7 @@
   vars:
     backup_dir: "/etc/mysql/backup"
     backup_file: "{{backup_dir}}/backup-{{ansible_date_time.date}}-{{ansible_date_time.hour}}.sql"
+    MYSQL_PASSWORD: lookup('ansible.builtin.env', 'MYSQL_PASSWORD')
 
   tasks:
   - name: Update apt cache and upgrade packages
@@ -44,6 +45,24 @@
     community.mysql.mysql_info:
       login_user: root
       login_unix_socket: /run/mysqld/mysqld.sock
+  
+  - name: Change MySQL root user password
+    community.mysql.mysql_user: 
+      name: root
+      password: "{{ MYSQL_PASSWORD }}"
+      check_implicit_admin: yes
+      login_user: "root"
+      login_password: "{{ MYSQL_PASSWORD }}"
+      state: present
+      login_unix_socket: /run/mysqld/mysqld.sock
+
+  - name: Create .my.cnf from local file config file
+    ansible.builtin.template:
+      src: "local.my.cnf.j2"
+      dest: "/root/.my.cnf"
+      owner: root
+      group: root
+      mode: 0600
 
   # Watch out, this is NOT idempotent and will recreate the database every time, the playbook will run!
   - name: Create MySQL database messages
