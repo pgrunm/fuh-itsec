@@ -13,6 +13,8 @@
     - hifis.unattended_upgrades
   roles:
     - ssh_hardening
+    - os_hardening
+    - mysql_hardening
     - hifis.unattended_upgrades
   tasks:
     # SSH Guard setup
