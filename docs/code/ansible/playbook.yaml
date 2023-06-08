@@ -18,6 +18,11 @@
       name: ['apparmor', 'mariadb-server', 'apache2', 'python3-pip', "libmariadb-dev", "sshguard"]
       state: present
 
+  - name: Install latest Certbot snap package
+    community.general.snap:
+      name: certbot
+      classic: true
+
   - name: Create backup directory
     ansible.builtin.file:
       path: "{{ backup_dir }}"
