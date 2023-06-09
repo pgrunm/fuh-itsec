@@ -4,7 +4,7 @@
     # Domain name variable for Let's Encrypt
     domain: example.com
     # Webserver name for Let's Encrypt Certbot
-    webserver: apache
+    webserver: nginx
     # Certbot parameters
     cb_params: "--dry-run"
   become: true
@@ -14,8 +14,9 @@
   roles:
     - ssh_hardening
     - os_hardening
-    - mysql_hardening
+    - nginx_hardening
     - hifis.unattended_upgrades
+    - mysql_hardening
   tasks:
     # SSH Guard setup
     - name: Update SSHguard whitelist file
