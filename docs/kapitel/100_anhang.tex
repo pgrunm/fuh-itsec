@@ -1,0 +1,38 @@
+\section{Anhang}
+
+\subsection{Installationsskript AppArmor}
+
+\begin{listing}[ht]{}
+    \shellcode{code/shell/apparmor_profile.sh}
+    \caption{Installation der AppArmor Profile}
+    \label{listing:installation_apparmor}
+\end{listing}
+
+\subsection{Ansible Playbooks}
+
+\subsubsection{Installation benötigter Ansible Module}
+\begin{listing}
+    \yamlcode{code/ansible/requirements.yaml}
+    \caption{Installation erforderlicher Ansible Module}
+    \label{listing:ansible_module_installation}
+\end{listing}
+
+
+\subsubsection{Ansible Playbook zur Einrichtung des Systems}
+\begin{longlisting}
+    \yamlcode{code/ansible/playbook.yaml}
+    \caption{Installation des Servers mit Ansible}
+    \label{listing:ansible_playbook}
+\end{longlisting}
+
+\subsubsection{Ansible Playbook zur Härtung des Systems}
+\begin{longlisting}
+    \yamlcode{code/ansible/hardening.yaml}
+    \caption{Härtung des Servers mit Ansible}
+    \label{listing:hardening}
+\end{longlisting}
+
+\subsection{Ausgabe von Konfigurations- und Logdateien}
+
+\subsubsection{Ausgabe eines unterbundenen SSH Brute Force Angriffs}
+\inputminted[breaklines=true,firstline=34, lastline=42]{text}{code/output/sshguard.txt}

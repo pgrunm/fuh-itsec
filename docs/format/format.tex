@@ -38,10 +38,24 @@
 \usepackage{minted}
 \input{format/code_shell.tex}
 \input{format/code_python.tex}
+\input{format/code_yaml.tex}
 % \input{format/code_powershell.tex}
+
+% Ermöglicht das Einbinden langer Quellcode Dateien z. B.
+% \begin{longlisting}
+%     \yamlcode{code/ansible/playbook.yaml}
+%     \caption{Installation des Servers mit Ansible}
+%     \label{listing:ansible_playbook}
+% \end{longlisting}
+\usepackage{caption}
+\newenvironment{longlisting}{\captionsetup{type=listing}}{}
 
 % Positionierung von Bilder, s. https://www.overleaf.com/learn/latex/Positioning_images_and_tables#Positioning_images
 \usepackage[export]{adjustbox}
 
+%Graf
+\usepackage{pgfplots}
+
 % 1.5facher Zeilenabstand.
 \linespread{1.5}\selectfont
+

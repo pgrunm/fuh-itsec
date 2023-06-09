@@ -1,0 +1,116 @@
+\newpage
+\subsubsection{H\"artung des Servers}
+
+F\"ur die h\"artung des Servers m\"ussen die einzelnen verwendeten Anwendung und Services betrachtet werden. Im vorliegenden Fall wird ein Webserver mit einer relationalen Datenbank betrieben welcher mit kritischer Infrastruktur in Ber\"uhrung kommt. Bei IT-Systemen aus Sektoren, welche unter \S2 Abs. 10 Nr. 1 des BSI-Gesetz fallen (kritische Infrastruktur), muss zweij\"ahrig eine Selbsterkl\"arung zur IT-Sicherheit abgeben werden. Dies umfasst beispielsweise die Sektoren Energie, Informationstechnik und Telekommunikation, Transport und Verkehr, Gesundheit und weitere. In dieser Selbsterkl\"arung m\"ussen Zertifizierungen, Audits und konkrete Systeme zur Sicherung besonders sch\"utzenswerter Daten angegeben werden. F\"ur Zertifizierungen ist ein Informationssicherheitsmanagementsystem (ISMS) nach DIN EN ISO/IEC 27000 oder BSI IT-Grundschutz erforderlich. Durch das Bundesamt f\"ur Sicherheit in der Informationstechnik wird das IT-Grundschutzkompendium zur Verf\"ugung gestellt.  Einzelne Themen der IT-Sicherheit werden in sogenannten Bausteinen behandelt, welche im Kompendium zusammengefasst werden. In jedem Baustein wird Themenbezogen auf die Gef\"ahrdungen eingegangen und Anforderungen zu Absicherung empfohlen. Dadurch sollen die Grundwerte Vertraulichkeit, Verf\"ugbarkeit und Integrit\"at gew\"ahrleistet werden. Wichtig ist, dass die Ma{\ss}nahmen aus den Bausteinen des IT-Grundschutzes nicht als abschlie{\ss}end gesehen werden d\"urfen. Je nach Konfiguration und Gef\"ahrdungen m\"ussen weitere Ma{\ss}nahmen ber\"ucksichtigt werden. F\"ur die operative IT-Sicherheit k\"onnen diverse Onlinequellen wie beispielsweise https://dev-sec.io/ herangezogen werden. Die Ma{\ss}nahmen m\"ussen sich am Stand der Technik orientieren. \\
+
+Folgende Bausteine aus dem IT-Grundschutz werden als relevant angesehen:
+  \begin{itemize}
+      \item APP.3.2 Webserver
+			\item APP.4.3 Relationale Datenbanken
+      \item SYS.1.3 Server unter Linux und Unix
+			\item SYS.1.6 Containerisierung
+   \end{itemize} 
+
+Im Rahmen dieser Dokumentation werden die folgenden Anforderungen nur auszugsweise genannt. Die vollst\"andigen Bausteine mit den Anforderungen nach IT-Grundschutz werden vom Bundesamt f\"ur Sicherheit in der Informationstechnik kostenfrei zur Verf\"ugung gestellt.
+
+\paragraph{Webserver}
+\noindent \\Der Webserver nimmt Anfrage eines Client entgegen und liefert die angefragten Webseiten aus. Folgende Anforderungen werden an der Webserver gestellt:
+  \begin{itemize}
+      \item APP.3.2.A1 Sichere Konfiguration eines Webservers\\
+			Dazu muss man insbesondere den Webserver-Prozess einem Konto mit minimalen Rechten zuweisen. Der Webserver muss in einer gekapselten Umgebung ausgef\"uhrt werden, sofern dies vom Betriebssystem unterst\"utzt wird. Ist dies nicht m\"oglich, sollte jeder Webserver auf einem eigenen physischen oder virtuellen Server ausgef\"uhrt werden. Dem Webserver-Dienst m\"ussen alle nicht notwendige Schreibberechtigungen entzogen werden. Nicht ben\"otigte Module und Funktionen des Webservers m\"ussen deaktiviert werden.\\
+			
+			\item APP.3.2.A2 Schutz der Webserver-Dateien\\
+			Der IT-Betrieb muss alle Dateien auf dem Webserver, insbesondere Skripte und Konfigurationsdateien, so sch\"utzen, dass sie nicht unbefugt gelesen und ge\"andert werden k\"onnen. Es muss sichergestellt werden, dass Webanwendungen nur auf einen definierten Verzeichnisbaum zugreifen k\"onnen (WWW-Wurzelverzeichnis). Der Webserver muss so konfiguriert sein, dass er nur Dateien ausliefert, die sich innerhalb des WWW-Wurzelverzeichnisses befinden. Der IT-Betrieb muss alle nicht ben\"otigten Funktionen, die Verzeichnisse auflisten, deaktivieren. Vertrauliche Daten m\"ussen vor unberechtigtem Zugriff gesch\"utzt werden. Insbesondere muss der
+IT-Betrieb sicherstellen, dass vertrauliche Dateien nicht in \"offentlichen Verzeichnissen des Webservers liegen. Der IT-Betrieb muss regelm\"a{\ss}ig \"uberpr\"ufen, ob vertrauliche Dateien in \"offentlichen Verzeichnissen gespeichert wurden.\\
+
+      \item APP.3.2.A4 Protokollierung von Ereignissen\\
+			Der Webserver muss mindestens folgende Ereignisse protokollieren:
+\begin{itemize}
+\item erfolgreiche Zugriffe auf Ressourcen,
+\item fehlgeschlagene Zugriffe auf Ressourcen aufgrund von mangelnder Berechtigung, nicht vorhandenen Ressourcen und Server-Fehlern sowie
+\item allgemeine Fehlermeldungen.
+\end{itemize}
+Die Protokollierungsdaten sollten regelm\"a{\ss}ig ausgewertet werden.\\
+			
+			\item APP.3.2.A11 Verschl\"usselung \"uber TLS\\
+			Der Webserver muss f\"ur alle Verbindungen durch nicht vertrauensw\"urdige Netze eine sichere Verschl\"usselung \"uber TLS anbieten (HTTPS). Falls es aus Kompatibilit\"atsgr\"unden erforderlich ist, veraltete Verfahren zu verwenden, sollten diese auf so wenige F\"alle wie m\"oglich beschr\"ankt werden. Wenn eine HTTPS-Verbindung genutzt wird, m\"ussen alle Inhalte \"uber HTTPS ausgeliefert werden. Sogenannter Mixed Content darf nicht verwendet werden.\\
+			
+			\item APP.3.2.A14 Integrit\"atspr\"ufungen und Schutz vor Schadsoftware\\
+			Der IT-Betrieb sollte regelm\"a{\ss}ig pr\"ufen, ob die Konfigurationen des Webservers und die von ihm bereitgestellten Dateien noch integer sind und nicht durch Angriffe ver\"andert wurden. Die zur Ver\"offentlichung vorgesehenen Dateien sollten regelm\"a{\ss}ig auf Schadsoftware gepr\"uft werden.\\
+						
+   \end{itemize}   
+
+\paragraph{Relationale Datenbanken}
+\noindent \\Eine Datenbank verwaltet gro{\ss}e Datenmengen und ist im Zusammenhang mit einem Webserver f\"ur die dauerhafte Speicherung von Informationen und Inhalten der Webseite erforderlich. Folgende Anforderungen werden an die Datenbank gestellt:
+
+\begin{itemize}
+			\item  APP.4.3.A13 Restriktive Handhabung von Datenbank-Links \\
+			Es sollte sichergestellt sein, dass nur Zust\"andige dazu berechtigt sind, Datenbank-Links (DB-Links) anzulegen. Werden solche Links angelegt, m\"ussen so genannte Private DB-Links vor Public DB-Links bevorzugt angelegt werden. Alle von den Zust\"andigen angelegten DB-Links SOLLTEN dokumentiert und regelm\"a{\ss}ig \"uberpr\"uft werden. Zudem sollten DB-Links mitber\"ucksichtigt werden, wenn das Datenbanksystem gesichert wird (siehe APP.4.3.A9 Datensicherung eines Datenbanksystems).\\
+
+			\item APP.4.3.A16 Verschl\"usselung der Datenbankanbindung \\
+			Das Datenbankmanagementsystem sollte so konfiguriert werden, dass Datenbankverbindungen immer verschl\"usselt werden. Die dazu eingesetzten kryptografischen Verfahren und Protokolle sollten den internen Vorgaben der Institution entsprechen (siehe CON.1 Kryptokonzept).\\
+			
+			\item APP.4.3.A21 Einsatz von Datenbank Security Tools\\
+			Es sollten Informationssicherheitsprodukte f\"ur Datenbanken eingesetzt werden. Die eingesetzten Produkte sollten folgende Funktionen bereitstellen:
+\begin{itemize}
+	\item Erstellung einer \"Ubersicht \"uber alle Datenbanksysteme,
+	\item erweiterte Konfigurationsm\"oglichkeiten und Rechtemanagement der Datenbanken,
+	\item Erkennung und Unterbindung von m\"oglichen Angriffen (z. B. Brute Force Angriffe auf Konten, SQL-Injection) und
+	\item Auditfunktionen (z. B. \"Uberpr\"ufung von Konfigurationsvorgaben).\\
+\end{itemize}
+			
+			\item APP.4.3.A24 Datenverschl\"usselung in der Datenbank\\
+			Die Daten in den Datenbanken sollten verschl\"usselt werden. Dabei sollten vorher unter anderem folgende Faktoren betrachtet werden:
+\begin{itemize}
+	\item Einfluss auf die Performance,
+	\item Schl\"usselverwaltungsprozesse und -verfahren, einschlie{\ss}lich separater Schl\"usselaufbewahrung und -sicherung,
+	\item Einfluss auf Backup-Recovery-Konzepte,
+	\item funktionale Auswirkungen auf die Datenbank, beispielsweise Sortierm\"oglichkeiten.\\
+\end{itemize}
+\end{itemize}
+
+\paragraph{Server unter Linux}
+\noindent \\Linux stellt im vorliegenden Fall das Serverbetriebssytem dar. Bei Linux handelt es sich um eine freie Open-Source-Software. Folgende Anforderungen werden an das Betriebssystem Linux gestellt:
+
+\begin{itemize}
+	\item	SYS.1.3.A2 Sorgf\"altige Vergabe von IDs\\ 
+	Jeder Login-Name, jede User-ID (UID) und jede Gruppen-ID (GID) darf nur einmal vorkommen. Jedes Konto von Benutzenden muss Mitglied mindestens einer Gruppe sein. Jede in der Datei /etc/passwd vorkommende GID muss in der Datei /etc/group definiert sein. Jede Gruppe sollte nur die Konten enthalten, die unbedingt notwendig sind. Bei vernetzten Systemen muss au{\ss}erdem darauf geachtet werden, dass die Vergabe von Benutzenden- und Gruppennamen, UID und GID im Systemverbund konsistent erfolgt, wenn beim system\"ubergreifenden Zugriff die M\"oglichkeit besteht, dass gleiche UIDs bzw. GIDs auf den Systemen unterschiedlichen Benutzenden- bzw. Gruppennamen zugeordnet werden k\"onnten.\\
+	
+	\item SYS.1.3.A4 Schutz vor Ausnutzung von Schwachstellen in Anwendungen\\
+	Um die Ausnutzung von Schwachstellen in Anwendungen zu erschweren, muss ASLR und DEP/NX im Kernel aktiviert und von den Anwendungen genutzt werden. Sicherheitsfunktionen des Kernels und der Standardbibliotheken, wie z. B. Heap- und Stackschutz, d\"urfen nicht deaktiviert werden.\\
+	
+	\item SYS.1.3.A8 Verschl\"usselter Zugriff \"uber Secure Shell\\
+	Um eine verschl\"usselte und authentisierte, interaktive Verbindung zwischen zwei IT-Systemen aufzubauen, sollte ausschlie{\ss}lich Secure Shell (SSH) verwendet werden. Alle anderen Protokolle, deren Funktionalit\"at durch Secure Shell abgedeckt wird, sollten vollst\"andig abgeschaltet werden. F\"ur die Authentifizierung sollten vorrangig Zertifikate anstatt eines Passworts verwendet werden.\\
+
+	\item SYS.1.3.A10 Verhinderung der Ausbreitung bei der Ausnutzung von Schwachstellen\\
+	Dienste und Anwendungen sollten mit einer individuellen Sicherheitsarchitektur gesch\"utzt werden (z. B. mit AppArmor oder SELinux). Auch chroot-Umgebungen sowie LXC- oder Docker-Container sollten dabei ber\"ucksichtigt werden. Es sollte sichergestellt sein, dass mitgelieferte Standardprofile bzw. -regeln aktiviert sind.\\
+\end{itemize} 
+
+\paragraph{Containerisierung}
+\noindent \\Der Begriff Containerisierung bezeichnet ein Konzept, bei dem Ressourcen eines Betriebssystems partitioniert werden, um Ausf\"uhrungsumgebungen f\"ur Prozesse zu schaffen. Hierbei k\"onnen je nach verwendetem Betriebssystem unterschiedliche Techniken zum Einsatz kommen, die sich in Funktionsumfang und Sicherheitseigenschaften unterscheiden. Oft wird auch von einer "`Betriebssystemvirtualisierung"' gesprochen. Es wird jedoch kein vollst\"andiges Betriebssystem
+virtualisiert, sondern es werden lediglich bestimmte Ressourcen durch einen geteilten Kernel zur Verf\"ugung gestellt. Folgende Anforderungen sind bei einer Containerisierung relevant:
+
+\begin{itemize}
+	\item SYS.1.6.A7 Persistenz von Protokollierungsdaten der Container\\
+	Die Speicherung der Protokollierungsdaten der Container muss au{\ss}erhalb des Containers, mindestens auf dem Container-Host, erfolgen.\\
+	
+	\item SYS.1.6.A8 Sichere Speicherung von Zugangsdaten bei Containern \\
+	Zugangsdaten m\"ussen so gespeichert und verwaltet werden, dass nur berechtigte Personen und Container darauf zugreifen k\"onnen. Insbesondere muss sichergestellt sein, dass Zugangsdaten nur an besonders gesch\"utzten Orten und nicht in den Images liegen. Die von der Verwaltungssoftware des Container-Dienstes bereitgestellten Verwaltungsmechanismen f\"ur Zugangsdaten sollten eingesetzt werden. Mindestens die folgenden Zugangsdaten m\"ussen sicher gespeichert werden:
+\begin{itemize}
+	\item Passw\"orter jeglicher Accounts,
+	\item API-Keys f\"ur von der Anwendung genutzte Dienste,
+	\item Schl\"ussel f\"ur symmetrische Verschl\"usselungen sowie
+	\item private Schl\"ussel bei Public-Key-Authentisierung.\\
+\end{itemize}	
+
+	\item SYS.1.6.A24 Hostbasierte Angriffserkennung \\
+	Das Verhalten der Container und der darin betriebenen Anwendungen und Dienste sollte \"uberwacht werden. Abweichungen von einem normalen Verhalten sollten bemerkt und gemeldet werden. Die Meldungen sollten im zentralen Prozess zur Behandlung von Sicherheitsvorf\"allen angemessen behandelt werden. Das zu \"uberwachende Verhalten solte mindestens umfassen:
+\begin{itemize}
+	\item Netzverbindungen,
+	\item erstellte Prozesse,
+	\item Dateisystem-Zugriffe und
+	\item Kernel-Anfragen (Syscalls).\\
+\end{itemize}
+	
+\end{itemize}
+   

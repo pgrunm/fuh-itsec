@@ -1,0 +1,49 @@
+---
+- hosts: infra
+  vars:
+    # Domain name variable for Let's Encrypt
+    domain: example.com
+    # Webserver name for Let's Encrypt Certbot
+    webserver: nginx
+    # Certbot parameters
+    cb_params: "--dry-run"
+  become: true
+  collections:
+    - devsec.hardening
+    - hifis.unattended_upgrades
+  roles:
+    - ssh_hardening
+    - os_hardening
+    - nginx_hardening
+    - hifis.unattended_upgrades
+    - mysql_hardening
+  tasks:
+    # SSH Guard setup
+    - name: Update SSHguard whitelist file
+      ansible.builtin.copy:
+        src: sshguard_whitelist
+        dest: /etc/sshguard/whitelist
+        mode: "644"
+
+    - name: Add require UFW lines
+      ansible.builtin.lineinfile:
+        insertafter: '^-A ufw-before-output -o lo -j ACCEPT$'
+        path: /etc/ufw/before.rules
+        line: |
+          # Ensure SSHguard is controlling incoming SSH traffic.
+          :sshguard - [0:0]
+          -A ufw-before-input -p tcp --dport 22 -j sshguard
+    
+    - name: Restart ufw
+      ansible.builtin.systemd:
+        name: ufw
+        state: restarted
+    
+    # TLS/HTTPS Let's Encrypt setup for Certbot
+    - name: Enable and configure the Certbot
+      # See commands documentation:
+      # https://eff-certbot.readthedocs.io/en/stable/using.html#certbot-commands
+      shell: |
+        certbot certonly --{{ webserver}} {{ cb_params }} -d {{ domain }}
+        certbot renew {{ cb_params }} 
+        

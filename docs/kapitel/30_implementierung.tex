@@ -1,0 +1,333 @@
+\section{Implementierung der Sicherheitsmaßnahmen}
+
+\subsection{Installation der ausgewählten Software}
+
+\subsubsection{Apache als Webserver}
+
+Der Webserver (auf Ubuntu System) soll zwei separate Webseiten, \enquote{hello.fernuni} und \enquote{messages.fernuni}, bedienen. Beide Webseiten sind in der Programmiersprache Python geschrieben. Diese Dokumentation erläutert die Gründe hinter jedem Schritt und gibt detaillierte Anweisungen zur Durchführung der Installation.
+
+Als Team 3 haben wir uns für den Apache Webserver entschieden, denn Apache ist ein weit verbreiteter und zuverlässiger Webserver, der auf vielen Plattformen eingesetzt wird. Die Installation erfolgt mithilfe des Paketmanagers von Ubuntu.
+
+\subsubsection*{Apache installieren.}
+Um den Apache-Webserver zu installieren, führen wir folgenden Befehl aus:
+
+\mint{shell}|sudo apt-get install apache2|
+
+\subsubsection*{Flask installieren.}
+Um Flask, ein Python-Framework für Webanwendungen, zu installieren, verwenden wir den folgenden Befehl:
+
+\mint{shell}|sudo apt install python3-flask|
+
+Flask ermöglicht die Entwicklung von Webanwendungen mit Python. In diesem Fall wird Flask verwendet, um die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} zu implementieren.
+
+\subsubsection*{Hostdatei ändern.}
+Die Hostdatei muss angepasst werden, um die lokal gehosteten Webseiten zu erreichen. Die \enquote{hosts}-Datei befindet sich in /etc/hosts. Wir öffenen die \enquote{hosts}-Datei mit einem Texteditor (z. B. Nano oder Vim) und fügen die folgenden Zeilen hinzu:
+
+\begin{minted}{shell}
+    127.0.0.1 	hello.fernuni
+    127.0.0.1 	messages.fernuni
+\end{minted}
+
+Durch das Hinzufügen der entsprechenden Einträge in der \enquote{hosts}-Datei kann der Webbrowser die lokal gehosteten Webseiten unter den angegebenen Domains finden.
+
+\subsubsection*{Proxy-Modul aktivieren.}
+Das Proxy-Modul ermöglicht die Weiterleitung von HTTP-Anfragen an andere Webserver. Es wird benötigt, um die Anfragen für die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} an die entsprechenden Python-Server weiterzuleiten.
+Das Proxy-Modul in Apache wird mit den folgenden Befehlen aktiviert:
+
+\begin{minted}{shell}
+    sudo a2enmod proxy
+    sudo a2enmod proxy_html
+    sudo a2enmod proxy_http
+\end{minted}
+
+\subsubsection*{Modul \enquote{mod\_wsgi} installieren}
+
+Das \verb+mod_wsgi-Modul+ ermöglicht die Ausführung von Python-Anwendungen innerhalb des Apache-Webservers. Es wird verwendet, um die Flask-Anwendungen für die Webseiten zu integrieren.
+Wir installieren das Python-Paket \verb+mod_wsgi+ mit dem folgenden Befehl:
+
+\begin{minted}{shell}
+    sudo apt-get install libapache2-mod-wsgi-py3
+\end{minted}
+
+\subsubsection*{Python-Dateien ablegen.}
+
+Apache verwendet standardmäßig das Verzeichnis \enquote{/var/www/html} als den Wurzelordner für gehostete Webinhalte. Durch das Ablegen der Python-Dateien in diesem Verzeichnis können sie vom Webserver erkannt und ausgeführt werden.
+Aus diesem Grund legen wir die Python-Dateien für die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} im Verzeichnis \enquote{/var/www/html/hello}  bzw. \enquote{/var/www/html/messages} ab. 
+
+\subsubsection*{Konfigurationsdateien erstellen.}
+
+Der Webserver benötigt für das bedienen von Webseiten Konfigurationsdateien.
+Durch das Erstellen von separaten Konfigurationsdateien für jede Webseite können die spezifischen Einstellungen und Proxy-Weiterleitungen für jede Seite festgelegt werden.
+Dafür erstellen wir für jede Webseite eine separate Konfigurationsdatei im Verzeichnis \enquote{/etc/apache2/sites-enabled}. 
+Dabei hat die Datei \enquote{hello.fernuni.config} folgenden Inhalt:
+\begin{verbatim}
+<VirtualHost *:80> 
+    ProxyPreserveHost On
+    ProxyRequest Off
+    ServerName hello.fernuni 
+    ServerAlias www.hello.fernuni 
+    DocumentRoot /var/www/html/hello
+    ProxyPass / http://localhost:8080
+    ProxyPassReverse / http://localhost:8080
+    ErrorLog ${APACHE_LOG_DIR}/hello.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/hello.fernuni_access.log combined
+</VirtualHost>
+\end{verbatim}
+
+Analog hat die Datei \enquote{messages.fernuni.config} folgenden Inhalt:
+\begin{verbatim}
+<VirtualHost *:80> 
+    ProxyPreserveHost On
+    ProxyRequest Off
+    ServerName messages.fernuni 
+    ServerAlias www.messages.fernuni 
+    DocumentRoot /var/www/html/messages
+    ProxyPass / http://localhost:7500
+    ProxyPassReverse / http://localhost:7500
+    ErrorLog ${APACHE_LOG_DIR}/messages.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/messagesfernuni_access.log combined
+</VirtualHost>
+\end{verbatim}
+
+\subsubsection*{Virtuelle Hosts aktivieren.}
+Durch die Aktivierung der virtuellen Hosts werden die Konfigurationsdateien mit dem Verzeichnis \enquote{/etc/apache2/sites-enabled} verknüpft. Dadurch kann Apache die entsprechenden Webseiten bedienen.
+Wir aktivieren die virtuellen Hosts, indem wir die Befehle \enquote{a2ensite} für jede Konfigurationsdatei ausführen.
+
+\begin{minted}{shell}
+sudo a2ensite hello.fernuni.config
+sudo a2ensite messages.fernuni.config
+\end{minted}
+
+\subsubsection*{Apache-Webserver neu starten.}
+Um die Konfigurationsänderungen zu übernehmen, muss der Apache-Webserver neugestartet werden:
+\mint{shell}|sudo service apache2 restart|
+
+\subsubsection*{Starten des Python-Servers.}
+
+Damit die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} durch den Apache Webserver bedienbar sind, müssen diese gestartet werden. Dies kann man mit folgenden Befehlen in den jeweiligen Ordnern erreichen:
+
+\begin{minted}{shell}
+    python3 hello.fernuni.py
+    python3 messages.fernuni.py
+\end{minted}
+
+\subsubsection*{Umstellung des Webservers auf HTTPS.}
+Der Zweck dieser Umstellung besteht darin, die Kommunikation zwischen den Benutzern und dem Webserver zu verschlüsseln, um die Sicherheit und Vertraulichkeit der übertragenen Daten zu gewährleisten. Der Apache Webserver bedient zwei Webseiten: \enquote{hello.fernuni} und \enquote{messages.fernuni}. Für jede Webseite wird ein eigenes \verb+SSL/TLS-Zertifikat+ benötigt.
+
+\subsubsection*{Zertifikatgenerierung für \enquote{hello.fernuni}.}
+Um ein gültiges \verb+SSL/TLS-Zertifikat+ für die Website \enquote{hello.fernuni} zu generieren, geht man wie folgt vor.
+Man navigiert zum Verzeichnis \enquote{/var/www/html/hello}, wo sich die \verb+Website-Dateien+ befinden und man gibt den folgenden Befehl im Terminal ein, um ein selbstsigniertes Zertifikat zu generieren:
+
+\begin{minted}{shell}
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout helloprivatkey.key -out hellocert.crt
+\end{minted}
+
+Während des Zertifikatgenerierungsprozesses wird man nach Informationen gefragt. Man kann die meisten Felder unausgefüllt lassen, aber man muss sicherstellen, dass der Domainname \enquote{hello.fernuni} im Feld \enquote{Common Name} angegeben wird.
+
+\subsubsection*{Aktivierung des \enquote{Apache-SSL-Moduls}}
+
+Um SSL für den \verb+Apache-Webserver+ zu aktivieren, führt man den folgenden Befehl aus:
+\mint{shell}|sudo a2enmod ssl|
+
+\subsubsection*{Anpassung der Konfigurationsdatei \enquote{hello.fernuni.conf}.}
+
+Die Konfigurationsdatei \enquote{hello.fernuni.conf} muss entsprechend angepasst werden, um HTTPS zu ermöglichen. Zuerst ersetzen wir die Portnummer von 80 auf 443. Die Portnummer 443 ist die Standartportnummer für HTTPS anfragen auf Apache. Zudem werden die Pfadangaben zum Zertifikat und zum privaten Schlüssel angegeben.
+Um sicherzustellen, dass Benutzer automatisch von HTTP auf HTTPS umgeleitet werden, fügen wir noch einen Umleitungsabschnitt zur \enquote{hello.fernuni.conf} hinzu. Die angepasste Konfigurationsdatei sieht folgendermaßen aus:
+\begin{minted}{apache}
+<VirtualHost *:443>
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ServerName hello.fernuni
+    ServerAlias www.hello.fernuni
+    DocumentRoot /var/www/html/hello
+    ProxyPass / http://localhost:8080
+    ProxyPassReverse / http://localhost:8080
+    ErrorLog ${APACHE_LOG_DIR}/hello.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/hello.fernuni_access.log combined
+    SSLEngine on
+    SSLCertificateFile /var/www/html/hello/hellocert.crt
+    SSLCertificateKeyFile /var/www/html/hello/helloprivatkey.key
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName hello.fernuni
+    Redirect / https://hello.fernuni/
+</VirtualHost>
+\end{minted}
+
+Analog zur diesen Vorgehensweise werden die gleichen Schritte für \enquote{messages.fernuni} durchgeführt. Man erstellt ein separates Zertifikat und passt die Konfigurationsdatei \enquote{messages.fernuni.conf} an:
+
+\begin{minted}{apache}
+    <VirtualHost *:443>
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ServerName messages.fernuni
+    ServerAlias www.messages.fernuni
+    DocumentRoot /var/www/html/messages
+    ProxyPass / http://localhost:7500
+    ProxyPassReverse / http://localhost:7500
+    ErrorLog ${APACHE_LOG_DIR}/messages.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/messages.fernuni_access.log combined
+    SSLEngine on
+    SSLCertificateFile /var/www/html/messages/messagescert.crt
+    SSLCertificateKeyFile /var/www/html/messages/messagesprivatkey.key
+    </VirtualHost>
+    
+    <VirtualHost *:80>
+    ServerName messages.fernuni
+    Redirect / https://messages.fernuni/
+    </VirtualHost>
+\end{minted}
+
+\subsubsection*{Neustart des \enquote{Apache-Webservers}}
+Nachdem die Konfigurationsänderungen durchgeführt sind, startet man den \enquote{Apache-Webserver} neu:
+
+\mint{shell}|sudo service apache2 restart|
+
+Nun sind die Websites \enquote{hello.fernuni} und \enquote{messages.fernuni} auf HTTPS umgestellt. Benutzer können sicher auf die Websites zugreifen, und die Kommunikation zwischen den Benutzern und dem Webserver ist verschlüsselt.
+Zu beachten ist, dass die in dieser Dokumentation verwendeten Zertifikate selbstsigniert sind, weshalb Warnmeldungen im Webbrowser angezeigt werden. Würden Zertifikate von vertrauenswürdigen Zertifizierungsstellen verwendet, wären diese Warnungen nicht vorhanden.
+
+\subsubsection*{ Aufsetzen einer Datenbank auf Ubuntu}
+
+Die Webseite \enquote{messages.fernuni} erfordert eine Datenbank. Zur Erfüllung dieser Aufgabe wird eine MySQL-Datenbank aufgesetzt. Dabei werden die erforderlichen Installationsschritte für MySQL, Python-Pakete und die Konfiguration der Datenbank beschrieben und durchgeführt.
+Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der MySQL-Server installiert, gefolgt von den erforderlichen Python-Paketen für die Datenbankverbindung. Die benötigten Befehle sind folgende:
+
+\begin{minted}{shell}
+    sudo apt install mysql-server python3-pip libmariadb-dev
+    sudo pip install mysql-connector mysql-connector-python mariadb
+\end{minted}
+
+Nach der Installation kann der MySQL-Server mit folgendem Befehl gestartet werden:
+
+\mint{shell}|sudo service mysql start|
+
+Der Status des MySQL-Servers kann mit folgendem Befehl abgerufen werden:
+
+\mint{shell}|sudo service mysql status|
+
+Nachdem der MySQL-Server gestartet ist, wird eine Datenbank und ein Benutzerkonto auf dem MySQL-Server eingerichtet. Die benötigten Informationen für das Erstellen der Datenbank und des Benutzers werden dem Quellcode der \enquote{messages.fernuni.py} entnommen.
+Um eine Datenbank zu erstellen und einen Benutzer anzulegen, wird der \verb+MySQL-Client+ verwendet. Dieser kann mit folgendem Befehl aufgerufen werden:
+\mint{shell}|sudo mysql -u root|
+
+Anschließend befinden wir uns in der MySQL-Shell. Hier führen wir die folgenden Befehle aus, um die Datenbank und den Benutzer anzulegen:
+
+\begin{minted}{sql}
+    CREATE DATABASE messages;
+    CREATE USER 'testuser'@'localhost' IDENTIFIED BY '58tqxEJxqf123';
+    GRANT ALL PRIVILEGES ON messages.* TO 'testuser'@'localhost';
+\end{minted}
+
+Um eine Tabelle in der Datenbank zu erstellen, verwenden wir erneut die \verb+MySQL Shell+.
+Als Erstes wechseln wir zur Datenbank \enquote{messages} und erstellen dort die Tabelle \enquote{messagestorage} mit der Spalte \enquote{timestamp}:
+
+\begin{minted}{sql}
+    USE messages;
+    CREATE TABLE messagestorage (message TEXT);
+    ALTER TABLE messagestorage ADD COLUMN timestamp TIMESTAMP;
+\end{minted}
+
+Falls erforderlich, kann der MySQL-Server mit dem folgenden Befehl neu gestartet werden:
+
+\mint{shell}|sudo service mysql restart|
+
+Nun ist die Datenbank, die für \enquote{messages.fernuni} erforderlich ist, aufgesetzt und die Funktionalität der Webseite gewährleistet.
+
+Erstellen eines automatischen Backups der MySQL-Datenbank.
+
+Das automatische Backup gewährleistet den Schutz wichtiger Daten und ermöglicht die Wiederherstellung im Falle eines Datenverlusts oder eines Systemfehlers. Die folgenden Schritte erläutern die Einrichtung des automatischen Backups für unsere Datenbank.
+Erstellen einer Skriptdatei für das Backup.
+Durch das Erstellen einer Skriptdatei können wir den Backup-Prozess automatisieren und die Ausführungsschritte zentralisieren.
+Im Verzeichnis \enquote{/etc/mysql} erstellt man eine Skriptdatei namens \verb+mysql_backup.sh+ mit dem folgenden Inhalt:
+
+\begin{minted}[breaklines=true]{shell}
+    #!/bin/bash
+    sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql
+\end{minted}
+
+Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie der Datenbank \enquote{messages} zu erstellen. 
+Die Backup-Datei wird im Verzeichnis /etc/mysql/backup/ mit dem Namen \verb+backup_messages.sql+ gespeichert.
+
+Ausführbarkeit der Skriptdatei gewährleisten
+
+Um die Skriptdatei ausführbar zu machen, gibt man den folgenden Befehl ein:
+\begin{verbatim} sudo chmod +x mysql_backup.sh \end{verbatim}
+Dadurch wird die Ausführungsberechtigung für die Skriptdatei aktiviert.
+Ausführen des Skripts im Terminal, um sicherzustellen, dass es ordnungsgemäß funktioniert:
+\mint{shell}|sudo ./mysql_backup.sh|
+
+Einrichten eines regelmäßigen automatischen Updates.
+
+Dazu gibt man den folgenden Befehl ein, um den Crontab-Editor zu öffnen:
+\mint{shell}|sudo crontab -e|
+Die Verwendung des Crontab-Dienstes ermöglicht es uns, den \verb+Backup-Job+ regelmäßig auszuführen. Durch das Hinzufügen einer Zeile zur Crontab geben wir an, wann und wie oft das Backup-Skript ausgeführt werden soll. 
+
+\begin{verbatim}0 18 * * * /etc/mysql/mysql_backup.sh\end{verbatim}
+
+Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Backup Skript täglich um 18:00 Uhr ausgeführt.
+
+
+% \begin{listing}[ht]{}
+%     \shellcode{code/shell/webserver_installieren.sh}
+%     \caption{Installation des Apache Webservers}
+%     \label{listing:installation_apache}
+% \end{listing}
+
+\subsubsection{Umsetzung der Mandatory Access Control mittels AppArmor}
+
+Mittels AppArmor ist die Zuweisung von Profilen zu einer Anwendung möglich. Ein Profil besteht dabei aus Regeln, die z. B. lesenden oder schreibenden Zugriff zu einer Datei oder einem Verzeichnis oder sogar Netzwerkzugang ermöglichen. Im Falle einer Kompromittierung kann AppArmor somit des Gesamtsystem schützen.
+
+Im Fokus der Betrachtung stehen insbesondere Anwendungen mit Netzwerkzugriff, da diese auch aus der Ferne angreifbar sind. Im Falle einer Rechteausweitung mittels Privilege Escalation begrenzt AppArmor den potenziellen Schaden\cite{hutchinsIntelligenceDrivenComputerNetwork}.
+
+Dies betrifft insbesondere die Dienste \ac{SSH}, \ac{HTTP} bzw. \ac{HTTPS} sowie Wireguard. Auf Github existieren mehrere Projekte, die fertige Profile für AppArmor anbieten, insbesondere das \enquote{apparmor.d}-Projekt, welches nach eigenen Angaben etwa 1400 Profile bereitstellt. Dabei werden auch Dienste erfasst, welche unter dem \enquote{root} Benutzer ausgeführt werden und folglich besonders anfällig für eine Rechteausweitung sind.
+
+% Begründen, warum ausgerechnet apparmor.d
+Das \enquote{apparmor.d}-Projekt eignet sich am ehesten zur Umsetzung umfassender AppArmor Profile, weil dies sowohl aktiv weiterentwickelt wird als auch über eine umfassende Dokumentation verfügt. Es existieren zwar noch andere Projekt, dies ist nach der Anzahl der Beitragenden sowie Commits am weitesten entwickelt.
+
+% Installation kurz beschreiben
+Die konkrete Installation der AppArmor Profile ist im Anhang in \autoref{listing:installation_apparmor} beschrieben. In der Dokumentation des Projekts wird explizit darauf hingewiesen, zunächst die Lauffähigkeit des Systems zuprüfen, bevor der Enforce Mode aktiviert.
+
+% Auf Tests eingehen.
+Die Überprüfung möglicher Probleme bei der Durchsetzung der Profile erfolgt über den Befehl \mint{shell}|sudo aa-log|
+und zeigt dabei sowohl blockierte als auch erlaubte Aktionen an, wie in der folgenden Ausgabe anhand des Docker Daemons erkennbar ist:
+
+\begin{minted}[breaklines=true]{shell}
+vagrant@ubuntu-jammy:~$ sudo aa-log 
+ALLOWED dockerd mount /var/lib/docker/check-overlayfs-support2956447284/merged/ info="failed mntpnt match" comm=dockerd fstype=overlay srcname=overlay error=-13
+ALLOWED dockerd umount /var/lib/docker/check-overlayfs-support2956447284/merged/ comm=dockerd
+\end{minted}
+
+\subsubsection{Konfiguration der lokalen Firewall}
+
+
+\begin{table}[!ht]
+    \centering
+    \begin{adjustbox}{width=\textwidth}
+
+    \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+        \hline
+            Nr. & Protokoll & Quell-IP & Quell-Port & Ziel-IP & Ziel-Port & Interface & -m State & Aktion \\ \hline
+            1 & TCP & Internal & ANY & 192.168.2.80 & 22 & eth0 & NEW,ESTABLISHED & ALLOW \\ \hline
+            2 & TCP & ANY & ANY & 192.168.2.80 & 80/443 & eth0 & NEW,ESTABLISHED & ALLOW \\ \hline
+            3 & TCP & ANY & ANY & 192.168.2.80 & Wireguard & eth0 & NEW,ESTABLISHED & ALLOW \\ \hline
+        \end{tabular}
+    \end{adjustbox}
+    \caption{Firewall Tabelle für eingehenden Verkehr}
+    \label{regeln_fw_incoming}
+\end{table}
+% Tabelle erstellen: \url{https://tableconvert.com/latex-generator}
+
+MySQL Regel entfällt, weil lediglich vom lokalen System Verbindungen hergestellt werden. Andernfalls sollte dies ebenfalls auf nur erforderliche Adressen eingerichtet werden.
+
+\subsubsection{Härtung des Systems}
+
+% Literatur
+% https://github.com/trimstray/the-practical-linux-hardening-guide#policy-compliance
+% https://dev-sec.io/
+
+\subsubsection{Einrichtung eines Intrusion Detection Systems}
+
+OSSEC, Einrichtung via Ansible.
+
+
+

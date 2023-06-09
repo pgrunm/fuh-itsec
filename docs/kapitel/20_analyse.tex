@@ -1,0 +1,42 @@
+\section{Analyse potenzieller Bedrohungen}
+
+\underline{Hinweis:} Das hier sind nur Notizen!
+
+\subsection*{Aufgabenstellung}
+\begin{itemize}
+    \item Bedenken Sie, die IT-Sicherheit umfassend zu betrachten
+    \item  Entscheidungen sollen nachvollziehbar dargestellt (insbesondere unter Betrachtung der IT-Sicherheit) werden
+    \item Der Fokus liegt nicht auf der konkreten technischen Implementierung, sondern auf der Analyse
+    und Vergleich von Technologien
+    \item Stellen Sie Überlegungen, Vorgehensweisen und Recherchen dar
+\end{itemize}
+
+\subsection{Diskussion potenzieller Angriffsvektoren}
+
+Als Grundlage zur Analyse vermeintlicher Schwachstellen in der Infrastruktur der Fernuni Inc. dient das sogenannte \enquote{Intrusion Kill Chain}-Modell des amerikanischen Unternehmens Lockheed Martin.
+
+Dieses Modell unterteilt Cyberangriffe in unterschiedliche Phasen, in denen Angrifer versuchen, IT-Infrastruktur zu kompromittieren. Das Modell basiert dabei auf Informationen, sogenannten Indikatoren, die als Anhaltspunkt für einen Angriff dienen\footcite[Vgl.][]{hutchinsIntelligenceDrivenComputerNetwork}.
+
+Das Modell listet dabei auch Maßnahmen auf, mit denen Angriffe in den verschiedenen Phasen aufgespürt, verhindert, gestört, abgeschwächt oder getäuscht werden können.
+
+\begin{table}[]
+    \begin{center}
+        \begin{tabular}{|l|l|l|}
+            \hline
+            Phase                & Detect        & Deny         \\ \hline
+            Reconnaissance       & Web analytics & Firewall     \\ \hline
+            Weaponization        & NIDS          & NIPS         \\ \hline
+            Delivery             & Vigilant user & Proxy filter \\ \hline
+            Exploitation         & HIDS          & Patch        \\ \hline
+            Installation         & HIDS          &              \\ \hline
+            C2                   & NIDS          & Firewall     \\ \hline
+    Actions on Objective & Audit log     &              \\ \hline
+        \end{tabular}
+    \caption{Liste mit Werkzeugen zur Detektion oder Verhinderung von Angriffen in verschiedenen Phasen}
+    \label{table:defense_tools}
+    \end{center}
+\end{table}
+% Literatur:
+% \url{https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html}
+
+% \url{https://de.wikipedia.org/wiki/Cyber_Kill_Chain}

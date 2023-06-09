@@ -1,0 +1,128 @@
+---
+
+- hosts: infra
+  become: true
+
+  vars:
+    backup_dir: "/etc/mysql/backup"
+    backup_file: "{{backup_dir}}/backup-{{ansible_date_time.date}}-{{ansible_date_time.hour}}.sql"
+    MYSQL_PASSWORD: lookup('ansible.builtin.env', 'MYSQL_PASSWORD')
+
+  tasks:
+  - name: Update apt cache and upgrade packages
+    ansible.builtin.apt:
+      update_cache: true
+      upgrade: true
+
+  - name: Install required packages
+    ansible.builtin.apt:
+      name: ['apparmor', 'mariadb-server', 'nginx', 'python3-pip', "libmariadb-dev", "sshguard", "integrit", "docker"]
+      state: present
+
+  - name: Install latest Certbot snap package
+    community.general.snap:
+      name: certbot
+      classic: true
+
+  - name: Create backup directory
+    ansible.builtin.file:
+      path: "{{ backup_dir }}"
+      state: directory
+      mode: "0761"
+
+  - name: Upload the local sql file
+    ansible.builtin.copy:
+      src: createsql.sql
+      dest: "{{ backup_dir }}/createsql.sql"
+      mode: "700"
+      # owner: "{{ansible_ssh_user}}"
+
+  - name: Install Ansible/Python requirements
+    ansible.builtin.pip:
+      name: PyMySQL
+
+  - name: Collect all possible information using passwordless root access
+    community.mysql.mysql_info:
+      login_user: root
+      login_unix_socket: /run/mysqld/mysqld.sock
+  
+  - name: Change MySQL root user password
+    community.mysql.mysql_user: 
+      name: root
+      password: "{{ MYSQL_PASSWORD }}"
+      check_implicit_admin: yes
+      login_user: "root"
+      login_password: "{{ MYSQL_PASSWORD }}"
+      state: present
+      login_unix_socket: /run/mysqld/mysqld.sock
+
+  - name: Create .my.cnf from local file config file
+    ansible.builtin.template:
+      src: "local.my.cnf.j2"
+      dest: "/root/.my.cnf"
+      owner: root
+      group: root
+      mode: 0600
+
+  # Watch out, this is NOT idempotent and will recreate the database every time, the playbook will run!
+  - name: Create MySQL database messages
+    community.mysql.mysql_db:
+      name: messages
+      state: import
+      target: "{{backup_dir}}/createsql.sql"
+      # Maybe required to ignore errors, as the statements only creates the database if its NOT existing.
+      force: true
+      login_user: root
+      login_unix_socket: /run/mysqld/mysqld.sock
+
+
+  - name: Setup MySQL backup
+    community.mysql.mysql_db:
+      state: dump
+      name: messages
+      login_user: root
+      login_unix_socket: /run/mysqld/mysqld.sock
+      target: "{{backup_file}}"
+
+  - name: Create cron job for MySQL backups to run every hour.
+    ansible.builtin.cron:
+      name: "Backup MySQL database"
+      minute: "0"
+      hour: "*"
+      user: root
+      job: "/usr/bin/mysql --user=root --password=super_secret_password messages > {{ backup_file }}"
+
+  # UFW part
+  ## Allow list
+  - name: Allow SSH
+    community.general.ufw:
+      rule: allow
+      name: OpenSSH
+
+  - name: Allow all access to tcp port 80 (HTTP)
+    community.general.ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
+
+  - name: Allow all access to tcp port 443 (HTTPS)
+    community.general.ufw:
+      rule: allow
+      port: '443'
+      proto: tcp
+
+  - name: Allow all access to udp port 51820 (Wireguard)
+    community.general.ufw:
+      rule: allow
+      port: '51820'
+      proto: udp
+
+  - name: Limit SSH
+    community.general.ufw:
+      rule: limit
+      port: ssh
+      proto: tcp
+
+  - name: Enable UFW to block not allowed connections.
+    community.general.ufw:
+      state: enabled

@@ -1,0 +1,27 @@
+\newpage
+\subsubsection{Intrusion Detection System}
+
+Intrusion Detection Systeme werden eingesetzt, um Angriffe auf Netzwerke und Computersysteme erkennen zu können. Dabei findet bei signaturbasierten Systemen eine Mustererkennung in Log-Dateien statt. Beispielsweise können drei fehlerhafte Anmeldeversuche als Muster in einer Log-Datei erkannt und gemeldet werden. Auch Systemmeldungen verschiedenster Priorität oder Warnungen aus einer Integritätsprüfung sind Beispiele solcher Muster.\\
+Bei einer anomaliebasierten Erkennung werden Abweichungen vom Normalzustand erkannt und gemeldet. Die Grundlage hierfür können beispielsweise statistische Daten sein, um eine Abweichung vom "`Normalzustand"'erkennen zu können. Ein weiteres Beispiel hierfür wäre die übertragen Datenmenge zu einem bestimmten Zeitpunkt. Es werden auch Systeme Angeboten, welche eine Erkennung auf Basis einer künstlichen Intelligenz durchführen.   
+
+\paragraph{Grundlegende Arten von Intrusion Detection Systemen}
+Grundsätzlich können Intrusion Detection Systeme (IDS) in die folgenden drei Arten eingeteilt werden:
+
+\begin{itemize}
+\item Hostbasierte IDS
+\item Netzwerkbasierte IDS
+\item Hybride IDS
+\end{itemize}
+
+\noindent Hostbasierte IDS werden zur Überwachung eines Servers oder Clients eingesetzt. Sie werten die lokalen Log-Dateien eines Systems aus. Dadurch kann der Zustand des Systems wie die Auslastung von Schnittstellen, der verfügbare Speicherplatz auf Datenträgern aber auch ein potentieller Angriff auf das System erkannt werden. Da hostbasierte IDS die lokalen Log-Dateien auswerten, kann ein Angreifer erst erkannt werden, wenn er bereits auf das überwachte System vorgedrungen ist.\\ 
+
+\noindent Netzwerkbasierte IDS erkennen Angreifer bereits bei netzbasierten Angriffen wie das Auskundschaften der Infrastruktur oder bei Denial-of-Service Angriffen. Sie lassen sich für den Angreifer nahezu unsichtbar im Netzwerk installieren. Durch die Überwachung der Netzwerke werden die Clients nicht belastet. Netzwerkbasierte IDS können jedoch keine Auskunft über den Zustand einzelner Systeme geben.\\ 
+
+\noindent Bei hybriden IDS handelt es sich um eine Mischung der beiden zuvor genannten Systemen. Dies hat den Vorteil, dass Angreifer bereits auf Netzebene erkannt und gegebenenfalls auf einen Honeypot umgeleitet werden können. Gleichzeitig besteht jedoch auch ein erhöhter Schutz vor Angreifern, welche sich unerkannt durch das Netzwerk bewegen konnten. Diese können dann auf Clientebene beispielsweise durch auffällige Log-Dateien durch eine misslungene Integritätsprüfung erkannt werden.\\
+
+\paragraph{Implementierung eines IDS}
+\noindent \\Gegeben ist ein Server sowie ein Client unter Ubuntu Linux, auf denen das hostbasierte IDS OSSEC installiert werden soll. Dabei besteht die Installation aus zwei Teilen, einem Agent und einem Server. Der Agent wird auf dem zu überwachenden System installiert und sammelt die Daten des jeweiligen Systems, um diese an den Server zu senden. Der Server als zentraler Punkt speichert zum Beispiel die Log-Dateien, eine Integritätsdatenbank und ist für die Verwaltung der Agents zuständig. Für die Kommunikation zwischen Agent und Server wird das System Logging Protocol (syslog) verwendet. Die syslog-Telegramme werden über eine TLS-verschlüsselte UDP Verbindung übertragen. Üblicherweise wird hierfür der Port 514 verwendet. Damit der Agent eine verschlüsselte TLS-Verbindung zum Server aufbauen kann, muss zuvor ein Schlüssel auf dem Server extrahiert und auf den Agent übertragen werden. Für jeden Agent wird ein eigener Schlüssel generiert. 
+ 
+  
+ 
+

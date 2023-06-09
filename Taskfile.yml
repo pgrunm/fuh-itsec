@@ -10,3 +10,28 @@ tasks:
     cmds:
       - echo "{{.GREETING}}"
     silent: true
+
+  up:
+    cmds:
+      - vagrant up
+    desc: Starts the Vagrant machine
+  down:
+    cmds:
+      - vagrant halt
+    desc: Stops the Vagrant machine.
+  lint:
+    desc: Lints the given Ansible playbook.
+    cmds:
+      - source /home/pascal/Dokumente/Entwicklung/FUH/fuh-itsec/.venv/bin/activate
+      - ansible-lint docs/code/ansible/playbook.yaml
+  ansible:
+    desc: Runs the Ansible playbook.
+    vars:
+      INVENTORY: docs/code/ansible/hosts.ini
+      PK: .vagrant/machines/default/virtualbox/private_key
+      USER: vagrant
+    env:
+      MYSQL_PASSWORD: hallo123
+    cmds:
+      - ansible-playbook docs/code/ansible/playbook.yaml -u {{.USER}} -i {{.INVENTORY}} --private-key {{.PK}} {{.CLI_ARGS}}
+      - ansible-playbook docs/code/ansible/hardening.yaml -u {{.USER}} -i {{.INVENTORY}} --private-key {{.PK}} {{.CLI_ARGS}}

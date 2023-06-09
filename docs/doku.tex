@@ -3,6 +3,14 @@
 % Grundlegende Einstellungen
 \input{format/format.tex}
 
+% Einstellungen zum Zitieren.
+\input{format/zitieren.tex}
+
+% --------------------------------------------------------------------
+% Hier die entsprechende .bib-Datei eintragen
+% --------------------------------------------------------------------
+% !BIB program = biblatex
+\addbibresource{literatur/literatur.bib}
 	
 \begin{document}
 % Hier wird der Titel-Bereich formatiert
@@ -44,22 +52,27 @@
 \setcounter{page}{1}
 
 % Vorschlag: Für jedes Kapitel eine eigene .tex Datei anlegen, dann ist die Aufteilung leichter.
-\input{kapitel/1_kapitel1.tex}
+\input{kapitel/10_kapitel1.tex}
+\newpage
+\input{kapitel/20_analyse.tex}
+\newpage
+\input{kapitel/30_implementierung.tex}
+\input{kapitel/31_impl_Wireguard.tex}
+\input{kapitel/32_härtung_Server.tex}
+\input{kapitel/33_ids.tex}
+\newpage
+\input{kapitel/40_fazit.tex}
 
-
-% --------------------------------------------------------------------
-% Hier die entsprechende .bib-Datei eintragen
-% --------------------------------------------------------------------
-% !BIB program = biblatex
-% \addbibresource{literature/seminar-lit.bib}
+% Anhang
+\newpage
+\input{kapitel/100_anhang.tex}
 
 % Warnung vermeiden
 % \BiblatexSplitbibDefernumbersWarningOff
 
 % Ggf. heading= usw. entfernen, um aus dem Inhaltsverzeichnis zu entfernen.
-% \printbibliography[nottype=online, heading=bibintoc]
+\printbibliography[heading=bibintoc]
 % \printbibliography[type=online, heading=bibintoc, title={Internetquellen}]
-
 
 % \cleardoublepage
 % \input{ee.tex}
