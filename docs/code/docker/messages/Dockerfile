@@ -14,6 +14,7 @@ RUN wget https://dlm.mariadb.com/2862620/Connectors/c/connector-c-3.3.4/mariadb-
 
 RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb; apt remove wget gcc -y
 
+USER app
 COPY . .
 
 # Listen on TCP port 8080
