@@ -14,9 +14,9 @@
       update_cache: true
       upgrade: true
 
-  - name: Install AppArmor, Mariadb and Apache2
+  - name: Install required packages
     ansible.builtin.apt:
-      name: ['apparmor', 'mariadb-server', 'apache2', 'python3-pip', "libmariadb-dev", "sshguard", "integrit"]
+      name: ['apparmor', 'mariadb-server', 'nginx', 'python3-pip', "libmariadb-dev", "sshguard", "integrit", "docker"]
       state: present
 
   - name: Install latest Certbot snap package
@@ -91,12 +91,6 @@
       hour: "*"
       user: root
       job: "/usr/bin/mysql --user=root --password=super_secret_password messages > {{ backup_file }}"
-
-  # TODO: Create Apache configuration.
-  - name: Restart Apache2
-    ansible.builtin.systemd:
-      name: apache2
-      state: restarted
 
   # UFW part
   ## Allow list
