@@ -8,6 +8,7 @@ WORKDIR /usr/src/app
 # Install required software
 RUN pip install --no-cache-dir flask
 
+USER app
 COPY . .
 
 # Listen on TCP port 8080
