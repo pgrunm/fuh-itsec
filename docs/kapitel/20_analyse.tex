@@ -54,4 +54,18 @@ Ausgehend von \autoref{table:defense_tools} existieren zwei potenzielle Strategi
 \subsection{Auswahl potenzieller Software}
 Im Rahmen unserer Vorgaben, setzen wir je Phase die nachfolgenden Tools ein, zur Verteidigung gegen einen potenziellen Angriff.
 
-% TODO: Tabelle aufsetzen. 
+\begin{table}[]
+    \begin{tabular}{|l|l|l|}
+    \hline
+    Phase        & Aufspürung     & Unterbindung        \\ \hline
+    Aufklärung   &                & Firewall z. B. \href{https://feodotracker.abuse.ch/blocklist/}{hier}            \\ \hline
+    Angriff      &                & SSHGuard            \\ \hline
+    Übermittlung &                & \href{https://gitlab.com/malware-filter/urlhaus-filter}{URLhaus Filter?}     \\ \hline
+    Ausnutzung   &                & Unattended Upgrades \\ \hline
+    Installation & OSSEC          &                     \\ \hline
+    C2           &                & Firewall            \\ \hline
+    Manipulation & Auditd Service &                     \\ \hline
+    \end{tabular}
+    \caption{Auswahl verschiedener Softwares zur Abwehr von Cyberangriffen}
+    \label{tab:tools_killchain}
+\end{table}
