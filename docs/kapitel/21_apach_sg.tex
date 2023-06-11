@@ -1,0 +1,183 @@
+Der Webserver (auf Ubuntu System) soll zwei separate Webseiten, \enquote{hello.fernuni} und \enquote{messages.fernuni}, bedienen. Beide Webseiten sind in der Programmiersprache Python geschrieben. Diese Dokumentation erläutert die Gründe hinter jedem Schritt und gibt detaillierte Anweisungen zur Durchführung der Installation.
+
+Als Team 3 haben wir uns für den Apache Webserver entschieden, denn Apache ist ein weit verbreiteter und zuverlässiger Webserver, der auf vielen Plattformen eingesetzt wird. Die Installation erfolgt mithilfe des Paketmanagers von Ubuntu.
+
+\subsubsection*{Apache installieren.}
+Um den Apache-Webserver zu installieren, führen wir folgenden Befehl aus:
+
+\mint{shell}|sudo apt-get install apache2|
+
+\subsubsection*{Flask installieren.}
+Um Flask, ein Python-Framework für Webanwendungen, zu installieren, verwenden wir den folgenden Befehl:
+
+\mint{shell}|sudo apt install python3-flask|
+
+Flask ermöglicht die Entwicklung von Webanwendungen mit Python. In diesem Fall wird Flask verwendet, um die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} zu implementieren.
+
+\subsubsection*{Hostdatei ändern.}
+Die Hostdatei muss angepasst werden, um die lokal gehosteten Webseiten zu erreichen. Die \enquote{hosts}-Datei befindet sich in /etc/hosts. Wir öffenen die \enquote{hosts}-Datei mit einem Texteditor (z. B. Nano oder Vim) und fügen die folgenden Zeilen hinzu:
+
+\begin{minted}{shell}
+    127.0.0.1 	hello.fernuni
+    127.0.0.1 	messages.fernuni
+\end{minted}
+
+Durch das Hinzufügen der entsprechenden Einträge in der \enquote{hosts}-Datei kann der Webbrowser die lokal gehosteten Webseiten unter den angegebenen Domains finden.
+
+\subsubsection*{Proxy-Modul aktivieren.}
+Das Proxy-Modul ermöglicht die Weiterleitung von HTTP-Anfragen an andere Webserver. Es wird benötigt, um die Anfragen für die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} an die entsprechenden Python-Server weiterzuleiten.
+Das Proxy-Modul in Apache wird mit den folgenden Befehlen aktiviert:
+
+\begin{minted}{shell}
+    sudo a2enmod proxy
+    sudo a2enmod proxy_html
+    sudo a2enmod proxy_http
+\end{minted}
+
+\subsubsection*{Modul \enquote{mod\_wsgi} installieren}
+
+Das \verb+mod_wsgi-Modul+ ermöglicht die Ausführung von Python-Anwendungen innerhalb des Apache-Webservers. Es wird verwendet, um die Flask-Anwendungen für die Webseiten zu integrieren.
+Wir installieren das Python-Paket \verb+mod_wsgi+ mit dem folgenden Befehl:
+
+\begin{minted}{shell}
+    sudo apt-get install libapache2-mod-wsgi-py3
+\end{minted}
+
+\subsubsection*{Python-Dateien ablegen.}
+
+Apache verwendet standardmäßig das Verzeichnis \enquote{/var/www/html} als den Wurzelordner für gehostete Webinhalte. Durch das Ablegen der Python-Dateien in diesem Verzeichnis können sie vom Webserver erkannt und ausgeführt werden.
+Aus diesem Grund legen wir die Python-Dateien für die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} im Verzeichnis \enquote{/var/www/html/hello}  bzw. \enquote{/var/www/html/messages} ab. 
+
+\subsubsection*{Konfigurationsdateien erstellen.}
+
+Der Webserver benötigt für das bedienen von Webseiten Konfigurationsdateien.
+Durch das Erstellen von separaten Konfigurationsdateien für jede Webseite können die spezifischen Einstellungen und Proxy-Weiterleitungen für jede Seite festgelegt werden.
+Dafür erstellen wir für jede Webseite eine separate Konfigurationsdatei im Verzeichnis \enquote{/etc/apache2/sites-enabled}. 
+Dabei hat die Datei \enquote{hello.fernuni.config} folgenden Inhalt:
+\begin{verbatim}
+<VirtualHost *:80> 
+    ProxyPreserveHost On
+    ProxyRequest Off
+    ServerName hello.fernuni 
+    ServerAlias www.hello.fernuni 
+    DocumentRoot /var/www/html/hello
+    ProxyPass / http://localhost:8080
+    ProxyPassReverse / http://localhost:8080
+    ErrorLog ${APACHE_LOG_DIR}/hello.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/hello.fernuni_access.log combined
+</VirtualHost>
+\end{verbatim}
+
+Analog hat die Datei \enquote{messages.fernuni.config} folgenden Inhalt:
+\begin{verbatim}
+<VirtualHost *:80> 
+    ProxyPreserveHost On
+    ProxyRequest Off
+    ServerName messages.fernuni 
+    ServerAlias www.messages.fernuni 
+    DocumentRoot /var/www/html/messages
+    ProxyPass / http://localhost:7500
+    ProxyPassReverse / http://localhost:7500
+    ErrorLog ${APACHE_LOG_DIR}/messages.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/messagesfernuni_access.log combined
+</VirtualHost>
+\end{verbatim}
+
+\subsubsection*{Virtuelle Hosts aktivieren.}
+Durch die Aktivierung der virtuellen Hosts werden die Konfigurationsdateien mit dem Verzeichnis \enquote{/etc/apache2/sites-enabled} verknüpft. Dadurch kann Apache die entsprechenden Webseiten bedienen.
+Wir aktivieren die virtuellen Hosts, indem wir die Befehle \enquote{a2ensite} für jede Konfigurationsdatei ausführen.
+
+\begin{minted}{shell}
+sudo a2ensite hello.fernuni.config
+sudo a2ensite messages.fernuni.config
+\end{minted}
+
+\subsubsection*{Apache-Webserver neu starten.}
+Um die Konfigurationsänderungen zu übernehmen, muss der Apache-Webserver neugestartet werden:
+\mint{shell}|sudo service apache2 restart|
+
+\subsubsection*{Starten des Python-Servers.}
+
+Damit die Webseiten \enquote{hello.fernuni} und \enquote{messages.fernuni} durch den Apache Webserver bedienbar sind, müssen diese gestartet werden. Dies kann man mit folgenden Befehlen in den jeweiligen Ordnern erreichen:
+
+\begin{minted}{shell}
+    python3 hello.fernuni.py
+    python3 messages.fernuni.py
+\end{minted}
+
+\subsubsection*{Umstellung des Webservers auf HTTPS.}
+Der Zweck dieser Umstellung besteht darin, die Kommunikation zwischen den Benutzern und dem Webserver zu verschlüsseln, um die Sicherheit und Vertraulichkeit der übertragenen Daten zu gewährleisten. Der Apache Webserver bedient zwei Webseiten: \enquote{hello.fernuni} und \enquote{messages.fernuni}. Für jede Webseite wird ein eigenes \verb+SSL/TLS-Zertifikat+ benötigt.
+
+\subsubsection*{Zertifikatgenerierung für \enquote{hello.fernuni}.}
+Um ein gültiges \verb+SSL/TLS-Zertifikat+ für die Website \enquote{hello.fernuni} zu generieren, geht man wie folgt vor.
+Man navigiert zum Verzeichnis \enquote{/var/www/html/hello}, wo sich die \verb+Website-Dateien+ befinden und man gibt den folgenden Befehl im Terminal ein, um ein selbstsigniertes Zertifikat zu generieren:
+
+\begin{minted}{shell}
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout helloprivatkey.key -out hellocert.crt
+\end{minted}
+
+Während des Zertifikatgenerierungsprozesses wird man nach Informationen gefragt. Man kann die meisten Felder unausgefüllt lassen, aber man muss sicherstellen, dass der Domainname \enquote{hello.fernuni} im Feld \enquote{Common Name} angegeben wird.
+
+\subsubsection*{Aktivierung des \enquote{Apache-SSL-Moduls}}
+
+Um SSL für den \verb+Apache-Webserver+ zu aktivieren, führt man den folgenden Befehl aus:
+\mint{shell}|sudo a2enmod ssl|
+
+\subsubsection*{Anpassung der Konfigurationsdatei \enquote{hello.fernuni.conf}.}
+
+Die Konfigurationsdatei \enquote{hello.fernuni.conf} muss entsprechend angepasst werden, um HTTPS zu ermöglichen. Zuerst ersetzen wir die Portnummer von 80 auf 443. Die Portnummer 443 ist die Standartportnummer für HTTPS anfragen auf Apache. Zudem werden die Pfadangaben zum Zertifikat und zum privaten Schlüssel angegeben.
+Um sicherzustellen, dass Benutzer automatisch von HTTP auf HTTPS umgeleitet werden, fügen wir noch einen Umleitungsabschnitt zur \enquote{hello.fernuni.conf} hinzu. Die angepasste Konfigurationsdatei sieht folgendermaßen aus:
+\begin{minted}{apache}
+<VirtualHost *:443>
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ServerName hello.fernuni
+    ServerAlias www.hello.fernuni
+    DocumentRoot /var/www/html/hello
+    ProxyPass / http://localhost:8080
+    ProxyPassReverse / http://localhost:8080
+    ErrorLog ${APACHE_LOG_DIR}/hello.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/hello.fernuni_access.log combined
+    SSLEngine on
+    SSLCertificateFile /var/www/html/hello/hellocert.crt
+    SSLCertificateKeyFile /var/www/html/hello/helloprivatkey.key
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName hello.fernuni
+    Redirect / https://hello.fernuni/
+</VirtualHost>
+\end{minted}
+
+Analog zur diesen Vorgehensweise werden die gleichen Schritte für \enquote{messages.fernuni} durchgeführt. Man erstellt ein separates Zertifikat und passt die Konfigurationsdatei \enquote{messages.fernuni.conf} an:
+
+\begin{minted}{apache}
+    <VirtualHost *:443>
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ServerName messages.fernuni
+    ServerAlias www.messages.fernuni
+    DocumentRoot /var/www/html/messages
+    ProxyPass / http://localhost:7500
+    ProxyPassReverse / http://localhost:7500
+    ErrorLog ${APACHE_LOG_DIR}/messages.fernuni_error.log
+    CustomLog ${APACHE_LOG_DIR}/messages.fernuni_access.log combined
+    SSLEngine on
+    SSLCertificateFile /var/www/html/messages/messagescert.crt
+    SSLCertificateKeyFile /var/www/html/messages/messagesprivatkey.key
+    </VirtualHost>
+    
+    <VirtualHost *:80>
+    ServerName messages.fernuni
+    Redirect / https://messages.fernuni/
+    </VirtualHost>
+\end{minted}
+
+\subsubsection*{Neustart des \enquote{Apache-Webservers}}
+Nachdem die Konfigurationsänderungen durchgeführt sind, startet man den \enquote{Apache-Webserver} neu:
+
+\mint{shell}|sudo service apache2 restart|
+
+Nun sind die Websites \enquote{hello.fernuni} und \enquote{messages.fernuni} auf HTTPS umgestellt. Benutzer können sicher auf die Websites zugreifen, und die Kommunikation zwischen den Benutzern und dem Webserver ist verschlüsselt.
+Zu beachten ist, dass die in dieser Dokumentation verwendeten Zertifikate selbstsigniert sind, weshalb Warnmeldungen im Webbrowser angezeigt werden. Würden Zertifikate von vertrauenswürdigen Zertifizierungsstellen verwendet, wären diese Warnungen nicht vorhanden.
