@@ -41,7 +41,6 @@ Bei der Härtung sind sowohl die Anforderungen hinsichtlich der kryptografischen
 % Nginx Server config:
 % https://www.digitalocean.com/community/tools/nginx?domains.0.server.domain=messages.fernuni&domains.0.php.php=false&domains.0.reverseProxy.reverseProxy=true&domains.1.server.domain=hello.fernuni&domains.1.php.php=false&domains.1.reverseProxy.reverseProxy=true&domains.1.reverseProxy.proxyPass=http%3A%2F%2F127.0.0.1%3A3001&domains.1.routing.root=false&global.app.lang=de
 
-Der relevante Teil der Nginx Konfiguration für das Reverse Proxying wird in \autoref{listing:nginx_config_hello} dargestellt.
 
 \begin{listing}
     \nginxcode[firstline=19, lastline=23]{code/nginx/sites-enabled/hello.fernuni.conf}
@@ -49,7 +48,7 @@ Der relevante Teil der Nginx Konfiguration für das Reverse Proxying wird in \au
     \label{listing:nginx_config_hello}
 \end{listing}
 
-Diese Konfiguration sorgt dafür, dass beim Aufruf der Domain\linebreak \url{https://hello.fernuni} die eingehende Anfrage auf den auf localhost lauschenden Docker Container auf den \ac{TCP} Port 3001 weitergeleitet wird. Ein identisches Verfahren wird für die URL \url{https://messages.fernuni} angewendet.
+Der relevante Teil der Nginx Konfiguration für das Reverse Proxying wird in \autoref{listing:nginx_config_hello} dargestellt. Diese Konfiguration sorgt dafür, dass beim Aufruf der Domain \url{https://hello.fernuni} die eingehende Anfrage auf den auf Localhost lauschenden Docker Container auf den \ac{TCP} Port 3001 weitergeleitet wird. Ein identisches Verfahren wird für die URL \url{https://messages.fernuni} angewendet. Der Einsatz eines Reverse Proxys ermöglicht die TLS Terminierung und sorgt dafür, dass ein Webserver Zertifikat lediglich im Webserver einzurichten ist. Dies verhindert jedoch eine vollständige Ende zu Ende Verschlüsselung.
 
 \subsubsection*{ Aufsetzen einer Datenbank auf Ubuntu}
 
