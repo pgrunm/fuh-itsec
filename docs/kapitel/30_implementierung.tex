@@ -181,4 +181,8 @@ ALLOWED dockerd umount /var/lib/docker/check-overlayfs-support2956447284/merged/
 
 Eine MySQL Regel entfällt, weil lediglich vom lokalen System Verbindungen hergestellt werden. Andernfalls sollte dies ebenfalls auf nur erforderliche Adressen eingerichtet werden.
 
-Zugriff via \ac{SSH} ist lediglich aus dem internen Netzwerk (\enquote{Internal}) gestattet, sodass Zugriff aus dem öffentlichen Internet in gänze unterbunden werden, wie dies auch das Cyber-Killchain Modell vorsieht.
+Zugriff via \ac{SSH} ist lediglich aus dem internen Netzwerk (\enquote{Internal}, was hier als Platzhalter dient) gestattet, sodass Zugriff aus dem öffentlichen Internet in gänze unterbunden werden, wie dies auch das Cyber-Killchain Modell vorsieht.
+
+% TODO: Firewall weiter ergänzen, um z. B. böswillige Adressen zu blockieren.
+% https://abuse.ch/#platforms
+Das Projekt \href{https://abuse.ch}{Abuse.ch} bietet eine regelmäßig aktualisierte Liste mit bösartigen IP-Adressen an, die in Verbindung mit der Verbreitung von Malware oder Botnets stehen. Folglich bietet es sich an, diese IP-Adressen zusätzlich in der Firewall zu blockieren, um weitere Angriffe einzuschränken.
