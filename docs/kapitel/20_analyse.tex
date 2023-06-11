@@ -1,17 +1,5 @@
 \section{Analyse potenzieller Bedrohungen}
 
-\underline{Hinweis:} Das hier sind nur Notizen!
-
-% TODO: Aufgabenstellung entfernen
-\subsection*{Aufgabenstellung}
-\begin{itemize}
-    \item Bedenken Sie, die IT-Sicherheit umfassend zu betrachten
-    \item  Entscheidungen sollen nachvollziehbar dargestellt (insbesondere unter Betrachtung der IT-Sicherheit) werden
-    \item Der Fokus liegt nicht auf der konkreten technischen Implementierung, sondern auf der Analyse
-    und Vergleich von Technologien
-    \item Stellen Sie Überlegungen, Vorgehensweisen und Recherchen dar
-\end{itemize}
-
 \subsection{Diskussion potenzieller Angriffsvektoren}
 
 Als Grundlage zur Analyse vermeintlicher Schwachstellen in der Infrastruktur der Fernuni Inc. dient das sogenannte \enquote{Intrusion Kill Chain}-Modell des amerikanischen Unternehmens Lockheed Martin.
@@ -20,7 +8,7 @@ Dieses Modell unterteilt Cyberangriffe in unterschiedliche Phasen, in denen Angr
 
 Das Modell listet dabei auch Maßnahmen auf, mit denen Angriffe in den verschiedenen Phasen aufgespürt, verhindert, gestört, abgeschwächt oder getäuscht werden können. \autoref{table:defense_tools} gibt eine Übersicht über die verschiedenen Phasen sowie potenziell Werkzeuge.
 
-\begin{table}[]
+\begin{table}[ht]
     \begin{center}
         \begin{tabular}{|l|l|l|}
             \hline
@@ -51,18 +39,16 @@ Dazu zählen Maßnahmen wie z. B. Verschlüsselung während des Transports und d
 
 Ausgehend von \autoref{table:defense_tools} existieren zwei potenzielle Strategien, zur Verteidigung gegen Angriffe: Entweder durch die Aufspürung eines Angriffs oder durch die Verhinderung dessen. Die Verhinderung ist nicht in sämtlichen Phasen möglich, die Aufspürung jedoch in sämtlichen Phasen.
 
-\subsection{Auswahl potenzieller Software}
+Im Rahmen unserer Vorgaben und mit der Orientierung am Killchain Modell, setzen wir zusätzlich die nachfolgenden Softwares ein, zur Verteidigung gegen potenzielle Cyberangriffe.
 
-Im Rahmen unserer Vorgaben und mit der Orientierung am Killchain Modell, setzen wir zusätzlich je Angriffsphase die nachfolgenden Tools ein, zur Verteidigung gegen potenzielle Cyberangriffe.
-
-\begin{table}[]
+\begin{table}[ht]
     \begin{center}
         \begin{tabular}{|l|l|l|}
             \hline
             Phase        & Aufspürung     & Unterbindung        \\ \hline
             Aufklärung   &                & Firewall z. B. \href{https://feodotracker.abuse.ch/blocklist/}{hier}            \\ \hline
             Angriff      &                & SSHGuard            \\ \hline
-            Übermittlung &                & \href{https://gitlab.com/malware-filter/urlhaus-filter}{URLhaus Filter?}     \\ \hline
+            Übermittlung &                & \href{https://gitlab.com/malware-filter/urlhaus-filter}{URLhaus Filter}     \\ \hline
             Ausnutzung   &                & Unattended Upgrades \\ \hline
             Installation & OSSEC          &                     \\ \hline
             C2           &                & Firewall            \\ \hline
