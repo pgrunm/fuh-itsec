@@ -179,9 +179,13 @@ ALLOWED dockerd umount /var/lib/docker/check-overlayfs-support2956447284/merged/
 \end{table}
 % Tabelle erstellen: \url{https://tableconvert.com/latex-generator}
 
-MySQL Regel entfällt, weil lediglich vom lokalen System Verbindungen hergestellt werden. Andernfalls sollte dies ebenfalls auf nur erforderliche Adressen eingerichtet werden.
+Eine MySQL Regel entfällt, weil lediglich vom lokalen System Verbindungen hergestellt werden. Andernfalls sollte dies ebenfalls auf nur erforderliche Adressen eingerichtet werden.
 
-\subsubsection{Härtung des Systems}\label{kap:haertung_des_systems}
+Zugriff via \ac{SSH} ist lediglich aus dem internen Netzwerk (\enquote{Internal}) gestattet, sodass Zugriff aus dem öffentlichen Internet in gänze unterbunden werden, wie dies auch das Cyber-Killchain Modell vorsieht.
+
+% TODO: Firewall weiter ergänzen, um z. B. böswillige Adressen zu blockieren.
+
+\subsection{Härtung des Systems}\label{kap:haertung_des_systems}
 
 % Literatur
 % https://github.com/trimstray/the-practical-linux-hardening-guide#policy-compliance
