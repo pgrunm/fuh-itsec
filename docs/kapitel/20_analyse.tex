@@ -52,20 +52,25 @@ Dazu zählen Maßnahmen wie z. B. Verschlüsselung während des Transports und d
 Ausgehend von \autoref{table:defense_tools} existieren zwei potenzielle Strategien, zur Verteidigung gegen Angriffe: Entweder durch die Aufspürung eines Angriffs oder durch die Verhinderung dessen. Die Verhinderung ist nicht in sämtlichen Phasen möglich, die Aufspürung jedoch in sämtlichen Phasen.
 
 \subsection{Auswahl potenzieller Software}
-Im Rahmen unserer Vorgaben, setzen wir je Phase die nachfolgenden Tools ein, zur Verteidigung gegen einen potenziellen Angriff.
+
+Im Rahmen unserer Vorgaben und mit der Orientierung am Killchain Modell, setzen wir zusätzlich je Angriffsphase die nachfolgenden Tools ein, zur Verteidigung gegen potenzielle Cyberangriffe.
 
 \begin{table}[]
-    \begin{tabular}{|l|l|l|}
-    \hline
-    Phase        & Aufspürung     & Unterbindung        \\ \hline
-    Aufklärung   &                & Firewall z. B. \href{https://feodotracker.abuse.ch/blocklist/}{hier}            \\ \hline
-    Angriff      &                & SSHGuard            \\ \hline
-    Übermittlung &                & \href{https://gitlab.com/malware-filter/urlhaus-filter}{URLhaus Filter?}     \\ \hline
-    Ausnutzung   &                & Unattended Upgrades \\ \hline
-    Installation & OSSEC          &                     \\ \hline
-    C2           &                & Firewall            \\ \hline
-    Manipulation & Auditd Service &                     \\ \hline
-    \end{tabular}
+    \begin{center}
+        \begin{tabular}{|l|l|l|}
+            \hline
+            Phase        & Aufspürung     & Unterbindung        \\ \hline
+            Aufklärung   &                & Firewall z. B. \href{https://feodotracker.abuse.ch/blocklist/}{hier}            \\ \hline
+            Angriff      &                & SSHGuard            \\ \hline
+            Übermittlung &                & \href{https://gitlab.com/malware-filter/urlhaus-filter}{URLhaus Filter?}     \\ \hline
+            Ausnutzung   &                & Unattended Upgrades \\ \hline
+            Installation & OSSEC          &                     \\ \hline
+            C2           &                & Firewall            \\ \hline
+            Manipulation & Auditd Service &                     \\ \hline
+        \end{tabular}
+    \end{center}
     \caption{Auswahl verschiedener Softwares zur Abwehr von Cyberangriffen}
     \label{tab:tools_killchain}
 \end{table}
+
+Die in \autoref{tab:tools_killchain} aufgelisteten Softwares wie z. B. SSHGuard oder Unattended Upgrades werden im \autoref{kap:haertung_des_systems} detailliert erläutert.
