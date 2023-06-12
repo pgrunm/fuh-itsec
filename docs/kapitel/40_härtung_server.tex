@@ -122,4 +122,7 @@ virtualisiert, sondern es werden lediglich bestimmte Ressourcen durch einen gete
    
 \subsubsection{Härtung der installierten Software}
 
-TODO: Guten Content niederschreiben.
+% TODO: Guten Content niederschreiben.
+Die Härtung des Systems und der installierten Dienste erfolgt durch das im \autoref{listing:hardening} dargestellten Ansible Playbook. Bei der Härtung wird unter anderem auf eine Ansible Rolle des \enquote{Dev-Sec} Projekts gesetzt, welches eine grundsätzliche Härtung auf der Basis von Empfehlungen der Deutschen Telekom, der Webseite \href{https://bettercrypto.org/}{Bettercrypto} sowie der amerikanischen \ac{NSA}\footcite[Vgl.][]{OverviewDevSecBaselines}. 
+
+Die Ansible Rolle legt sichere Standard Konfigurationswerte unter anderem für das Betriebssystem, \ac{SSH}, \ac{TLS}, MySQL und Nginx fest, die wiederum durch eigene zusätzliche Einstellungen noch ergänzt werden. In Summe ergeben diese ein funktionierendes und sicheres Gesamtsystem.
