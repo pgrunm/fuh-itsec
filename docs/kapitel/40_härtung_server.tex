@@ -132,4 +132,18 @@ Eine Eigenentwicklung auf Basis der Vorgaben des \ac{BSI} oder anderer Empfehlun
 Das Dev-Sec Projekt bietet eine vorgefertige Ansible Rolle an, welches exakt zu den Vorgaben der FernUni Inc. passt. Sämtliche ausgewählten Software Komponenten werden durch die Rolle unterstützt und können somit in eine umfassende und sichere Grundkonfiguration versetzt werden. 
 Eine ausführliche Auflistung sämtlicher Einstellungen ist auf der Seite des Dev-Sec Projekts ersichtlich\footcite[Vgl.][]{OverviewDevSecBaselines}.
 
-Die Ansible Rolle legt sichere Standard Konfigurationswerte unter anderem für das Betriebssystem, \ac{SSH}, \ac{TLS}, MySQL und Nginx fest, die wiederum durch eigene zusätzliche Einstellungen noch ergänzt werden. In Summe ergeben diese ein funktionierendes und sicheres Gesamtsystem.
+Die Ansible Rolle legt sichere Standard Konfigurationswerte unter anderem für das Betriebssystem, \ac{SSH}, \ac{TLS}, MySQL und Nginx fest, die wiederum durch eigene zusätzliche Einstellungen noch ergänzt werden. In Summe ergeben diese ein funktionierendes und sicheres Gesamtsystem. Durch die Kombination mit Ansible können die definierten Einstellungen schnell und unkompliziert auf einer Vielzahl von Server angewendet werden.
+
+% Einige Einstellungen erläutern
+Dies umfasst neben den bereits erwähnten Grundeinstellungen beispielsweise die Einrichtung von SSHGuard, welches nach drei fehlerhaften Anmeldeversuchen die Quell IP Adresse für drei Minuten blockiert:
+
+\begin{minted}[]{properties}
+	# Block an attacker after 3 failed logins.
+	THRESHOLD=30
+	# Blocks for at least 3mins.
+	BLOCK_TIME=180
+	# Attackers are remembered for 10m.
+	DETECTION_TIME=3600
+\end{minted}
+
+In der Standardeinstellung werden weitere Anfragen mit dem Faktor 1.5 gesperrt, sodass die Blockierung kontinuierlich steigt.
