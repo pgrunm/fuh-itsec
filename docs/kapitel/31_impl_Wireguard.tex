@@ -81,7 +81,7 @@ Ein GPG-Zertifikat kann durch Eingabe des Befehls \mint{shell}|gpg --full-genera
 ausgelesen werden. Auch hierbei wird die Passphrase des GPG-Zertifikats abgefragt. 
 
 \paragraph{Verwendung eines PIV-Slots auf einem Yubikey}
-\noindent \\Bei einem Yubikey handelt es sich um ein Security-Token, welcher an Schnittstellen wie Lightning oder USB verwendet wird. Ein Yubikey unterst\"utzt mehrere Protokolle zur Identifizierung und Authentifizierung von Benutzern. Auf einem Yubikey stehen so genante Personal Identity Verification Solts (PIV-Slots) zur Verf\"ugung, in denen private Schl\"ussel abgelegt werden k\"onnen. Hierf\"ur wird das Yubikey Command Line Interface ben\"otigt, welches mit \mint{shell}|sudo apt-get install yubikey-manager| installiert werden kann. Mit den Befehlen 
+\noindent \\Bei einem Yubikey handelt es sich um ein Security-Token, welcher an Schnittstellen wie Lightning oder USB verwendet wird. Ein Yubikey unterst\"utzt mehrere Protokolle zur Identifizierung und Authentifizierung von Benutzern. Auf einem Yubikey stehen so genante Personal Identity Verification Slots (PIV-Slots) zur Verf\"ugung, in denen private Schl\"ussel abgelegt werden k\"onnen. Hierf\"ur wird das Yubikey Command Line Interface ben\"otigt, welches mit \mint{shell}|sudo apt-get install yubikey-manager| installiert werden kann. Mit den Befehlen 
 \begin{minted}{shell}
  gpg --encrypt --recipient 0x1234567890ABCDEF wg0.key
  ykman piv objects import 5f0000 wg0.key.gpg
