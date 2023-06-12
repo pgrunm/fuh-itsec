@@ -179,7 +179,7 @@ ALLOWED dockerd umount /var/lib/docker/check-overlayfs-support2956447284/merged/
 \end{table}
 % Tabelle erstellen: \url{https://tableconvert.com/latex-generator}
 
-Eine MySQL Regel entfällt, weil lediglich vom lokalen System Verbindungen hergestellt werden. Andernfalls sollte dies ebenfalls auf nur erforderliche Adressen eingerichtet werden.
+Eine MySQL Regel entfällt, weil lediglich vom lokalen System Verbindungen hergestellt werden. Andernfalls sollte dies ebenfalls auf nur erforderliche Adressen eingerichtet werden. MySQL lauscht in der Standardeinstellung lediglich auf Localhost und externe Verbindungen sind in der derzeitigen Konfiguration nicht vorgesehen. Dementsprechend ist dies die sicherste Variante zum Schutz des Datenbankservers.
 
 Zugriff via \ac{SSH} ist lediglich aus dem internen Netzwerk (\enquote{Internal}, was hier als Platzhalter dient) gestattet, sodass Zugriff aus dem öffentlichen Internet in gänze unterbunden werden, wie dies auch das Cyber-Killchain Modell vorsieht.
 
