@@ -71,7 +71,11 @@ PersistentKeepAlive = 25
 
 \paragraph{Passwortspeicher} 
 \noindent \\Der private Key kann in einem Passwortspeicher gesichert werden, welcher beim \"offnen ein Passwort vom Benutzer abfr\"agt. Dies bietet zum Faktor "`Besitz"' des private Key den weiteren Faktor "`Wissen"' durch eingabe des zus\"atzlichen Kennwortes beim \"Offnen des Passwortspeichers. Hierzu bietet sich der Passwortspeicher "`Pass"' an, welcher wie Wireguard ebenfalls von Jason A. Donenfeld entwickelt wurde. Beim initialisieren des Passwortspeichers wird dieser mit einem GPG-Zertifikat verknüpft. Das Zertifikat ist wiederum durch eine Passphrase gesch\"utz welche zum Entschlüssle eingegeben werden muss.
-Ein GPG-Zertifikat kann durch Eingabe des Befehls \mint{shell}|gpg --full-generate-key| erzeugt werden. Beim initialisieren des Passwortspeichers mit dem Befehl \mint{shell}|pass init zuvor-erstellter-gpg-key| wird im entsprechenden Verzeichnis ein Unterverzeichnis \enquote{ .password-store } erstellt. In der Wireguard-Konfiguration kann nun der zuvor gespeicherte private Key beispielsweise mit \mint{shell}|PostUp = wg set wg0 private-key <(sudo -u Benutzer pass wireguard/private-keys/wg0)| ausgelesen werden.
+Ein GPG-Zertifikat kann durch Eingabe des Befehls \mint{shell}|gpg --full-generate-key| erzeugt werden. Beim initialisieren des Passwortspeichers mit dem Befehl \mint{shell}|pass init zuvor-erstellter-gpg-key| wird im entsprechenden Verzeichnis ein Unterverzeichnis \enquote{ .password-store } erstellt. In der Wireguard-Konfiguration kann nun der zuvor gespeicherte private Key beispielsweise mit 
+\begin{minted}[breaklines=true]{shell}
+   PostUp = wg set wg0 private-key <(sudo -u Benutzer pass wireguard/private-keys/wg0)
+\end{minted}
+ausgelesen werden.
 
 \paragraph{Verschl\"usselung des private key auf einem Datentr\"ager}
 \noindent \\Wie zuvor kann der private Key auch in einer verschl\"usselten Datei auf einem Datentr\"ager gesichert werden. Hierfür eignet sich beispielsweise die Verschl\"usselung mit GPG. In der Wireguard-Konfiguration kann nun der verschl\"usselte private Key mit 
