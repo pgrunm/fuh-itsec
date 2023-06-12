@@ -50,7 +50,7 @@ Bei der Härtung sind sowohl die Anforderungen hinsichtlich der kryptografischen
 
 Der relevante Teil der Nginx Konfiguration für das Reverse Proxying wird in \autoref{listing:nginx_config_hello} dargestellt. Diese Konfiguration sorgt dafür, dass beim Aufruf der Domain \url{https://hello.fernuni} die eingehende Anfrage auf den auf Localhost lauschenden Docker Container auf den \ac{TCP} Port 3001 weitergeleitet wird. Ein identisches Verfahren wird für die Domain \url{https://messages.fernuni} angewendet. Der Einsatz eines Reverse Proxys ermöglicht die TLS Terminierung und sorgt dafür, dass ein Webserver Zertifikat lediglich im Webserver einzurichten ist. Dies verhindert jedoch eine vollständige Ende zu Ende Verschlüsselung.
 
-\subsubsection*{ Aufsetzen einer Datenbank auf Ubuntu}
+\subsubsection{Aufsetzen einer Datenbank auf Ubuntu}
 
 Die Webseite \enquote{messages.fernuni} erfordert eine Datenbank. Zur Erfüllung dieser Aufgabe wird eine MySQL-Datenbank aufgesetzt. Dabei werden die erforderlichen Installationsschritte für MySQL, Python-Pakete und die Konfiguration der Datenbank beschrieben und durchgeführt.
 Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der MySQL-Server installiert, gefolgt von den erforderlichen Python-Paketen für die Datenbankverbindung. Die benötigten Befehle sind folgende:
@@ -139,7 +139,7 @@ Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Backup S
 
 Mittels AppArmor ist die Zuweisung von Profilen zu einer Anwendung möglich. Ein Profil besteht dabei aus Regeln, die z. B. lesenden oder schreibenden Zugriff zu einer Datei oder einem Verzeichnis oder sogar Netzwerkzugang ermöglichen. Im Falle einer Kompromittierung kann AppArmor somit des Gesamtsystem schützen.
 
-Im Fokus der Betrachtung stehen insbesondere Anwendungen mit Netzwerkzugriff, da diese auch aus der Ferne angreifbar sind. Im Falle einer Rechteausweitung mittels Privilege Escalation begrenzt AppArmor den potenziellen Schaden\cite{hutchinsIntelligenceDrivenComputerNetwork}.
+Im Fokus der Betrachtung stehen insbesondere Anwendungen mit Netzwerkzugriff, da diese auch aus der Ferne angreifbar sind. Im Falle einer Rechteausweitung mittels Privilege Escalation begrenzt AppArmor den potenziellen Schaden\footcite[Vgl.][]{hutchinsIntelligenceDrivenComputerNetwork}.
 
 Dies betrifft insbesondere die Dienste \ac{SSH}, \ac{HTTP} bzw. \ac{HTTPS} sowie Wireguard. Auf Github existieren mehrere Projekte, die fertige Profile für AppArmor anbieten, insbesondere das \enquote{apparmor.d}-Projekt, welches nach eigenen Angaben etwa 1400 Profile bereitstellt. Dabei werden auch Dienste erfasst, welche unter dem \enquote{root} Benutzer ausgeführt werden und folglich besonders anfällig für eine Rechteausweitung sind.
 
