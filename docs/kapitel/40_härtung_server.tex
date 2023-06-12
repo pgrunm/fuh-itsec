@@ -125,4 +125,11 @@ virtualisiert, sondern es werden lediglich bestimmte Ressourcen durch einen gete
 % TODO: Guten Content niederschreiben.
 Die Härtung des Systems und der installierten Dienste erfolgt durch das im \autoref{listing:hardening} dargestellten Ansible Playbook. Bei der Härtung wird unter anderem auf eine Ansible Rolle des \enquote{Dev-Sec} Projekts gesetzt, welches eine grundsätzliche Härtung auf der Basis von Empfehlungen der Deutschen Telekom, der Webseite \href{https://bettercrypto.org/}{Bettercrypto} sowie der amerikanischen \ac{NSA}\footcite[Vgl.][]{OverviewDevSecBaselines}. 
 
+% Mehr vergleichen
+Eine Eigenentwicklung auf Basis der Vorgaben des \ac{BSI} oder anderer Empfehlungen wäre zwar auch möglich, jedoch weiter weniger umfassend und ausgiebig getestet. Es stünden auch alternative Projekte bereit, wie beispielsweise das \enquote{ComplianceAsCode} Projekt, dessen Installation bzw. Konfiguration mehr Aufwand beansprucht als eine Ansible Rolle.
+
+% Ansible Rolle erläutern
+Das Dev-Sec Projekt bietet eine vorgefertige Ansible Rolle an, welches exakt zu den Vorgaben der FernUni Inc. passt. Sämtliche ausgewählten Software Komponenten werden durch die Rolle unterstützt und können somit in eine umfassende und sichere Grundkonfiguration versetzt werden. 
+Eine ausführliche Auflistung sämtlicher Einstellungen ist auf der Seite des Dev-Sec Projekts ersichtlich\footcite[Vgl.][]{OverviewDevSecBaselines}.
+
 Die Ansible Rolle legt sichere Standard Konfigurationswerte unter anderem für das Betriebssystem, \ac{SSH}, \ac{TLS}, MySQL und Nginx fest, die wiederum durch eigene zusätzliche Einstellungen noch ergänzt werden. In Summe ergeben diese ein funktionierendes und sicheres Gesamtsystem.
