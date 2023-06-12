@@ -6,16 +6,18 @@ Bei Wireguard handelt es sich um eine schlanke L\"osung um ein Virtual Private N
 Damit ist der Quellcode von openVPN anf\"alliger f\"ur Implementierungsfehler. W\"ahrend f\"ur die meisten VPN-Verbindungen der bew\"ahrte symmetrische Algorithmus AES256 verwendet wird, Verwendet Wireguard den relativ neuen ChaCha20 Algorithmus. Damit besteht die M\"oglichkeit, dass zuk\"unftig noch unentdeckte Fehler in der Verschl\"usselung gefunden werden. Vom Bundesamt f\"ur Sicherheit in der Informationstechnik gibt es aktuell noch keine Empfehlung zu ChaCha20 wogegen AES256 derzeit noch als sicher eingestuft ist.  
 Durch den schlanken Quelcode und dem k\"urzeren Schl\"ussel zeigt sich Wireguard jedoch performanter als andere VPN-Technologien.   
 
-\begin{center}
-Verschl\"usselungen im Vergleich
-\begin{tabular}{lc}\toprule
-\textbf{Protokoll}	&\textbf{Konfiguration} \\ 	
-Wireguard	& 256-bit ChaCha20, 128-bit Poly1305 \\
-IPsec & 256-bit ChaCha20, 128-bit Poly1305 \\
-IPsec	& 256-bit AES, 128-bit GCM \\
-openVPN	& 256-bit AES, HMAC-SHA2-256, UDP mode \\
-\end{tabular}
-\end{center}
+\begin{table}
+   \begin{center}
+      \begin{tabular}{lc}\toprule
+         \textbf{Protokoll}	&\textbf{Konfiguration} \\ 	
+         Wireguard	& 256-bit ChaCha20, 128-bit Poly1305 \\
+         IPsec & 256-bit ChaCha20, 128-bit Poly1305 \\
+         IPsec	& 256-bit AES, 128-bit GCM \\
+         openVPN	& 256-bit AES, HMAC-SHA2-256, UDP mode \\
+      \end{tabular}
+   \end{center}
+   \caption{Verschlüsselungen im Vergleich}
+\end{table}
 
 \noindent F\"ur die \"Ubertragung des symmetrischen Schl\"ussels wird ein assymetrisches Schl\"usselpaar ben\"otigt. W\"ahrend der \"Ubertragung werden wechselnde Schl\"ussel verwendet und gew\"ahrleisten so \ac{PFS}. Das Schl\"usselpar vom Typ 256 Bit Curve25519 wird mit dem Befehl 
 \begin{minted}{shell}
@@ -72,7 +74,11 @@ PersistentKeepAlive = 25
 Ein GPG-Zertifikat kann durch Eingabe des Befehls \mint{shell}|gpg --full-generate-key| erzeugt werden. Beim initialisieren des Passwortspeichers mit dem Befehl \mint{shell}|pass init zuvor-erstellter-gpg-key| wird im entsprechenden Verzeichnis ein Unterverzeichnis \enquote{ .password-store } erstellt. In der Wireguard-Konfiguration kann nun der zuvor gespeicherte private Key beispielsweise mit \mint{shell}|PostUp = wg set wg0 private-key <(sudo -u Benutzer pass wireguard/private-keys/wg0)| ausgelesen werden.
 
 \paragraph{Verschl\"usselung des private key auf einem Datentr\"ager}
-\noindent \\Wie zuvor kann der private Key auch in einer verschl\"usselten Datei auf einem Datentr\"ager gesichert werden. Hierfür eignet sich beispielsweise die Verschl\"usselung mit GPG. In der Wireguard-Konfiguration kann nun der verschl\"usselte private Key mit \mint{shell}|PostUp = wg set wg0 private-key <(sudo -u Benutzer gpg -d /home/justin/.config/wireguard/wg0.key.gpg| ausgelesen werden. Auch hierbei wird die Passphrase des GPG-Zertifikats abgefragt. 
+\noindent \\Wie zuvor kann der private Key auch in einer verschl\"usselten Datei auf einem Datentr\"ager gesichert werden. Hierfür eignet sich beispielsweise die Verschl\"usselung mit GPG. In der Wireguard-Konfiguration kann nun der verschl\"usselte private Key mit 
+\begin{minted}[breaklines=true]{shell}
+   PostUp = wg set wg0 private-key <(sudo -u Benutzer gpg -d /home/justin/.config/wireguard/wg0.key.gpg
+\end{minted}
+ausgelesen werden. Auch hierbei wird die Passphrase des GPG-Zertifikats abgefragt. 
 
 \paragraph{Verwendung eines PIV-Slots auf einem Yubikey}
 \noindent \\Bei einem Yubikey handelt es sich um ein Security-Token, welcher an Schnittstellen wie Lightning oder USB verwendet wird. Ein Yubikey unterst\"utzt mehrere Protokolle zur Identifizierung und Authentifizierung von Benutzern. Auf einem Yubikey stehen so genante Personal Identity Verification Solts (PIV-Slots) zur Verf\"ugung, in denen private Schl\"ussel abgelegt werden k\"onnen. Hierf\"ur wird das Yubikey Command Line Interface ben\"otigt, welches mit \mint{shell}|sudo apt-get install yubikey-manager| installiert werden kann. Mit den Befehlen 
@@ -80,7 +86,11 @@ Ein GPG-Zertifikat kann durch Eingabe des Befehls \mint{shell}|gpg --full-genera
  gpg --encrypt --recipient 0x1234567890ABCDEF wg0.key
  ykman piv objects import 5f0000 wg0.key.gpg
 \end{minted}
-wird ein key wg0.key mit dem Zertifikat 0x1234567890ABCDEF verschl\"usselt und in den PIV-Slot 5f0000 geschrieben. In der Wireguard-Konfiguration kann nun mit \mint{shell}|PostUp = wg set wg0 private-key <(ykman piv objects export 5f0000 - | sudo -u Benutzer gpg -d)| der Schl\"ussel aus dem Slot gelesen und entschl\"usselt werden. Der entschl\"usselte private Key für wg0 wird nun nach dem Start der Schnittstelle gesetzt  und zu Aufbau der Verbindung verwendet. 
+wird ein key wg0.key mit dem Zertifikat 0x1234567890ABCDEF verschl\"usselt und in den PIV-Slot 5f0000 geschrieben. In der Wireguard-Konfiguration kann nun mit
+\begin{minted}[breaklines=true]{shell}
+   PostUp = wg set wg0 private-key <(ykman piv objects export 5f0000 - | sudo -u Benutzer gpg -d)
+\end{minted}
+der Schl\"ussel aus dem Slot gelesen und entschl\"usselt werden. Der entschl\"usselte private Key für wg0 wird nun nach dem Start der Schnittstelle gesetzt  und zu Aufbau der Verbindung verwendet. 
 
 
 
