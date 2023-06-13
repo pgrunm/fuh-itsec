@@ -145,5 +145,16 @@ Dies umfasst neben den bereits erwähnten Grundeinstellungen beispielsweise die 
 	# Attackers are remembered for 10m.
 	DETECTION_TIME=3600
 \end{minted}
+% \caption{Ausschnitt der SSHGuard Konfigurationsdatei}
 
-In der Standardeinstellung werden weitere Anfragen mit dem Faktor 1.5 gesperrt, sodass die Blockierung kontinuierlich steigt.
+In der Standardeinstellung werden weitere Anfragen mit dem Faktor 1.5 gesperrt, sodass die Blockierung kontinuierlich steigt, wie in \autoref{listing:sshguard_log} dargestellt. Dies bremst Angreifer aus, die versuchen den Server per SSH anzugreifen. Zusätzlich muss der Angriff aus dem internen Netz erfolgen, da die Firewall nur Zugriff von intern erlaubt. Mittels einer Einstellung im Ansible Playbook lässt sich diese Einstellung variabel anpassen, um beispielsweise auf Angriffe zu reagieren.
+
+In Verbindung mit der Firewall und SSHGuard stellen beide Maßnahme bereits eine entscheidende Hürde für potenzielle Angreifer dar, deren Überwindung Zeit und Aufwand erfordern.
+
+Die einzigen anderen Möglichkeiten, Zugriff von außen zu erlangen stellen der Webserver Nginx sowie das \ac{VPN} Wireguard dar.
+
+% TODO: Nginx auf non Root umstellen
+% s. hier: https://www.sherbers.de/running-nginx-without-root/
+Standardmäßig läuft der Nginx Master Prozess unter dem Benutzer \enquote{Root} und sollte durch eine Sicherheitslücke der Webserver anfällig sein, wäre der Webserver als kompromittiert zu betrachten. Dementsprechend ist Nginx umgestellt, dass er nicht mehr als Root Benutzer läuft.
+
+Zusätzlich unterliegen sowohl Nginx als auch Wireguard einem AppArmor Profil, wie in \autoref{kap:installation_apparmor} beschrieben. Dies beschränkt den Zugang zum System weiter.
