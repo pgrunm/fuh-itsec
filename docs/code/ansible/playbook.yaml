@@ -75,7 +75,6 @@
       login_user: root
       login_unix_socket: /run/mysqld/mysqld.sock
 
-
   - name: Setup MySQL backup
     community.mysql.mysql_db:
       state: dump
