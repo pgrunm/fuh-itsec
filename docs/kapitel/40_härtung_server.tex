@@ -39,7 +39,7 @@ IT-Betrieb sicherstellen, dass vertrauliche Dateien nicht in \"offentlichen Verz
 Die Protokollierungsdaten sollten regelm\"a{\ss}ig ausgewertet werden.\\
 			
 			\item APP.3.2.A11 Verschl\"usselung \"uber TLS\\
-			Der Webserver muss f\"ur alle Verbindungen durch nicht vertrauensw\"urdige Netze eine sichere Verschl\"usselung \"uber TLS anbieten (HTTPS). Falls es aus Kompatibilit\"atsgr\"unden erforderlich ist, veraltete Verfahren zu verwenden, sollten diese auf so wenige F\"alle wie m\"oglich beschr\"ankt werden. Wenn eine HTTPS-Verbindung genutzt wird, m\"ussen alle Inhalte \"uber HTTPS ausgeliefert werden. Sogenannter Mixed Content darf nicht verwendet werden.\\
+			Der Webserver muss f\"ur alle Verbindungen durch nicht vertrauensw\"urdige Netze eine sichere Verschl\"usselung \"uber \ac{TLS} anbieten (HTTPS). Falls es aus Kompatibilit\"atsgr\"unden erforderlich ist, veraltete Verfahren zu verwenden, sollten diese auf so wenige F\"alle wie m\"oglich beschr\"ankt werden. Wenn eine HTTPS-Verbindung genutzt wird, m\"ussen alle Inhalte \"uber HTTPS ausgeliefert werden. Sogenannter Mixed Content darf nicht verwendet werden.\\
 			
 			\item APP.3.2.A14 Integrit\"atspr\"ufungen und Schutz vor Schadsoftware\\
 			Der IT-Betrieb sollte regelm\"a{\ss}ig pr\"ufen, ob die Konfigurationen des Webservers und die von ihm bereitgestellten Dateien noch integer sind und nicht durch Angriffe ver\"andert wurden. Die zur Ver\"offentlichung vorgesehenen Dateien sollten regelm\"a{\ss}ig auf Schadsoftware gepr\"uft werden.\\
@@ -129,7 +129,7 @@ Die Härtung des Systems und der installierten Dienste erfolgt durch das im \aut
 Eine Eigenentwicklung auf Basis der Vorgaben des \ac{BSI} oder anderer Empfehlungen wäre zwar auch möglich, jedoch weiter weniger umfassend und ausgiebig getestet. Es stünden auch alternative Projekte bereit, wie beispielsweise das \enquote{ComplianceAsCode} Projekt, dessen Installation bzw. Konfiguration mehr Aufwand beansprucht als eine Ansible Rolle.
 
 % Ansible Rolle erläutern
-Das Dev-Sec Projekt bietet eine vorgefertige Ansible Rolle an, welches exakt zu den Vorgaben der FernUni Inc. passt. Sämtliche ausgewählten Software Komponenten werden durch die Rolle unterstützt und können somit in eine umfassende und sichere Grundkonfiguration versetzt werden. 
+Das Dev-Sec Projekt bietet eine vorgefertigte Ansible Rolle an, welches exakt zu den Vorgaben der FernUni Inc. passt. Sämtliche ausgewählten Software Komponenten werden durch die Rolle unterstützt und können somit in eine umfassende und sichere Grundkonfiguration versetzt werden. 
 Eine ausführliche Auflistung sämtlicher Einstellungen ist auf der Seite des Dev-Sec Projekts ersichtlich\footcite[Vgl.][]{OverviewDevSecBaselines}.
 
 Die Ansible Rolle legt sichere Standard Konfigurationswerte unter anderem für das Betriebssystem, \ac{SSH}, \ac{TLS}, MySQL und Nginx fest, die wiederum durch eigene zusätzliche Einstellungen noch ergänzt werden. In Summe ergeben diese ein funktionierendes und sicheres Gesamtsystem. Durch die Kombination mit Ansible können die definierten Einstellungen schnell und unkompliziert auf einer Vielzahl von Server angewendet werden.
