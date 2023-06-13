@@ -48,7 +48,7 @@ Bei der Härtung sind sowohl die Anforderungen hinsichtlich der kryptografischen
     \label{listing:nginx_config_hello}
 \end{listing}
 
-Der relevante Teil der Nginx Konfiguration für das Reverse Proxying wird in \autoref{listing:nginx_config_hello} dargestellt. Diese Konfiguration sorgt dafür, dass beim Aufruf der Domain \url{https://hello.fernuni} die eingehende Anfrage auf den auf Localhost lauschenden Docker Container auf den \ac{TCP} Port 3001 weitergeleitet wird. Ein identisches Verfahren wird für die Domain \url{https://messages.fernuni} angewendet. Der Einsatz eines Reverse Proxys ermöglicht die TLS Terminierung und sorgt dafür, dass ein Webserver Zertifikat lediglich im Webserver einzurichten ist. Dies verhindert jedoch eine vollständige Ende zu Ende Verschlüsselung.
+Der relevante Teil der Nginx Konfiguration für das Reverse Proxying wird in \autoref{listing:nginx_config_hello} dargestellt. Diese Konfiguration sorgt dafür, dass beim Aufruf der Domain \url{https://hello.fernuni} die eingehende Anfrage auf den auf Localhost lauschenden Docker Container auf den \ac{TCP} Port 3001 weitergeleitet wird. Ein identisches Verfahren wird für die Domain \url{https://messages.fernuni} angewendet. Der Einsatz eines Reverse Proxys ermöglicht die TLS Terminierung und sorgt dafür, dass ein Webserver Zertifikat lediglich im Webserver einzurichten ist. Dies verhindert jedoch eine vollständige Ende zu Ende Verschlüsselung. Die vollständige Konfiguration des Nginx ist im Anhang in \autoref{kap:nginx} ersichtlich.
 
 \subsubsection{Aufsetzen einer Datenbank auf Ubuntu}
 
