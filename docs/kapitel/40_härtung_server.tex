@@ -158,3 +158,16 @@ Die einzigen anderen Möglichkeiten, Zugriff von außen zu erlangen stellen der 
 Standardmäßig läuft der Nginx Master Prozess unter dem Benutzer \enquote{Root} und sollte durch eine Sicherheitslücke der Webserver anfällig sein, wäre der Webserver als kompromittiert zu betrachten. Dementsprechend ist Nginx umgestellt, dass er nicht mehr als Root Benutzer läuft.
 
 Zusätzlich unterliegen sowohl Nginx als auch Wireguard einem AppArmor Profil, wie in \autoref{kap:installation_apparmor} beschrieben. Dies beschränkt den Zugang zum System weiter.
+
+% Auf OSSEC eingehen.
+Zusätzlich zu den beschriebenen Härtungsmaßnahmen sind weitere Maßnahmen von \enquote{Innen} implementiert. Dazu zählen beispielsweise die Nutzung automatischer Aktualisierungen durch \enquote{Unattended Upgrades}, welches automatisch Sicherheitsupdates installiert.
+
+% https://www.redhat.com/sysadmin/configure-linux-auditing-auditd
+Sollte es dennoch einem Angreifer gelingen, Zugriff auf den Server gelangen, sind dort noch zusätzlich der Auditd Service und OSSEC als \ac{IDS} installiert. Auditd protokolliert sämtliche Aktionen in der Log Datei \mint[]{shell}|/var/log/audit/audit.log| sodass sämtliche Aktionen nachvollzogen werden können.
+
+Zusätzlich bietet OSSEC an neben neben der Intrusion Detection auch Dateien auf Änderungen zu Überwachen. Dies ermöglicht die Alarmierung eines Administrators, sofern Manipulationen festgestellt werden.
+
+% TODO: Integration OSSEC mit Prometheus Node Exporter? Alternative: Eigener Exporter :think:
+% Dokumentation: https://www.ossec.net/docs/docs/manual/output/json-alert-log-output.html
+
+Beides basiert auf den Überlegungen des Cyber-Killchain Modells und stellt eine hybride Strategie aus Detektion und Abwehr dar, um Angriffe entweder abzuwehren oder aufspüren zu können. Je mehr Aufwand ein Angreifer aufwenden muss, desto wahrscheinlicher ist auch die Detektion durch die getroffenen Maßnahmen.
