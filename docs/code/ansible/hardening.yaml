@@ -2,7 +2,7 @@
 - hosts: infra
   vars:
     # Domain name variable for Let's Encrypt
-    domain: example.com
+    domain: "messages.fernuni,hello.fernuni"
     # Webserver name for Let's Encrypt Certbot
     webserver: nginx
     # Certbot parameters
