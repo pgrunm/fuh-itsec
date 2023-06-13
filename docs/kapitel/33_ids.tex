@@ -38,6 +38,32 @@ Durch Auswahl im Menü kann nun ein Agent mit seiner IP-Adresse dem Server hinzu
 
 \noindent Nach Abschluss der Einstellungen muss der Agent, falls dieser schon gestartet wurde, mit \mint{shell}|./ossec-control restart| neu gestartet werden, damit die Einstellungen wirksam werden.
 
+\paragraph{Integritätsprüfung}
+Mit Modul syscheckd bietet OSSEC auch die Möglichkeit Integritätstest auf den Clients durchzuführen. Durch den Agent werden einen MD5-Hash und ein SHA1-Hash erstellt und in die Datenbank auf dem Server übertragen. Durch die Erstellung zwei verschiedener Hashwerte wird das Risiko von Fehlalarmen durch Kollisionen verringert. In der Konfiguration können die überwachten Verzeichnisse und die Prüffrequenz konfiguriert werden. OSSEC bietet auch die Möglichkeit eine Echtzeiterkennung. Die Ausgabe einer Integritätswarnung sieht beispielsweise wie folgt aus:
+\begin{minted}{shell}
+023 Jun 11 16:40:07,0 - /etc/shadow
+File added to the database. 
+Integrity checking values:
+   Size: 1585
+   Perm: rw-r-----
+   Uid:  0
+   Gid:  42
+   Md5:  b7e3fbb8751e3a8d2a0e477d64c4a388
+   Sha1: c59ce7c1ee81f23c804efabed0a3a26b78c7cffb
+
+2023 Jun 12 17:19:30,0 - /etc/shadow
+File changed. - 1st time modified.
+Integrity checking values:
+   Size: 1585
+   Perm: rw-r-----
+   Uid:  0
+   Gid:  42
+   Md5:  >24e94e0c9445faa2f7479d4276029e63
+   Sha1: >59e7cc2bc3f3011d97eb63828cbd848554f8ffbd
+\end{minted}
+
+Neben den Hashwerten werden auch die Metadaten wie Dateigröße, Dateirechte, Benutzer-ID und Gruppen-ID erfasst. Durch eine zentrale Konfigurationsdatei können die Agents zentral durch den Server konfiguriert werden. 
+
 
   
  
