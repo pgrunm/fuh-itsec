@@ -20,7 +20,7 @@ Grundsätzlich können \ac{IDS} in die folgenden drei Arten eingeteilt werden:
 \noindent Bei hybriden \ac{IDS} handelt es sich um eine Mischung der beiden zuvor genannten Systemen. Dies hat den Vorteil, dass Angreifer bereits auf Netzebene erkannt und gegebenenfalls auf einen Honeypot umgeleitet werden können. Gleichzeitig besteht jedoch auch ein erhöhter Schutz vor Angreifern, welche sich unerkannt durch das Netzwerk bewegen konnten. Diese können dann auf Clientebene beispielsweise durch auffällige Log-Dateien durch eine misslungene Integritätsprüfung erkannt werden.\\
 
 \paragraph{Implementierung eines IDS}
-\noindent \\Gegeben ist ein Server sowie ein Client unter Ubuntu Linux, auf denen das hostbasierte IDS OSSEC installiert werden soll. Dabei besteht die Installation aus zwei Teilen, einem Agent und einem Server. Der Agent wird auf dem zu überwachenden System installiert und sammelt die Daten des jeweiligen Systems, um diese an den Server zu senden. Der Server als zentraler Punkt speichert zum Beispiel die Log-Dateien, eine Integritätsdatenbank und ist für die Verwaltung der Agents zuständig. Für die Kommunikation zwischen Agent und Server wird das System Logging Protocol (syslog) verwendet. Die syslog-Telegramme werden über eine TLS-verschlüsselte UDP Verbindung übertragen. Üblicherweise wird hierfür der Port 514 verwendet. Damit der Agent eine verschlüsselte TLS-Verbindung zum Server aufbauen kann, muss zuvor ein Schlüssel auf dem Server extrahiert und auf den Agent übertragen werden. Für jeden Agent wird ein eigener Schlüssel generiert. \\
+\noindent \\Gegeben ist ein Server sowie ein Client unter Ubuntu Linux, auf denen das hostbasierte IDS OSSEC installiert werden soll. Dabei besteht die Installation aus zwei Teilen, einem Agent und einem Server. Der Agent wird auf dem zu überwachenden System installiert und sammelt die Daten des jeweiligen Systems, um diese durch den Prozess "`logcollector"' an den Server zu senden. Der Server als zentraler Punkt speichert zum Beispiel die Log-Dateien, eine Integritätsdatenbank und ist für die Verwaltung der Agents zuständig. Für die Kommunikation zwischen Agent und Server wird das System Logging Protocol (syslog) verwendet. Die syslog-Telegramme werden über eine TLS-verschlüsselte UDP Verbindung übertragen. Üblicherweise wird hierfür der Port 514 verwendet. Damit der Agent eine verschlüsselte TLS-Verbindung zum Server aufbauen kann, muss zuvor ein Schlüssel auf dem Server extrahiert und auf den Agent übertragen werden. Für jeden Agent wird ein eigener Schlüssel generiert. Auf dem Server werden die Logdateien durch den Prozess analysisd ausgewertet.\\
 
 \noindent Für die Installation des Severs muss die Quelle des OSSEC-Repository eingetragen werden. Im Anschluss kann mit \mint{shell}|sudo apt-get update| und \mint{shell}|sudo apt-get install ossec-hids-server| der Server installiert werden. 
 Ebenso kann der Agent mit \mint{shell}|sudo apt-get install ossec-hids-agent| auf einem Client istalliert werden, welcher überwacht werden soll. Nach vollständiger Installation können dem Sever die Agents hinzugefügt werden. Dazu befindet sich im Verzeichnis \mint{shell}|/var/ossec/bin| die Anwendung \verb+manage_agent+ welche mit dem Befehl \mint{shell}|./manage_agents| gestartet werden kann. 
@@ -64,7 +64,9 @@ Integrity checking values:
 
 \noindent Neben den Hashwerten werden auch die Metadaten wie Dateigröße, Dateirechte, Benutzer-ID und Gruppen-ID erfasst. Durch eine zentrale Konfigurationsdatei können die Agents zentral durch den Server konfiguriert werden. 
 
+\paragraph{Regeln}
+\noindent \\Das Intrusion Detection System OSSEC bietet nach der Installation bereit Standardregel für diverse Anwendungen. Im vorliegenden Beispiel sind bereits Standardregeln für den Webserver NGINX vorhanden. Es werden standardmäßig Meldungen vom Typ "`error"', "`warning"' und "`critical"' ausgegeben. Daneben sind auch Meldungen wie "`Server returned 404"' oder "`authentication\_failed"' enthalten. 
 
-  
- 
+\paragraph{Benachrichtigung}
+\noindent \\ 
 
