@@ -119,11 +119,19 @@ Im Verzeichnis \enquote{/etc/mysql} erstellt man eine Skriptdatei namens \verb+m
 
 \begin{minted}[breaklines=true]{shell}
     #!/bin/bash
-    sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql
+    % sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql
+    # Create a MySQL dum of the messages database, zip it and encrypt it.
+    file_name=$(date +%Y-%m-%d-%H.%M.%S).sql.bz2.enc
+    sudo mysqldump -u root messages | bzip2 -c | age -e -R /etc/mysql/backup/encryption_key.txt -o /etc/mysql/backup/$file_name
+    # Copy the file to remote
+    rsync -a /etc/mysql/backup/$file_name backup_user@backup_server:/var/backups/mysql/server01/$file_name
 \end{minted}
 
 Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie der Datenbank \enquote{messages} zu erstellen. 
 Die Backup-Datei wird im Verzeichnis /etc/mysql/backup/ mit dem Namen \verb+backup_messages.sql+ gespeichert.
+
+% Backup erläutern.
+Zusätzlich wird das Datenbankbackup komprimiert und mittels asymmetrischer Verschlüsselung durch die Verschlüsselungssoftware \enquote{age} verschlüsselt. Da es sich um eine asymmetrischen Verschlüsselung handelt, muss der öffentliche Schlüssel nicht geschützt werden und kann lokal auf dem virtuellen Server liegen. Die gesicherte und verschlüsselte Datei wird im Anschluss noch auf einen Remote Server kopiert, auf dem sie archiviert wird.
 
 \subsubsection*{Ausführbarkeit der Skriptdatei gewährleisten}
 
@@ -139,9 +147,9 @@ Dazu gibt man den folgenden Befehl ein, um den Crontab-Editor zu öffnen:
 \mint{shell}|sudo crontab -e|
 Die Verwendung des Crontab-Dienstes ermöglicht es uns, den \verb+Backup-Job+ regelmäßig auszuführen. Durch das Hinzufügen einer Zeile zur Crontab geben wir an, wann und wie oft das Backup-Skript ausgeführt werden soll. 
 
-\begin{verbatim}0 18 * * * /etc/mysql/mysql_backup.sh\end{verbatim}
+\begin{verbatim}*/15 * * * * /etc/mysql/mysql_backup.sh\end{verbatim}
 
-Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Backup Skript täglich um 18:00 Uhr ausgeführt.
+Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Backup Skript alle 15 Minuten ausgeführt, sodass im schlimmsten Fall maximal 15 Minuten an Daten fehlen. Bei Bedarf kann das Intervall auch verringert werden, da die Installation per Ansible Playbook erfolgt.
 
 \subsubsection{Containerisierung der bereitgestellten Programme}
 

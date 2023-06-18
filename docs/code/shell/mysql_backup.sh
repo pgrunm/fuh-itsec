@@ -45,3 +45,6 @@ age-keygen -o key.txt
 cat .\mysql_installieren.sh | age -e -R .\rec.txt -o mysql_inst.enc.sh
 # Entschlüsselung via
 cat .\mysql_inst.enc.sh | age -d -i .\key.txt
+
+file_name="$(date +%Y-%m-%d-%H.%M.%S).sql.bz2.enc"
+sudo mysqldump -u root messages | bzip2 -c | age -e -R /etc/mysql/backup/encryption_key.txt -o $file_name
