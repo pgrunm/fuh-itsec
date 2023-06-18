@@ -64,6 +64,10 @@ Der relevante Teil der Nginx Konfiguration für das Reverse Proxying wird in \au
 \subsubsection{Aufsetzen einer Datenbank auf Ubuntu}
 
 Die Webseite \enquote{messages.fernuni} erfordert eine Datenbank. Zur Erfüllung dieser Aufgabe wird eine MySQL-Datenbank aufgesetzt. Dabei werden die erforderlichen Installationsschritte für MySQL, Python-Pakete und die Konfiguration der Datenbank beschrieben und durchgeführt.
+
+% Begründung warum nicht wir keine Container nutzen
+Anders als z. B. die bereitgestellten Python Applikationen handelt es bei einer Datenbank nicht um eine zustandslose Anwendung. Bei Containern handelt es sich meist um zustandslose Anwendungen wie Webserver o. ä., die beliebig skalierbar sind. Durch die Containerisierung wird noch eine zusätzliche Isolationsschicht zwischen dem Host und dem Container implementiert. Durch diese zusätzliche Isolation steigt der Overhead bei der Verwaltung der Datenbank und es werden mehr Ressourcen zur Verwaltung benötigt. Aus diesen Gründen findet keine Containerisierung der Datenbank statt. Bei Bedarf könnten stattdessen die Docker Container auf einen seperaten Server oder sogar via Kubernetes bereitgestellt werden, sodass auf dem vServer lediglich das Datenbankmanagementsystem installiert ist.
+
 Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der MySQL-Server installiert, gefolgt von den erforderlichen Python-Paketen für die Datenbankverbindung. Die benötigten Befehle sind folgende:
 
 \begin{minted}{shell}
@@ -106,7 +110,7 @@ Falls erforderlich, kann der MySQL-Server mit dem folgenden Befehl neu gestartet
 
 Nun ist die Datenbank, die für \enquote{messages.fernuni} erforderlich ist, aufgesetzt und die Funktionalität der Webseite gewährleistet.
 
-Erstellen eines automatischen Backups der MySQL-Datenbank.
+\subsubsection*{Erstellen eines automatischen Backups der MySQL-Datenbank}
 
 Das automatische Backup gewährleistet den Schutz wichtiger Daten und ermöglicht die Wiederherstellung im Falle eines Datenverlusts oder eines Systemfehlers. Die folgenden Schritte erläutern die Einrichtung des automatischen Backups für unsere Datenbank.
 Erstellen einer Skriptdatei für das Backup.
@@ -121,7 +125,7 @@ Im Verzeichnis \enquote{/etc/mysql} erstellt man eine Skriptdatei namens \verb+m
 Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie der Datenbank \enquote{messages} zu erstellen. 
 Die Backup-Datei wird im Verzeichnis /etc/mysql/backup/ mit dem Namen \verb+backup_messages.sql+ gespeichert.
 
-Ausführbarkeit der Skriptdatei gewährleisten
+\subsubsection*{Ausführbarkeit der Skriptdatei gewährleisten}
 
 Um die Skriptdatei ausführbar zu machen, gibt man den folgenden Befehl ein:
 \begin{verbatim} sudo chmod +x mysql_backup.sh \end{verbatim}
@@ -129,7 +133,7 @@ Dadurch wird die Ausführungsberechtigung für die Skriptdatei aktiviert.
 Ausführen des Skripts im Terminal, um sicherzustellen, dass es ordnungsgemäß funktioniert:
 \mint{shell}|sudo ./mysql_backup.sh|
 
-Einrichten eines regelmäßigen automatischen Updates.
+\subsubsection*{Einrichten eines regelmäßigen automatischen Updates}
 
 Dazu gibt man den folgenden Befehl ein, um den Crontab-Editor zu öffnen:
 \mint{shell}|sudo crontab -e|
