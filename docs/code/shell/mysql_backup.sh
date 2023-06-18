@@ -36,3 +36,12 @@ sudo ./mysql_backup.sh
 sudo crontab -e
 0 18 * * * /etc/mysql/mysql_backup.sh
 # Backup wird jeden Tag um 18 Uhr ausgeführt
+
+## Asymmetrische Verschlüsselung ##
+# Erzeugung der Schlüssel mit
+age-keygen -o key.txt
+
+# Verschlüsselung via 
+cat .\mysql_installieren.sh | age -e -R .\rec.txt -o mysql_inst.enc.sh
+# Entschlüsselung via
+cat .\mysql_inst.enc.sh | age -d -i .\key.txt
