@@ -32,6 +32,17 @@ Sämtliche Webserver verfügen über eine hochwertige Dokumentation und unterst�
 % Implementierung und Härtung
 Die eigentliche Installation des Webservers erfolgt über das im Anhang dargestellte Ansible Playbook (siehe \autoref{listing:ansible_playbook}).
 
+Damit der Webserver auch die Domains \url{messages.fernuni} und \url{hello.fernuni} muss dies im \ac*{DNS} eingetragen werden. Im \ac{DNS} müsste dies z. B. wie folgt aufgelöst werden:
+
+\begin{minted}[breaklines=true]{shell}
+q hello.fernuni
+hello.fernuni. 1h0m0s A 132.176.108.129
+q messages.fernuni
+messages.fernuni. 1h0m0s A 132.176.108.129
+\end{minted}
+
+Durch diese Einträge werden Anfragen an die IP-Adresse des Webservers geschickt, die dann von Nginx als Reverse Proxy beantwortet werden. Dies kann in der Nginx Konfiguration in \autoref{kap:nginx} detailliert nachgesehen werden.
+
 % Härtung
 Bei der Härtung sind sowohl die Anforderungen hinsichtlich der kryptografischen Verfahren zu beachten als auch die eigentliche Härtung des Webservers, da dieser von Außen erreichbar ist.
 
