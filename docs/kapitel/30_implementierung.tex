@@ -139,7 +139,7 @@ Eine Überlegung zur Härtung der Docker Images wäre die Verwendung eines sogen
 % Kompilierung erwähnen
 Eine Idee der Autoren, stellte die Kompilierung des vorhandenen Quellcodes in eine native ausführbare Datei dar, sodass lediglich diese Datei in einen Distroless Image zu kopieren wäre. Einige Versuche mit dem experimenten Compiler \href[]{https://github.com/exaloop/codon}{Codon} schlugen leider fehl, aufgrund fehlender Unterstützung für weitere Module wie beispielsweise Flask. Leider existiert bislang kein ausgereifter Python Compiler, der dies unterstützt, sodass diese Möglichkeit verworfen wurde.
 
-Stattdessen wird bei Bau des \enquote{Messages} Images auf ein sogenanntes \enquote{Multi-Stage-Build} Verfahren gesetzt. Im Rahmen dieses Prozesses wird zunächst ein Container für die Installation sämtlicher benötigter Pakete und zusätzlicher Software zur Installation gestartet. Im Anschluss werden die benötigten Dateien in ein noch leeres Image kopiert und dort als ausführender User \enquote{App} festgelegt. Dies verhindert, dass der Container mit Root Rechten läuft.
+Stattdessen wird beim Bau des \enquote{Messages} Images auf ein sogenanntes \enquote{Multi-Stage-Build} Verfahren gesetzt. Im Rahmen dieses Prozesses wird zunächst ein Container für die Installation sämtlicher benötigter Pakete und zusätzlicher Software zur Installation gestartet. Im Anschluss werden die benötigten Dateien in ein noch leeres Image kopiert und dort als ausführender User \enquote{App} festgelegt. Dies verhindert, dass der Container mit Root Rechten läuft. Aufgrund dieser weiteren Abhängigkeiten für das Mariadb Modul wird in diesem Fall das größere \enquote{Python Slim} Image als Basis genutzt. Dies enthält alle benötigten Softwarebibliotheken zur Installation.
 
 % TODO: Dockerfile überarbeiten
 \begin{minted}[breaklines=true]{docker}
@@ -178,7 +178,7 @@ EXPOSE 8080
 CMD [ "python", "./messages.fernuni.py" ]
 \end{minted}
 
-Für die Bereitstellung des \enquote{Hello} Container Image werden keinerlei externe Abhängigkeiten außer Python benötigt. Deshalb dient die Python Variante des sicherheitsorientierten Alpine Linux als Basis für das Container Image. Dort wird lediglich Flask sowie das Python Skript installiert sowie die Ausführung unter einem nicht Root Benutzer eingerichtet.
+Für die Bereitstellung des \enquote{Hello} Container Image werden keinerlei externe Abhängigkeiten außer Python benötigt. Deshalb dient die Python Variante des sicherheitsorientierten Alpine Linux als Basis für das Container Image. Dort wird lediglich Flask sowie das Python Skript installiert sowie die Ausführung unter einem nicht Root Benutzer eingerichtet. Weiterhin wird bei der Installation der Python Pakete via Pip wird auf ein Cache Verzichnis verzichtet, damit das finale Image möglichst klein ist.
 
 \subsubsection{Umsetzung der Mandatory Access Control mittels AppArmor}\label{kap:installation_apparmor}
 
