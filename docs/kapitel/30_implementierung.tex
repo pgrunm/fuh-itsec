@@ -136,7 +136,49 @@ Bei Python handelt es sich um eine interpretierte Programmiersprache, sodass ein
 
 Eine Überlegung zur Härtung der Docker Images wäre die Verwendung eines sogenannten \enquote{Distroless Image}, dass ohne ein Betriebssystem bereitgestellt wird. Allerdings wird der Einsatz eines solchen Images für Python im Produktivbetrieb bislang abgeraten, sodass dies im Kritis-Umfeld nicht möglich ist.
 
-Stattdessen wird bei Bau des Images auf ein spezielles 
+% Kompilierung erwähnen
+Eine Idee der Autoren, stellte die Kompilierung des vorhandenen Quellcodes in eine native ausführbare Datei dar, sodass lediglich diese Datei in einen Distroless Image zu kopieren wäre. Einige Versuche mit dem experimenten Compiler \href[]{https://github.com/exaloop/codon}{Codon} schlugen leider fehl, aufgrund fehlender Unterstützung für weitere Module wie beispielsweise Flask. Leider existiert bislang kein ausgereifter Python Compiler, der dies unterstützt, sodass diese Möglichkeit verworfen wurde.
+
+Stattdessen wird bei Bau des \enquote{Messages} Images auf ein sogenanntes \enquote{Multi-Stage-Build} Verfahren gesetzt. Im Rahmen dieses Prozesses wird zunächst ein Container für die Installation sämtlicher benötigter Pakete und zusätzlicher Software zur Installation gestartet. Im Anschluss werden die benötigten Dateien in ein noch leeres Image kopiert und dort als ausführender User \enquote{App} festgelegt. Dies verhindert, dass der Container mit Root Rechten läuft.
+
+% TODO: Dockerfile überarbeiten
+\begin{minted}[breaklines=true]{docker}
+# Build image, used to build everything we need
+FROM python:3.11-slim as builder
+
+WORKDIR /usr/src/app
+
+# Look for any new updates, install them and install wget.
+RUN apt update && apt install -y wget gcc
+
+# Install Mariadb connector, as it's required.
+# Source: https://stackoverflow.com/a/74452637
+RUN wget https://dlm.mariadb.com/2862620/Connectors/c/connector-c-3.3.4/mariadb-connector-c-3.3.4-debian-bullseye-amd64.tar.gz -O - | tar -zxf - --strip-components=1 -C /usr
+
+# Create a virtual Python environment
+RUN python -m venv /usr/src/app/venv
+ENV PATH="/usr/src/app/venv/bin:$PATH"
+
+RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb
+
+COPY . .
+
+# https://pythonspeed.com/articles/multi-stage-docker-python/
+FROM python:3.11-slim
+
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app /usr/src/app
+COPY --from=builder /usr /usr
+
+USER app
+ENV PATH="/usr/src/app/venv/bin:$PATH"
+
+# Listen on TCP port 8080
+EXPOSE 8080
+CMD [ "python", "./messages.fernuni.py" ]
+\end{minted}
+
+Für die Bereitstellung des \enquote{Hello} Container Image werden keinerlei externe Abhängigkeiten außer Python benötigt. Deshalb dient die Python Variante des sicherheitsorientierten Alpine Linux als Basis für das Container Image. Dort wird lediglich Flask sowie das Python Skript installiert sowie die Ausführung unter einem nicht Root Benutzer eingerichtet.
 
 \subsubsection{Umsetzung der Mandatory Access Control mittels AppArmor}\label{kap:installation_apparmor}
 
