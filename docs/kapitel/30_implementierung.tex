@@ -128,12 +128,15 @@ Die Verwendung des Crontab-Dienstes ermöglicht es uns, den \verb+Backup-Job+ re
 
 Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Backup Skript täglich um 18:00 Uhr ausgeführt.
 
+\subsubsection{Containerisierung der bereitgestellten Programme}
 
-% \begin{listing}[ht]{}
-%     \shellcode{code/shell/webserver_installieren.sh}
-%     \caption{Installation des Apache Webservers}
-%     \label{listing:installation_apache}
-% \end{listing}
+Eine der gestellten Anforderungen der \enquote{Fernuni Inc.} stellt die Containerisierung der in Python implementierten Programme \enquote{hello.fernuni.py} und \enquote{messages.fernuni.py} dar.
+
+Bei Python handelt es sich um eine interpretierte Programmiersprache, sodass eine Laufzeitumgebung zur Ausführung erforderlich ist. Diese muss zusätzlich mit in das Container Image installiert werden, damit das Programm lauffähig ist.
+
+Eine Überlegung zur Härtung der Docker Images wäre die Verwendung eines sogenannten \enquote{Distroless Image}, dass ohne ein Betriebssystem bereitgestellt wird. Allerdings wird der Einsatz eines solchen Images für Python im Produktivbetrieb bislang abgeraten, sodass dies im Kritis-Umfeld nicht möglich ist.
+
+Stattdessen wird bei Bau des Images auf ein spezielles 
 
 \subsubsection{Umsetzung der Mandatory Access Control mittels AppArmor}\label{kap:installation_apparmor}
 
