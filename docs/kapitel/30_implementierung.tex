@@ -233,14 +233,14 @@ ALLOWED dockerd mount /var/lib/docker/check-overlayfs-support2956447284/merged/ 
 ALLOWED dockerd umount /var/lib/docker/check-overlayfs-support2956447284/merged/ comm=dockerd
 \end{minted}
 
-Zur Aktivierung des Enforce Mode genügt es im Verzeichnis \enquote{debian/rules} die folgenden Zeilen im Makefile zu ergänzen:
+Eine ausführliche Ausgabe dieses Befehls ist im Anhang in \autoref{listing:log_apparmor} ersichtlich. Zur Aktivierung des Enforce Mode genügt es im Verzeichnis \enquote{debian/rules} die folgenden Zeilen im Makefile zu ergänzen:
 
 \begin{minted}{makefile}
 override_dh_auto_build:
     make enforce
 \end{minted}
 
-Nach diesen Änderung ist statt des Complain Mode der Enforce Mode aktiv.
+Nach diesen Änderung ist statt des Complain Mode der Enforce Mode nach der Installation aktiv.
 
 \subsubsection{Konfiguration der lokalen Firewall}
 
