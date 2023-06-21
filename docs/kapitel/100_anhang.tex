@@ -52,7 +52,9 @@ breaklines=true]{docker}{code/docker/messages/Dockerfile}
 \subsubsection{Konfiguration Nginx}
 \nginxcode[]{code/nginx/nginx.conf}
 
-\subsection{Installationsskript AppArmor}
+\subsection{AppArmor}
+\subsubsection{Installationsskript AppArmor}
+
 
 \begin{listing}[ht]{}
     \shellcode{code/shell/apparmor_profile.sh}
@@ -60,11 +62,35 @@ breaklines=true]{docker}{code/docker/messages/Dockerfile}
     \label{listing:installation_apparmor}
 \end{listing}
 
+\subsubsection{Ausgabe des AppArmor Logs}
+
+\begin{longlisting}
+    \inputminted[fontfamily=tt,
+    linenos=true,
+    numberblanklines=true,
+    numbersep=5pt,
+    gobble=0,
+    frame=leftline,
+    framerule=0.4pt,
+    framesep=2mm,
+    funcnamehighlighting=true,
+    tabsize=4,
+    obeytabs=false,
+    mathescape=false
+    samepage=false, %with this setting you can force the list to appear on the same page
+    showspaces=false,
+    showtabs =false,
+    texcl=false,
+    breaklines=true,
+    lastline=10]{text}{code/shell/apparmor.log}
+    \caption{Ausgabe des Apparmor Logs}
+    \label{listing:log_apparmor}
+\end{longlisting}
 \newpage
 \subsection{Ansible Playbooks}
 
 \subsubsection{Installation benötigter Ansible Module}
-\begin{listing}
+\begin{listing}[ht]
     \yamlcode{code/ansible/requirements.yaml}
     \caption{Installation erforderlicher Ansible Module}
     \label{listing:ansible_module_installation}
