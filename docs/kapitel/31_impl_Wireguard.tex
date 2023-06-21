@@ -24,6 +24,8 @@ Durch den schlanken Quellcode und dem k\"urzeren Schl\"ussel zeigt sich Wireguar
 wg genkey | tee server_private.key | wg pubkey > server_public.key
 \end{minted}
 in die zwei Schl\"usseldateien mit den Namen \verb+server_private.key+ und \verb+server_public.key+ abgelegt.\\
+Beim Aufbau eines VPN-Netzes werden zwei verschiedene Netze mit häufig unterschiedlichen Adressen verbunden. Damit die Kommunikation über verschiedene Netze möglich ist, müssen entsprechende Firewall- und Routing-Regeln angelegt werden. Wireguard bietet hierfür die Möglichkeit, diese Konfiguration über ein sogenanntes PostUp- und PostDown-Script durchzuführen. Diese Scripte werden jeweils vor Aufbau des Tunnels beziehungsweise nach Beendigung des Tunnels ausgeführt. Die Schnittstelle, welche für die Verbindung benötigt wird, wird von Wireguard in den Parameter \%i eingesetzt. Vor dem Aufbau der Verbindung werden so die in der Konfigurationsdatei enthaltenen Firewall- und Routing-Regeln eingetragen, welche die ankommenden Pakete akzeptiert und durch Network-Address-Translation in das richtige Zielnetz weiterleitet.  
+
 \newpage
 \noindent Die Konfiguration des Server:
 \begin{minted}{shell}
