@@ -2,6 +2,10 @@
 sudo apt install apparmor-profiles build-essential config-package-dev debhelper golang-go rsync git
 git clone https://github.com/roddhjav/apparmor.d.git
 cd apparmor.d
+
+# Enable Enforcement mode by adding this.
+printf "override_dh_auto_build:\n    make enforce" >> debian/rules
+
 dpkg-buildpackage -b -d --no-sign
 sudo dpkg -i ../apparmor.d_*_all.deb
 
