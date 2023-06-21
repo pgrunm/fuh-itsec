@@ -32,6 +32,17 @@ Sämtliche Webserver verfügen über eine hochwertige Dokumentation und unterst�
 % Implementierung und Härtung
 Die eigentliche Installation des Webservers erfolgt über das im Anhang dargestellte Ansible Playbook (siehe \autoref{listing:ansible_playbook}).
 
+Damit der Webserver auch die Domains \url{messages.fernuni} und \url{hello.fernuni} muss dies im \ac*{DNS} eingetragen werden. Im \ac{DNS} müsste dies z. B. wie folgt aufgelöst werden:
+
+\begin{minted}[breaklines=true]{shell}
+q hello.fernuni
+hello.fernuni. 1h0m0s A 132.176.108.129
+q messages.fernuni
+messages.fernuni. 1h0m0s A 132.176.108.129
+\end{minted}
+
+Durch diese Einträge werden Anfragen an die IP-Adresse des Webservers geschickt, die dann von Nginx als Reverse Proxy beantwortet werden. Dies kann in der Nginx Konfiguration in \autoref{kap:nginx} detailliert nachgesehen werden.
+
 % Härtung
 Bei der Härtung sind sowohl die Anforderungen hinsichtlich der kryptografischen Verfahren zu beachten als auch die eigentliche Härtung des Webservers, da dieser von Außen erreichbar ist.
 
@@ -50,9 +61,19 @@ Bei der Härtung sind sowohl die Anforderungen hinsichtlich der kryptografischen
 
 Der relevante Teil der Nginx Konfiguration für das Reverse Proxying wird in \autoref{listing:nginx_config_hello} dargestellt. Diese Konfiguration sorgt dafür, dass beim Aufruf der Domain \url{https://hello.fernuni} die eingehende Anfrage auf den auf Localhost lauschenden Docker Container auf den \ac{TCP} Port 3001 weitergeleitet wird. Ein identisches Verfahren wird für die Domain \url{https://messages.fernuni} angewendet. Der Einsatz eines Reverse Proxys ermöglicht die TLS Terminierung und sorgt dafür, dass ein Webserver Zertifikat lediglich im Webserver einzurichten ist. Dies verhindert jedoch eine vollständige Ende zu Ende Verschlüsselung. Die vollständige Konfiguration des Nginx ist im Anhang in \autoref{kap:nginx} ersichtlich.
 
+Da die vollständige Ende-zu-Ende-Verschlüsselung nicht gewährleistet werden kann, gibt es mehrere Risiken im Zusammenhang mit der Sicherheit. So besteht die Möglichkeit zum Abhören sensibler Daten. Die Angreifer können sensible Informationen wie Benutzernamen, Passwörter, Kreditkarteninformationen oder andere vertrauliche Daten aus dem Datenverkehr extrahieren.
+
+Zudem besteht die Möglichkeit eines sogenannten Man-in-the-Middle-Angriffs. Hierbei kann ein Angreifer den Datenverkehr abfangen, manipulieren oder sogar gefälschte Antworten an den Nginx-Server senden, um den Nutzer zu täuschen oder sensible Informationen zu stehlen. Beispielsweise können die Angreifer schädlichen Code in die übertragenen Daten einschleusen. Dies kann dazu führen, dass bösartiger Code auf dem Server oder im Container ausgeführt wird, was zu Sicherheitslücken oder Datenverlust führen kann.
+
+Nicht zu unterschätzen ist das Risiko zur Verletzung der Compliance-Anforderungen. Viele Branchen und Vorschriften erfordern den Schutz von personenbezogenen Daten und anderen vertraulichen Informationen. Durch die Weiterleitung unverschlüsselter Datenverbindungen an Container oder Server könnten diese Compliance-Anforderungen verletzt werden. Eine solche Verletzung kann zu erheblichen rechtlichen Konsequenzen und Strafen führen. 
+
 \subsubsection{Aufsetzen einer Datenbank auf Ubuntu}
 
 Die Webseite \enquote{messages.fernuni} erfordert eine Datenbank. Zur Erfüllung dieser Aufgabe wird eine MySQL-Datenbank aufgesetzt. Dabei werden die erforderlichen Installationsschritte für MySQL, Python-Pakete und die Konfiguration der Datenbank beschrieben und durchgeführt.
+
+% Begründung warum nicht wir keine Container nutzen
+Anders als z. B. die bereitgestellten Python Applikationen handelt es bei einer Datenbank nicht um eine zustandslose Anwendung. Bei Containern handelt es sich meist um zustandslose Anwendungen wie Webserver o. ä., die beliebig skalierbar sind. Durch die Containerisierung wird noch eine zusätzliche Isolationsschicht zwischen dem Host und dem Container implementiert. Durch diese zusätzliche Isolation steigt der Overhead bei der Verwaltung der Datenbank und es werden mehr Ressourcen zur Verwaltung benötigt. Aus diesen Gründen findet keine Containerisierung der Datenbank statt. Bei Bedarf könnten stattdessen die Docker Container auf einen seperaten Server oder sogar via Kubernetes bereitgestellt werden, sodass auf dem vServer lediglich das Datenbankmanagementsystem installiert ist.
+
 Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der MySQL-Server installiert, gefolgt von den erforderlichen Python-Paketen für die Datenbankverbindung. Die benötigten Befehle sind folgende:
 
 \begin{minted}{shell}
@@ -95,7 +116,7 @@ Falls erforderlich, kann der MySQL-Server mit dem folgenden Befehl neu gestartet
 
 Nun ist die Datenbank, die für \enquote{messages.fernuni} erforderlich ist, aufgesetzt und die Funktionalität der Webseite gewährleistet.
 
-Erstellen eines automatischen Backups der MySQL-Datenbank.
+\subsubsection*{Erstellen eines automatischen Backups der MySQL-Datenbank}
 
 Das automatische Backup gewährleistet den Schutz wichtiger Daten und ermöglicht die Wiederherstellung im Falle eines Datenverlusts oder eines Systemfehlers. Die folgenden Schritte erläutern die Einrichtung des automatischen Backups für unsere Datenbank.
 Erstellen einer Skriptdatei für das Backup.
@@ -104,13 +125,21 @@ Im Verzeichnis \enquote{/etc/mysql} erstellt man eine Skriptdatei namens \verb+m
 
 \begin{minted}[breaklines=true]{shell}
     #!/bin/bash
-    sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql
+    % sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql
+    # Create a MySQL dum of the messages database, zip it and encrypt it.
+    file_name=$(date +%Y-%m-%d-%H.%M.%S).sql.bz2.enc
+    sudo mysqldump -u root messages | bzip2 -c | age -e -R /etc/mysql/backup/encryption_key.txt -o /etc/mysql/backup/$file_name
+    # Copy the file to remote
+    rsync -a /etc/mysql/backup/$file_name backup_user@backup_server:/var/backups/mysql/server01/$file_name
 \end{minted}
 
 Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie der Datenbank \enquote{messages} zu erstellen. 
 Die Backup-Datei wird im Verzeichnis /etc/mysql/backup/ mit dem Namen \verb+backup_messages.sql+ gespeichert.
 
-Ausführbarkeit der Skriptdatei gewährleisten
+% Backup erläutern.
+Zusätzlich wird das Datenbankbackup komprimiert und mittels asymmetrischer Verschlüsselung durch die Verschlüsselungssoftware \enquote{age} verschlüsselt. Da es sich um eine asymmetrischen Verschlüsselung handelt, muss der öffentliche Schlüssel nicht geschützt werden und kann lokal auf dem virtuellen Server liegen. Die gesicherte und verschlüsselte Datei wird im Anschluss noch auf einen Remote Server kopiert, auf dem sie archiviert wird.
+
+\subsubsection*{Ausführbarkeit der Skriptdatei gewährleisten}
 
 Um die Skriptdatei ausführbar zu machen, gibt man den folgenden Befehl ein:
 \begin{verbatim} sudo chmod +x mysql_backup.sh \end{verbatim}
@@ -118,22 +147,67 @@ Dadurch wird die Ausführungsberechtigung für die Skriptdatei aktiviert.
 Ausführen des Skripts im Terminal, um sicherzustellen, dass es ordnungsgemäß funktioniert:
 \mint{shell}|sudo ./mysql_backup.sh|
 
-Einrichten eines regelmäßigen automatischen Updates.
+\subsubsection*{Einrichten eines regelmäßigen automatischen Updates}
 
 Dazu gibt man den folgenden Befehl ein, um den Crontab-Editor zu öffnen:
 \mint{shell}|sudo crontab -e|
 Die Verwendung des Crontab-Dienstes ermöglicht es uns, den \verb+Backup-Job+ regelmäßig auszuführen. Durch das Hinzufügen einer Zeile zur Crontab geben wir an, wann und wie oft das Backup-Skript ausgeführt werden soll. 
 
-\begin{verbatim}0 18 * * * /etc/mysql/mysql_backup.sh\end{verbatim}
+\begin{verbatim}*/15 * * * * /etc/mysql/mysql_backup.sh\end{verbatim}
 
-Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Backup Skript täglich um 18:00 Uhr ausgeführt.
+Diese Zeile gibt die gewünschte Zeit für das Backup an. Hier wird das Backup Skript alle 15 Minuten ausgeführt, sodass im schlimmsten Fall maximal 15 Minuten an Daten fehlen. Bei Bedarf kann das Intervall auch verringert werden, da die Installation per Ansible Playbook erfolgt.
 
+\subsubsection{Containerisierung der bereitgestellten Programme}
 
-% \begin{listing}[ht]{}
-%     \shellcode{code/shell/webserver_installieren.sh}
-%     \caption{Installation des Apache Webservers}
-%     \label{listing:installation_apache}
-% \end{listing}
+Eine der gestellten Anforderungen der \enquote{Fernuni Inc.} stellt die Containerisierung der in Python implementierten Programme \enquote{hello.fernuni.py} und \enquote{messages.fernuni.py} dar.
+
+Bei Python handelt es sich um eine interpretierte Programmiersprache, sodass eine Laufzeitumgebung zur Ausführung erforderlich ist. Diese muss zusätzlich mit in das Container Image installiert werden, damit das Programm lauffähig ist.
+
+Eine Überlegung zur Härtung der Docker Images wäre die Verwendung eines sogenannten \enquote{Distroless Image}, dass ohne ein Betriebssystem bereitgestellt wird. Allerdings wird der Einsatz eines solchen Images für Python im Produktivbetrieb bislang abgeraten, sodass dies im Kritis-Umfeld nicht möglich ist.
+
+% Kompilierung erwähnen
+Eine Idee der Autoren, stellte die Kompilierung des vorhandenen Quellcodes in eine native ausführbare Datei dar, sodass lediglich diese Datei in einen Distroless Image zu kopieren wäre. Einige Versuche mit dem experimenten Compiler \href[]{https://github.com/exaloop/codon}{Codon} schlugen leider fehl, aufgrund fehlender Unterstützung für weitere Module wie beispielsweise Flask. Leider existiert bislang kein ausgereifter Python Compiler, der dies unterstützt, sodass diese Möglichkeit verworfen wurde.
+
+Stattdessen wird beim Bau des \enquote{Messages} Images auf ein sogenanntes \enquote{Multi-Stage-Build} Verfahren gesetzt. Im Rahmen dieses Prozesses wird zunächst ein Container für die Installation sämtlicher benötigter Pakete und zusätzlicher Software zur Installation gestartet. Im Anschluss werden die benötigten Dateien in ein noch leeres Image kopiert und dort als ausführender User \enquote{App} festgelegt. Dies verhindert, dass der Container mit Root Rechten läuft. Aufgrund dieser weiteren Abhängigkeiten für das Mariadb Modul wird in diesem Fall das größere \enquote{Python Slim} Image als Basis genutzt. Dies enthält alle benötigten Softwarebibliotheken zur Installation.
+
+% TODO: Dockerfile überarbeiten
+\begin{minted}[breaklines=true]{docker}
+# Build image, used to build everything we need
+FROM python:3.11-slim as builder
+
+WORKDIR /usr/src/app
+
+# Look for any new updates, install them and install wget.
+RUN apt update && apt install -y wget gcc
+
+# Install Mariadb connector, as it's required.
+# Source: https://stackoverflow.com/a/74452637
+RUN wget https://dlm.mariadb.com/2862620/Connectors/c/connector-c-3.3.4/mariadb-connector-c-3.3.4-debian-bullseye-amd64.tar.gz -O - | tar -zxf - --strip-components=1 -C /usr
+
+# Create a virtual Python environment
+RUN python -m venv /usr/src/app/venv
+ENV PATH="/usr/src/app/venv/bin:$PATH"
+
+RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb
+
+COPY . .
+
+# https://pythonspeed.com/articles/multi-stage-docker-python/
+FROM python:3.11-slim
+
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app /usr/src/app
+COPY --from=builder /usr /usr
+
+USER app
+ENV PATH="/usr/src/app/venv/bin:$PATH"
+
+# Listen on TCP port 8080
+EXPOSE 8080
+CMD [ "python", "./messages.fernuni.py" ]
+\end{minted}
+
+Für die Bereitstellung des \enquote{Hello} Container Image werden keinerlei externe Abhängigkeiten außer Python benötigt. Deshalb dient die Python Variante des sicherheitsorientierten Alpine Linux als Basis für das Container Image. Dort wird lediglich Flask sowie das Python Skript installiert sowie die Ausführung unter einem nicht Root Benutzer eingerichtet. Weiterhin wird bei der Installation der Python Pakete via Pip wird auf ein Cache Verzichnis verzichtet, damit das finale Image möglichst klein ist.
 
 \subsubsection{Umsetzung der Mandatory Access Control mittels AppArmor}\label{kap:installation_apparmor}
 
@@ -159,8 +233,18 @@ ALLOWED dockerd mount /var/lib/docker/check-overlayfs-support2956447284/merged/ 
 ALLOWED dockerd umount /var/lib/docker/check-overlayfs-support2956447284/merged/ comm=dockerd
 \end{minted}
 
+Zur Aktivierung des Enforce Mode genügt es im Verzeichnis \enquote{debian/rules} die folgenden Zeilen im Makefile zu ergänzen:
+
+\begin{minted}{makefile}
+override_dh_auto_build:
+    make enforce
+\end{minted}
+
+Nach diesen Änderung ist statt des Complain Mode der Enforce Mode aktiv.
+
 \subsubsection{Konfiguration der lokalen Firewall}
 
+Zur Konfiguration der Firewall wird das Programm \enquote{ufw} genutzt, welches als einfach zu nutzendes Kommandozeilenwerkzeug zur Verwaltung der Netfilter Firewall unter Linux dient. \enquote{ufw} dient dabei als einfachere Alternative zu \enquote{iptables} und ist standardmäßig in Ubuntu als Paket installiert.
 
 \begin{table}[!ht]
     \centering
@@ -183,6 +267,7 @@ Eine MySQL Regel entfällt, weil lediglich vom lokalen System Verbindungen herge
 
 Zugriff via \ac{SSH} ist lediglich aus dem internen Netzwerk (\enquote{Internal}, was hier als Platzhalter dient) gestattet, sodass Zugriff aus dem öffentlichen Internet in Gänze unterbunden werden, wie dies auch das Cyber-Killchain Modell vorsieht.
 
-% TODO: Firewall weiter ergänzen, um z. B. böswillige Adressen zu blockieren.
 % https://abuse.ch/#platforms
 Das Projekt \href{https://abuse.ch}{Abuse.ch} bietet eine regelmäßig aktualisierte Liste mit bösartigen IP-Adressen an, die in Verbindung mit der Verbreitung von Malware oder Botnets stehen. Folglich bietet es sich an, diese IP-Adressen zusätzlich in der Firewall zu blockieren, um weitere Angriffe einzuschränken.
+
+Das im Anhang unter \autoref{kap:fw_abuse} dargestellte Skript ruft die IP-Adressen ab, löscht zunächst sämtliche vorher eingetragenen Adressen und fügt dann neue Regeln in die lokale Firewall ein. Somit wird verhindert, dass der Server diese IP Adressen kontaktieren kann und die Kompromittierung durch bösartige weiter Akteure verringert.
