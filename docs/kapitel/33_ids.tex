@@ -70,3 +70,5 @@ Integrity checking values:
 \paragraph{Benachrichtigung}
 \noindent \\Zur Benachrichtigung bei Ereignissen können beispielsweise Emails versandt werden. OSSEC bietet die Möglichkeit, innerhalb einer Domäne Emails an einem Email-Server per SMTP einzuliefern. Bei externen Benachrichtigungen kann beispielsweise ein Postfix Server als E-Mail-Relay-Server verwendet werden.  
 
+\paragraph{Vorliegender Anwendungsfall}
+\noindent \\Im vorliegenden Anwendungsfall eignet sich OSSEC als hostbasiertes IDS. Mit OSSEC lassen sich Webserver, die Datenbank sowie die System insgesamt überwachen. Dies betrifft nicht ausschließlich potentielle Angreifer sondern auch Warnmeldung über abnehmenden Speicherplatz der Datenbank oder zu hohe Systemlast. Ergänzend sollte ein netzwerbasiertes IDS zum Einsatz kommen, um bereits in der Angriffsphase netzwerkseitig Auffälligkeiten registrieren zu können. OSSEC registriert "`lediglich"' Angreifer, welche bereits am System angekommen sind. 
