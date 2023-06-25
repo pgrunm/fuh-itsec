@@ -188,12 +188,13 @@ RUN wget https://dlm.mariadb.com/2862620/Connectors/c/connector-c-3.3.4/mariadb-
 RUN python -m venv /usr/src/app/venv
 ENV PATH="/usr/src/app/venv/bin:$PATH"
 
-RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb
-
+RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb mysql-connector-python
 COPY . .
 
 # https://pythonspeed.com/articles/multi-stage-docker-python/
 FROM python:3.11-slim
+
+RUN groupadd -r app && useradd -r -g app app app
 
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app /usr/src/app
@@ -208,6 +209,13 @@ CMD [ "python", "./messages.fernuni.py" ]
 \end{minted}
 
 Für die Bereitstellung des \enquote{Hello} Container Image werden keinerlei externe Abhängigkeiten außer Python benötigt. Deshalb dient die Python Variante des sicherheitsorientierten Alpine Linux als Basis für das Container Image. Dort wird lediglich Flask sowie das Python Skript installiert sowie die Ausführung unter einem nicht Root Benutzer eingerichtet. Weiterhin wird bei der Installation der Python Pakete via Pip wird auf ein Cache Verzichnis verzichtet, damit das finale Image möglichst klein ist.
+
+% Härtung erläutern
+Das Image für das Messages Programm hat noch externe Abhängigkeiten zu einer C-Bibliothek (MySQL Konnektor) und benötigt zum Download z. B. das Programm \enquote{wget}. Die Installation auf einem Distroless System war nicht möglich, sodass weiterhin das Python Slim Image genutzt wird.
+
+Im Gegensatz dazu setzt das Hello Docker Image auf einen speziell gehärteten Distroless Container. Dieser besitzt keinen Paketmanager, sodass über die Entwicklungs Variante zunächst sämtliche Pakete installiert und anschließend in ein Image ohne Shell oder Paketmanager kopiert werden.
+
+Anders als übliche Docker Basis Images zeichnet sich dieses Image zusätzlich dadurch aus, dass es täglich neu erzeugt wird und in regelmäßigen Image Scans über keinerlei bekannte Sicherheitslücken verfügt, sogenannte \ac{CVE}, verfügt.
 
 \subsubsection{Umsetzung der Mandatory Access Control mittels AppArmor}\label{kap:installation_apparmor}
 
