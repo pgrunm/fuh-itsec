@@ -150,6 +150,19 @@ Die gelisteten Maßnahmen stellen lediglich einen Teil der Härtung innerhalb de
 % Weitere Erläuterungen zum Thema OS Härtung
 Weiterhin wird unter anderem verhindert, dass beispielsweise \ac{IP} Pakete weitergeleitet werden, um beispielsweise die Aufklärung des Netzwerks zu verhindern.
 
+% Auf Härtung SSH eingehen
+Zusätzlich zur Härtung des Betriebssystem ist auch der Zugang zum Server von Interesse. Dieser erfolgt ausschließlich aus der Ferne via \ac{SSH}. Dieser Dienst ist selbstverständlich auch zu Härten, eine Auswahl der Maßnahmen bietet die folgende Übersicht:
+
+\begin{itemize}
+	\item Konfiguration der verwendeten SSH Version 2, weil Version 1 Sicherheitslücken aufweist.
+	\item Deaktivierung des Logins via Passwort, stattdessen ist lediglich ein Login via SSH Schlüssel erlaubt.
+	\item Die Deaktivierung von SSH Tunnels, sodass kein Port Forwarding möglich ist.
+	\item Deaktivierung des Root Logins, sodass sich lediglich nicht Root Benutzer anmelden dürfen.
+\end{itemize}
+
+
+
+%% Weitere Tools: SSHGuard %%
 % Einige Einstellungen erläutern
 Dies umfasst neben den bereits erwähnten Grundeinstellungen beispielsweise die Einrichtung von SSHGuard, welches nach drei fehlerhaften Anmeldeversuchen die Quell IP Adresse für drei Minuten blockiert:
 
