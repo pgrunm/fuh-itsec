@@ -134,13 +134,21 @@ Eine ausführliche Auflistung sämtlicher Einstellungen ist auf der Seite des De
 
 Die Ansible Rolle legt sichere Standard Konfigurationswerte unter anderem für das Betriebssystem, \ac{SSH}, \ac{TLS}, MySQL und Nginx fest, die wiederum durch eigene zusätzliche Einstellungen noch ergänzt werden. In Summe ergeben diese ein funktionierendes und sicheres Gesamtsystem. Durch die Kombination mit Ansible können die definierten Einstellungen schnell und unkompliziert auf einer Vielzahl von Server angewendet werden.
 
-% Analysieren, analysieren... TODO: mehr erläutern
 % Betriebssystem
 Innerhalb des Betriebssystems werden durch die Ansible Rollen verschiede Einstellungen vorgenommen, darunter die folgenden besonders relevanten:
 
 \begin{itemize}
-	\item to do
+	\item Änderung der Besitzerrechte am Verzeichnis \enquote{/var/log} auf Root, sodass nur dieser Benutzer dort Veränderungen vornehmen kann.
+	\item Installation des \enquote{Syslog} Dienstes, um eine Protokollierung zu ermöglichen.
+	\item Installation des \enquote{Auditd} Dienstes, um erweiterte Protokollierung zu ermöglichen.
+	\item Deaktivierung der Weiterleitung von \ac{IP} Paketen.
+	\item Überprüfung der Zugangsrechte für die Dateien \enquote{/etc/shadow} und \enquote{/etc/passwd}.
 \end{itemize}
+
+Die gelisteten Maßnahmen stellen lediglich einen Teil der Härtung innerhalb des Betriebssystems dar. Sie verdeutlichen jedoch die Notwendigkeit sichere Grundeinstellungen festzulegen. Insbesondere der Schutz der Protokollierungsdaten und deren Erstellung sind von einer hohen Bedeutung. Sollte einem Angreifer der Zugriff auf das System gelingen, wäre dies darüber nachvollziehbar.
+
+% Weitere Erläuterungen zum Thema OS Härtung
+Weiterhin wird unter anderem verhindert, dass beispielsweise \ac{IP} Pakete weitergeleitet werden, um beispielsweise die Aufklärung des Netzwerks zu verhindern.
 
 % Einige Einstellungen erläutern
 Dies umfasst neben den bereits erwähnten Grundeinstellungen beispielsweise die Einrichtung von SSHGuard, welches nach drei fehlerhaften Anmeldeversuchen die Quell IP Adresse für drei Minuten blockiert:
