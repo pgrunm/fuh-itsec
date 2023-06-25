@@ -29,6 +29,8 @@ Nginx ist von allen drei Webserver der am meisten verbreitete und kommt auch im 
 % Finale Bemerkungen
 Sämtliche Webserver verfügen über eine hochwertige Dokumentation und unterstützen die geforderten Anforderungen. Aufgrund der weiten Verbreitung und Tools zur Härtung setzen für auf Nginx als Reverse Proxy.
 
+Allerdings ist es erforderlich, dass der Nginx Master Prozess als Root Benutzer läuft, denn nur auf diese Weise ist es möglich auf den Port 80 bzw. 443 zu lauschen. Diese werden als priviligierte Ports betrachtet und sind standardmäßig nur für administrative Benutzer verfügbar.
+
 % Implementierung und Härtung
 Die eigentliche Installation des Webservers erfolgt über das im Anhang dargestellte Ansible Playbook (siehe \autoref{listing:ansible_playbook}).
 
