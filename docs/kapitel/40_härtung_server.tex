@@ -160,7 +160,19 @@ Zusätzlich zur Härtung des Betriebssystem ist auch der Zugang zum Server von I
 	\item Deaktivierung des Root Logins, sodass sich lediglich nicht Root Benutzer anmelden dürfen.
 \end{itemize}
 
+% SSH erläutern
+Die Härtung der SSH Konfiguration zielt darauf auf, beispielsweise sich per Root Benutzer anmelden zu können. Somit werden weitgehende Administratorrechte direkt ab der Anmeldung unterbunden. Zur Authentisierung werden lediglich \ac{SSH} Schlüssel zugelassen, sodass keine Anmeldung per Kennwort mehr möglich ist. Dies erschwert zusätzlich den Remote Zugang zum System und steigert insbesondere mit den vorgegebenen Firewall Regeln sowie SSHGuard die Hürde zum Zugriff beträchtlich.
 
+% MySQL erläutern
+Zu guter Letzt steht noch die Härtung des Datenbankmanagementsystems an. Da dieses sämtliche Daten speichert, sind diese auch von großen Wert für einen Angreifer. Eine Auswahl der Maßnahmen zur Härtung stellen die folgenden dar:
+
+\begin{itemize}
+	\item MySQL Datenverzeichnis bzw. Log Verzeichnis gehört dem MySQL User.
+	\item Änderung der Standard Passwörter.
+	\item MySQL Konfigurationsdatei besitzt der Root Benutzer.
+\end{itemize}
+
+Die notwendigen Einstellungen beim Zugang zu MySQL sind recht übersichtlich, sodass sich diese primär auf Manipulation beim Zugang zu Konfigurationsdateien beziehen.
 
 %% Weitere Tools: SSHGuard %%
 % Einige Einstellungen erläutern
