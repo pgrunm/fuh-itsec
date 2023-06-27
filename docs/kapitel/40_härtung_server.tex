@@ -199,9 +199,9 @@ Die einzigen anderen Möglichkeiten, Zugriff von außen zu erlangen stellen der 
 
 % TODO: Nginx auf non Root umstellen
 % s. hier: https://www.sherbers.de/running-nginx-without-root/
-Standardmäßig läuft der Nginx Master Prozess unter dem Benutzer \enquote{Root} und sollte durch eine Sicherheitslücke der Webserver anfällig sein, wäre der Webserver als kompromittiert zu betrachten. Dementsprechend ist Nginx umgestellt, dass er nicht mehr als Root Benutzer läuft.
+Standardmäßig läuft der Nginx Master Prozess unter dem Benutzer \enquote{Root}. Allerdings betrifft dies lediglich den Master Prozess, die eigentlichen Worker Prozesse werden unter einem nicht priviligierten Benutzern ausgeführt (siehe dazu die Konfigurationsdatei im \autoref{kap:nginx}). Die Ausführung als Root Benutzer ist erforderlich, da nur dieser Benutzer Prozesse auf Ports unter 1024 binden darf. 
 
-Zusätzlich unterliegen sowohl Nginx als auch Wireguard einem AppArmor Profil, wie in \autoref{kap:installation_apparmor} beschrieben. Dies beschränkt den Zugang zum System weiter.
+Zusätzlich unterliegen sowohl Nginx als auch Wireguard einem AppArmor Profil, wie in \autoref{kap:installation_apparmor} beschrieben. Dies beschränkt den Zugang zum System im Falle einer Kompromittierung weiter.
 
 % Auf OSSEC eingehen.
 Zusätzlich zu den beschriebenen Härtungsmaßnahmen sind weitere Maßnahmen von \enquote{Innen} implementiert. Dazu zählen beispielsweise die Nutzung automatischer Aktualisierungen durch \enquote{Unattended Upgrades}, welches automatisch Sicherheitsupdates installiert.
