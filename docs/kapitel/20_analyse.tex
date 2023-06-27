@@ -2,9 +2,9 @@
 
 Als Grundlage zur Analyse vermeintlicher Schwachstellen in der Infrastruktur der Fernuni Inc. dient das sogenannte \enquote{Intrusion Kill Chain}-Modell des amerikanischen Unternehmens Lockheed Martin.
 
-Dieses Modell unterteilt Cyberangriffe in unterschiedliche Phasen, in denen Angreifer versuchen, IT-Infrastruktur zu kompromittieren. Das Modell basiert dabei auf Informationen, sogenannten Indikatoren, die als Anhaltspunkt für einen Angriff dienen\footcite[Vgl.][]{hutchinsIntelligenceDrivenComputerNetwork}.
+Dieses Modell unterteilt Cyberangriffe in unterschiedliche Phasen, in denen Angreifer versuchen, IT-Infrastruktur zu kompromittieren. Das Modell basiert dabei auf Informationen (Indikatoren), die als Anhaltspunkt für einen Angriff dienen\footcite[Vgl.][]{hutchinsIntelligenceDrivenComputerNetwork}.
 
-Das Modell listet dabei auch Maßnahmen auf, mit denen Angriffe in den verschiedenen Phasen aufgespürt, verhindert, gestört, abgeschwächt oder getäuscht werden können. \autoref{table:defense_tools} gibt eine Übersicht über die verschiedenen Phasen sowie potenziell Werkzeuge.
+Das Modell beschreibt dabei auch Maßnahmen auf, mit denen Angriffe in den verschiedenen Phasen aufgespürt, verhindert, gestört, abgeschwächt oder getäuscht werden können. \autoref{table:defense_tools} gibt eine Übersicht über die verschiedenen Phasen sowie potenzielle Werkzeuge.
 
 \begin{table}[ht]
     \begin{center}
@@ -23,21 +23,14 @@ Das Modell listet dabei auch Maßnahmen auf, mit denen Angriffe in den verschied
     \label{table:defense_tools}
     \end{center}
 \end{table}
-% Literatur:
-% \url{https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html}
 
-% \url{https://de.wikipedia.org/wiki/Cyber_Kill_Chain}
+Da nicht sämtliche Phasen aus zeitlichen Gründen im Rahmen des Fachpraktikums umgesetzt werden können, greifen die Autoren im Folgenden lediglich die Phasen auf, die eine besondere Relevanz darstellen. Überdies soll dies dem \enquote{Defense in Depth} Konzept folgen, das für das Erschweren möglicher Angriffe auf die IT-Infrastruktur die Implementierung verschiedener Sicherheitsmaßnahmen vorsieht\footcite[Vgl.][]{barbu2015defense}.
 
-% https://en.wikipedia.org/wiki/Defense_in_depth_(computing)
-Nicht sämtliche Phasen können während der kurzen Phase des Fachpraktikums umgesetzt werden, sodass wir uns auf die aus unserer Sicht wichtigsten konzentrieren. Dies soll zudem dem sogenannten Konzept von \enquote{Defense in Depth} folgen.
+Dazu zählen folgende Maßnahmen, wie z. B. Transportverschlüsselung und der Speicherung, Firewalls, \ac{MFA}, Prüfung der Integrität durch kryptografische Prüfsummen, Logging, sichere Anmeldeverfahren und die Durchführung regelmäßiger Aktualisierungen von installierten Anwendungen.
 
-Dieses Konzept sieht vor viele voneinander unabhängige Sicherheitsmaßnahmen zu implementieren, um Angriffe auf IT Infrastruktur möglichst schwierig zu gestalten\footcite[Vgl.][]{barbu2015defense}.
+Ausgehend von \autoref{table:defense_tools} existieren zwei potenzielle Strategien zur Verteidigung gegen Angriffe: Entweder durch die Aufspürung eines Angriffs oder durch die Verhinderung dessen. Die Verhinderung ist nicht in sämtlichen Phasen möglich, die Aufspürung jedoch in sämtlichen Phasen.
 
-Dazu zählen Maßnahmen wie z. B. Verschlüsselung während des Transports und der Speicherung, Firewalls, \ac{MFA}, Prüfung der Integrität durch kryptografische Prüfsummen, Logging, sichere Anmeldeverfahren und die Durchführung regelmäßiger Aktualisierungen von installierten Anwendungen.
-
-Ausgehend von \autoref{table:defense_tools} existieren zwei potenzielle Strategien, zur Verteidigung gegen Angriffe: Entweder durch die Aufspürung eines Angriffs oder durch die Verhinderung dessen. Die Verhinderung ist nicht in sämtlichen Phasen möglich, die Aufspürung jedoch in sämtlichen Phasen.
-
-Im Rahmen unserer Vorgaben und mit der Orientierung am Killchain Modell, setzen wir zusätzlich die nachfolgenden Softwares ein, zur Verteidigung gegen potenzielle Cyberangriffe.
+Im Rahmen unserer Vorgaben und mit der Orientierung am Killchain Modell, setzen wir zur Verteidigung zusätzlich die \autoref{tab:tools_killchain} abgebildeten Softwares ein.
 
 \begin{table}[ht]
     \begin{center}
@@ -57,4 +50,4 @@ Im Rahmen unserer Vorgaben und mit der Orientierung am Killchain Modell, setzen 
     \label{tab:tools_killchain}
 \end{table}
 
-Die in \autoref{tab:tools_killchain} aufgelisteten Softwares wie z. B. SSHGuard oder Unattended Upgrades werden im \autoref{kap:haertung_des_systems} detailliert erläutert.
+Die in der \autoref{tab:tools_killchain} aufgelisteten Softwares wie z. B. SSHGuard oder Unattended Upgrades werden im \autoref{kap:haertung_des_systems} näher betrachtet.
