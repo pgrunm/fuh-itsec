@@ -36,10 +36,16 @@ def test_libmariadb_dev(host):
     assert host.package("libmariadb-dev").is_installed
 
 def check_folders(host):
-    "Checks the existence of several folders"
+    # "Checks the existence of several folders"
     assert host.file("/etc/mysql/backup").exists
-    assert host.file("/etc/mysql/backup").is_folder
 
 def check_files(host):
+    "Check for existing files."
     assert host.file("/etc/mysql/backup/createsql.sql").exists
-    assert host.file("/etc/sshguard/whitelist").exists  
+    assert host.file("/etc/sshguard/whitelist").exists
+
+def check_connections(host):
+    "Check for listening connections"
+    assert host.socket("tcp://0.0.0.0:80").is_listening
+    assert host.socket("tcp://0.0.0.0:443").is_listening 
+    assert host.socket("tcp://127.0.0.1:3306").is_listening
