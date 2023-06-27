@@ -27,7 +27,7 @@ Der Webserver Apache2 hingegen existiert bereits seit dem Jahr 1995 und ist haup
 Nginx ist von allen drei Webserver der am meisten verbreitete und kommt auch im Cloud Umfeld z. B. als Ingress Controller für Kubernetes vor. Nginx ist ebenfalls in C programmiert und unterstützt die geforderten \ac{TLS} Versionen und verfügt über eine hochwertige Dokumentation sowie Unterstützung des Certbot.
 
 % Finale Bemerkungen
-Sämtliche Webserver verfügen über eine hochwertige Dokumentation und unterstützen die geforderten Anforderungen. Aufgrund der weiten Verbreitung und Tools zur Härtung setzen für auf Nginx als Reverse Proxy.
+Sämtliche Webserver verfügen über eine hochwertige Dokumentation und unterstützen die geforderten Anforderungen. Aufgrund der weiten Verbreitung und Tools zur Härtung setzen die Autoren auf Nginx als Reverse Proxy.
 
 Allerdings ist es erforderlich, dass der Nginx Master Prozess als Root Benutzer läuft, denn nur auf diese Weise ist es möglich auf den Port 80 bzw. 443 zu lauschen. Diese werden als priviligierte Ports betrachtet und sind standardmäßig nur für administrative Benutzer verfügbar.
 
