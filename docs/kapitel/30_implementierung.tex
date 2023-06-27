@@ -46,7 +46,7 @@ messages.fernuni. 1h0m0s A 132.176.108.129
 Durch diese Einträge werden Anfragen an die IP-Adresse des Webservers geschickt, die dann von Nginx als Reverse Proxy beantwortet werden. Dies kann in der Nginx Konfiguration in \autoref{kap:nginx} detailliert nachgesehen werden.
 
 % Härtung
-Bei der Härtung sind sowohl die Anforderungen hinsichtlich der kryptografischen Verfahren zu beachten als auch die eigentliche Härtung des Webservers, da dieser von Außen erreichbar ist.
+Bei der Härtung sind sowohl die Anforderungen hinsichtlich der kryptografischen Verfahren zu beachten als auch die eigentliche Härtung des Webservers, da dieser von außen erreichbar ist.
 
 % SSL Config:
 % https://ssl-config.mozilla.org/#server=nginx&version=1.17.7&config=intermediate&openssl=1.1.1k&guideline=5.7
@@ -74,7 +74,7 @@ Nicht zu unterschätzen ist das Risiko zur Verletzung der Compliance-Anforderung
 Die Webseite \enquote{messages.fernuni} erfordert eine Datenbank. Zur Erfüllung dieser Aufgabe wird eine MySQL-Datenbank aufgesetzt. Dabei werden die erforderlichen Installationsschritte für MySQL, Python-Pakete und die Konfiguration der Datenbank beschrieben und durchgeführt.
 
 % Begründung warum nicht wir keine Container nutzen
-Anders als z. B. die bereitgestellten Python Applikationen handelt es bei einer Datenbank nicht um eine zustandslose Anwendung. Bei Containern handelt es sich meist um zustandslose Anwendungen wie Webserver o. ä., die beliebig skalierbar sind. Durch die Containerisierung wird noch eine zusätzliche Isolationsschicht zwischen dem Host und dem Container implementiert. Durch diese zusätzliche Isolation steigt der Overhead bei der Verwaltung der Datenbank und es werden mehr Ressourcen zur Verwaltung benötigt. Aus diesen Gründen findet keine Containerisierung der Datenbank statt. Bei Bedarf könnten stattdessen die Docker Container auf einen seperaten Server oder sogar via Kubernetes bereitgestellt werden, sodass auf dem vServer lediglich das Datenbankmanagementsystem installiert ist.
+Anders als z. B. die bereitgestellten Python Applikationen handelt es bei einer Datenbank nicht um eine zustandslose Anwendung. Bei Containern handelt es sich meist um zustandslose Anwendungen wie Webserver o. ä., die beliebig skalierbar sind. Durch die Containerisierung wird noch eine zusätzliche Isolationsschicht zwischen dem Host und dem Container implementiert. Durch diese zusätzliche Isolation steigt der Overhead bei der Verwaltung der Datenbank und es werden mehr Ressourcen zur Verwaltung benötigt. Aus diesen Gründen findet keine Containerisierung der Datenbank statt. Bei Bedarf könnten stattdessen die Docker Container auf einen separaten Server oder sogar via Kubernetes bereitgestellt werden, sodass auf dem vServer lediglich das Datenbankmanagementsystem installiert ist.
 
 Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der MySQL-Server installiert, gefolgt von den erforderlichen Python-Paketen für die Datenbankverbindung. Die benötigten Befehle sind folgende:
 
@@ -139,7 +139,7 @@ Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie 
 Die Backup-Datei wird im Verzeichnis /etc/mysql/backup/ mit dem Namen \verb+backup_messages.sql+ gespeichert.
 
 % Backup erläutern.
-Zusätzlich wird das Datenbankbackup komprimiert und mittels asymmetrischer Verschlüsselung durch die Verschlüsselungssoftware \enquote{age} verschlüsselt. Da es sich um eine asymmetrischen Verschlüsselung handelt, muss der öffentliche Schlüssel nicht geschützt werden und kann lokal auf dem virtuellen Server liegen. Die gesicherte und verschlüsselte Datei wird im Anschluss noch auf einen Remote Server kopiert, auf dem sie archiviert wird.
+Zusätzlich wird das Datenbankbackup komprimiert und mittels asymmetrischer Verschlüsselung durch die Verschlüsselungssoftware \enquote{age} verschlüsselt. Da es sich um eine asymmetrische Verschlüsselung handelt, muss der öffentliche Schlüssel nicht geschützt werden und kann lokal auf dem virtuellen Server liegen. Die gesicherte und verschlüsselte Datei wird im Anschluss noch auf einen Remote Server kopiert, auf dem sie archiviert wird.
 
 \subsubsection*{Ausführbarkeit der Skriptdatei gewährleisten}
 
@@ -168,7 +168,7 @@ Bei Python handelt es sich um eine interpretierte Programmiersprache, sodass ein
 Eine Überlegung zur Härtung der Docker Images wäre die Verwendung eines sogenannten \enquote{Distroless Image}, dass ohne ein Betriebssystem bereitgestellt wird. Allerdings wird der Einsatz eines solchen Images für Python im Produktivbetrieb bislang abgeraten, sodass dies im Kritis-Umfeld nicht möglich ist.
 
 % Kompilierung erwähnen
-Eine Idee der Autoren, stellte die Kompilierung des vorhandenen Quellcodes in eine native ausführbare Datei dar, sodass lediglich diese Datei in einen Distroless Image zu kopieren wäre. Einige Versuche mit dem experimenten Compiler \href[]{https://github.com/exaloop/codon}{Codon} schlugen leider fehl, aufgrund fehlender Unterstützung für weitere Module wie beispielsweise Flask. Leider existiert bislang kein ausgereifter Python Compiler, der dies unterstützt, sodass diese Möglichkeit verworfen wurde.
+Eine Idee der Autoren, stellte die Kompilierung des vorhandenen Quellcodes in eine native ausführbare Datei dar, sodass lediglich diese Datei in einen Distroless Image zu kopieren wäre. Einige Versuche mit dem experimenten Compiler \href{https://github.com/exaloop/codon}{Codon} schlugen leider fehl, aufgrund fehlender Unterstützung für weitere Module wie beispielsweise Flask. Leider existiert bislang kein ausgereifter Python Compiler, der dies unterstützt, sodass diese Möglichkeit verworfen wurde.
 
 Stattdessen wird beim Bau des \enquote{Messages} Images auf ein sogenanntes \enquote{Multi-Stage-Build} Verfahren gesetzt. Im Rahmen dieses Prozesses wird zunächst ein Container für die Installation sämtlicher benötigter Pakete und zusätzlicher Software zur Installation gestartet. Im Anschluss werden die benötigten Dateien in ein noch leeres Image kopiert und dort als ausführender User \enquote{App} festgelegt. Dies verhindert, dass der Container mit Root Rechten läuft. Aufgrund dieser weiteren Abhängigkeiten für das Mariadb Modul wird in diesem Fall das größere \enquote{Python Slim} Image als Basis genutzt. Dies enthält alle benötigten Softwarebibliotheken zur Installation.
 

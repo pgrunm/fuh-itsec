@@ -7,7 +7,7 @@
 
 \subsubsection{Empfehlungen aus dem BSI Grundschutz zur Härtung}
 
-F\"ur die H\"artung des Servers m\"ussen die einzelnen verwendeten Anwendung und Services betrachtet werden. Im vorliegenden Fall wird ein Webserver mit einer relationalen Datenbank betrieben welcher mit kritischer Infrastruktur in Ber\"uhrung kommt. Bei IT-Systemen aus Sektoren, welche unter \S2 Abs. 10 Nr. 1 des BSI-Gesetz fallen (kritische Infrastruktur), muss zweij\"ahrig eine Selbsterkl\"arung zur IT-Sicherheit abgeben werden. Dies umfasst beispielsweise die Sektoren Energie, Informationstechnik und Telekommunikation, Transport und Verkehr, Gesundheit und weitere. In dieser Selbsterkl\"arung m\"ussen Zertifizierungen, Audits und konkrete Systeme zur Sicherung besonders sch\"utzenswerter Daten angegeben werden. F\"ur Zertifizierungen ist ein Informationssicherheitsmanagementsystem (ISMS) nach DIN EN ISO/IEC 27000 oder BSI IT-Grundschutz erforderlich. Durch das Bundesamt f\"ur Sicherheit in der Informationstechnik wird das IT-Grundschutzkompendium zur Verf\"ugung gestellt.  Einzelne Themen der IT-Sicherheit werden in sogenannten Bausteinen behandelt, welche im Kompendium zusammengefasst werden. In jedem Baustein wird Themenbezogen auf die Gef\"ahrdungen eingegangen und Anforderungen zu Absicherung empfohlen. Dadurch sollen die Grundwerte Vertraulichkeit, Verf\"ugbarkeit und Integrit\"at gew\"ahrleistet werden. Wichtig ist, dass die Ma{\ss}nahmen aus den Bausteinen des IT-Grundschutzes nicht als abschlie{\ss}end gesehen werden d\"urfen. Je nach Konfiguration und Gef\"ahrdungen m\"ussen weitere Ma{\ss}nahmen ber\"ucksichtigt werden. F\"ur die operative IT-Sicherheit k\"onnen diverse Onlinequellen wie beispielsweise https://dev-sec.io/ herangezogen werden. Die Ma{\ss}nahmen m\"ussen sich am Stand der Technik orientieren. \\
+F\"ur die H\"artung des Servers m\"ussen die einzelnen verwendeten Anwendungen und Services betrachtet werden. Im vorliegenden Fall wird ein Webserver mit einer relationalen Datenbank betrieben, welcher mit kritischer Infrastruktur in Ber\"uhrung kommt. Bei IT-Systemen aus Sektoren, welche unter \S2 Abs. 10 Nr. 1 des BSI-Gesetz fallen (kritische Infrastruktur), muss zweij\"ahrig eine Selbsterkl\"arung zur IT-Sicherheit abgeben werden. Dies umfasst beispielsweise die Sektoren Energie, Informationstechnik und Telekommunikation, Transport und Verkehr, Gesundheit und weitere. In dieser Selbsterkl\"arung m\"ussen Zertifizierungen, Audits und konkrete Systeme zur Sicherung besonders sch\"utzenswerter Daten angegeben werden. F\"ur Zertifizierungen ist ein Informationssicherheitsmanagementsystem (ISMS) nach DIN EN ISO/IEC 27000 oder BSI IT-Grundschutz erforderlich. Durch das Bundesamt f\"ur Sicherheit in der Informationstechnik wird das IT-Grundschutzkompendium zur Verf\"ugung gestellt.  Einzelne Themen der IT-Sicherheit werden in sogenannten Bausteinen behandelt, welche im Kompendium zusammengefasst werden. In jedem Baustein wird Themenbezogen auf die Gef\"ahrdungen eingegangen und Anforderungen zu Absicherung empfohlen. Dadurch sollen die Grundwerte Vertraulichkeit, Verf\"ugbarkeit und Integrit\"at gew\"ahrleistet werden. Wichtig ist, dass die Ma{\ss}nahmen aus den Bausteinen des IT-Grundschutzes nicht als abschlie{\ss}end gesehen werden d\"urfen. Je nach Konfiguration und Gef\"ahrdungen m\"ussen weitere Ma{\ss}nahmen ber\"ucksichtigt werden. F\"ur die operative IT-Sicherheit k\"onnen diverse Onlinequellen wie beispielsweise https://dev-sec.io/ herangezogen werden. Die Ma{\ss}nahmen m\"ussen sich am Stand der Technik orientieren. \\
 
 Folgende Bausteine aus dem IT-Grundschutz werden als relevant angesehen:
   \begin{itemize}
@@ -20,7 +20,7 @@ Folgende Bausteine aus dem IT-Grundschutz werden als relevant angesehen:
 Im Rahmen dieser Dokumentation werden die folgenden Anforderungen nur auszugsweise genannt. Die vollst\"andigen Bausteine mit den Anforderungen nach IT-Grundschutz werden vom Bundesamt f\"ur Sicherheit in der Informationstechnik kostenfrei zur Verf\"ugung gestellt.
 
 \paragraph{Webserver}
-\noindent \\Der Webserver nimmt Anfrage eines Client entgegen und liefert die angefragten Webseiten aus. Folgende Anforderungen werden an der Webserver gestellt:
+\noindent \\Der Webserver nimmt Anfrage eines Clients entgegen und liefert die angefragten Webseiten aus. Folgende Anforderungen werden an der Webserver gestellt:
   \begin{itemize}
       \item APP.3.2.A1 Sichere Konfiguration eines Webservers\\
 			Dazu muss man insbesondere den Webserver-Prozess einem Konto mit minimalen Rechten zuweisen. Der Webserver muss in einer gekapselten Umgebung ausgef\"uhrt werden, sofern dies vom Betriebssystem unterst\"utzt wird. Ist dies nicht m\"oglich, sollte jeder Webserver auf einem eigenen physischen oder virtuellen Server ausgef\"uhrt werden. Dem Webserver-Dienst m\"ussen alle nicht notwendige Schreibberechtigungen entzogen werden. Nicht ben\"otigte Module und Funktionen des Webservers m\"ussen deaktiviert werden.\cite{Grundschutz}\\
@@ -54,7 +54,7 @@ Die Protokollierungsdaten sollten regelm\"a{\ss}ig ausgewertet werden.\cite{Grun
 			Es sollte sichergestellt sein, dass nur Zust\"andige dazu berechtigt sind, Datenbank-Links (DB-Links) anzulegen. Werden solche Links angelegt, m\"ussen so genannte Private DB-Links vor Public DB-Links bevorzugt angelegt werden. Alle von den Zust\"andigen angelegten DB-Links SOLLTEN dokumentiert und regelm\"a{\ss}ig \"uberpr\"uft werden. Zudem sollten DB-Links mitber\"ucksichtigt werden, wenn das Datenbanksystem gesichert wird (siehe APP.4.3.A9 Datensicherung eines Datenbanksystems).\cite{Grundschutz}\\
 
 			\item APP.4.3.A16 Verschl\"usselung der Datenbankanbindung \\
-			Das Datenbankmanagementsystem sollte so konfiguriert werden, dass Datenbankverbindungen immer verschl\"usselt werden. Die dazu eingesetzten kryptografischen Verfahren und Protokolle sollten den internen Vorgaben der Institution entsprechen (siehe CON.1 Kryptokonzept).\cite{Grundschutz}\\
+			Das Datenbankmanagementsystem sollte so konfiguriert werden, dass Datenbankverbindungen immer verschl\"usselt werden. Die dazu eingesetzten kryptografischen Verfahren und Protokolle sollten den internen Vorgaben der Institution entsprechen (siehe CON.1 Krypto Konzept).\cite{Grundschutz}\\
 			
 			\item APP.4.3.A21 Einsatz von Datenbank Security Tools\\
 			Es sollten Informationssicherheitsprodukte f\"ur Datenbanken eingesetzt werden. Die eingesetzten Produkte sollten folgende Funktionen bereitstellen:
@@ -132,7 +132,7 @@ Die Härtung des Systems und der installierten Dienste erfolgt durch das im \aut
 Eine Eigenentwicklung auf Basis der Vorgaben des \ac{BSI} oder anderer Empfehlungen wäre zwar auch möglich, jedoch weiter weniger umfassend und ausgiebig getestet. Es stünden auch alternative Projekte bereit, wie beispielsweise das \enquote{ComplianceAsCode} Projekt, dessen Installation bzw. Konfiguration mehr Aufwand beansprucht als eine Ansible Rolle.
 
 % Ansible Rolle erläutern
-Das Dev-Sec Projekt bietet eine vorgefertigte Ansible Rolle an, welches exakt zu den Vorgaben der FernUni Inc. passt. Sämtliche ausgewählten Software Komponenten werden durch die Rolle unterstützt und können somit in eine umfassende und sichere Grundkonfiguration versetzt werden. 
+Das Dev-Sec Projekt bietet eine vorgefertigte Ansible Rolle an, welches exakt zu den Vorgaben der FernUni Inc. passt. Sämtliche ausgewählten Softwarekomponenten werden durch die Rolle unterstützt und können somit in eine umfassende und sichere Grundkonfiguration versetzt werden. 
 Eine ausführliche Auflistung sämtlicher Einstellungen ist auf der Seite des Dev-Sec Projekts ersichtlich\footcite[Vgl.][]{OverviewDevSecBaselines}.
 
 Die Ansible Rolle legt sichere Standard Konfigurationswerte unter anderem für das Betriebssystem, \ac{SSH}, \ac{TLS}, MySQL und Nginx fest, die wiederum durch eigene zusätzliche Einstellungen noch ergänzt werden. In Summe ergeben diese ein funktionierendes und sicheres Gesamtsystem. Durch die Kombination mit Ansible können die definierten Einstellungen schnell und unkompliziert auf einer Vielzahl von Server angewendet werden.
@@ -154,7 +154,7 @@ Die gelisteten Maßnahmen stellen lediglich einen Teil der Härtung innerhalb de
 Weiterhin wird unter anderem verhindert, dass beispielsweise \ac{IP} Pakete weitergeleitet werden, um beispielsweise die Aufklärung des Netzwerks zu verhindern.
 
 % Auf Härtung SSH eingehen
-Zusätzlich zur Härtung des Betriebssystem ist auch der Zugang zum Server von Interesse. Dieser erfolgt ausschließlich aus der Ferne via \ac{SSH}. Dieser Dienst ist selbstverständlich auch zu Härten, eine Auswahl der Maßnahmen bietet die folgende Übersicht:
+Zusätzlich zur Härtung des Betriebssystems ist auch der Zugang zum Server von Interesse. Dieser erfolgt ausschließlich aus der Ferne via \ac{SSH}. Dieser Dienst ist selbstverständlich auch zu Härten, eine Auswahl der Maßnahmen bietet die folgende Übersicht:
 
 \begin{itemize}
 	\item Konfiguration der verwendeten SSH Version 2, weil Version 1 Sicherheitslücken aufweist.
@@ -167,11 +167,11 @@ Zusätzlich zur Härtung des Betriebssystem ist auch der Zugang zum Server von I
 Die Härtung der SSH Konfiguration zielt darauf auf, beispielsweise sich per Root Benutzer anmelden zu können. Somit werden weitgehende Administratorrechte direkt ab der Anmeldung unterbunden. Zur Authentisierung werden lediglich \ac{SSH} Schlüssel zugelassen, sodass keine Anmeldung per Kennwort mehr möglich ist. Dies erschwert zusätzlich den Remote Zugang zum System und steigert insbesondere mit den vorgegebenen Firewall Regeln sowie SSHGuard die Hürde zum Zugriff beträchtlich.
 
 % MySQL erläutern
-Zu guter Letzt steht noch die Härtung des Datenbankmanagementsystems an. Da dieses sämtliche Daten speichert, sind diese auch von großen Wert für einen Angreifer. Eine Auswahl der Maßnahmen zur Härtung stellen die folgenden dar:
+Zu guter Letzt steht noch die Härtung des Datenbankmanagementsystems an. Da dieses sämtliche Daten speichert, sind diese auch von großem Wert für einen Angreifer. Eine Auswahl der Maßnahmen zur Härtung stellen die folgenden dar:
 
 \begin{itemize}
 	\item MySQL Datenverzeichnis bzw. Log Verzeichnis gehört dem MySQL User.
-	\item Änderung der Standard Passwörter.
+	\item Änderung der Standardpasswörter.
 	\item MySQL Konfigurationsdatei besitzt der Root Benutzer.
 \end{itemize}
 
@@ -193,7 +193,7 @@ Dies umfasst neben den bereits erwähnten Grundeinstellungen beispielsweise die 
 
 In der Standardeinstellung werden weitere Anfragen mit dem Faktor 1.5 gesperrt, sodass die Blockierung kontinuierlich steigt, wie in \autoref{listing:sshguard_log} dargestellt. Dies bremst Angreifer aus, die versuchen den Server per SSH anzugreifen. Zusätzlich muss der Angriff aus dem internen Netz erfolgen, da die Firewall nur Zugriff von intern erlaubt. Mittels einer Einstellung im Ansible Playbook lässt sich diese Einstellung variabel anpassen, um beispielsweise auf Angriffe zu reagieren.
 
-In Verbindung mit der Firewall und SSHGuard stellen beide Maßnahme bereits eine entscheidende Hürde für potenzielle Angreifer dar, deren Überwindung Zeit und Aufwand erfordern.
+In Verbindung mit der Firewall und SSHGuard stellen beide Maßnahmen bereits eine entscheidende Hürde für potenzielle Angreifer dar, deren Überwindung Zeit und Aufwand erfordern.
 
 Die einzigen anderen Möglichkeiten, Zugriff von außen zu erlangen stellen der Webserver Nginx sowie das \ac{VPN} Wireguard dar.
 

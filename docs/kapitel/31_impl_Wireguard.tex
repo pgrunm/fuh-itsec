@@ -70,8 +70,8 @@ PersistentKeepAlive = 25
    \end{itemize}
 
 \paragraph{Passwortspeicher} 
-\noindent \\Der Private Key kann in einem Passwortspeicher gesichert werden, welcher beim \"offnen ein Passwort vom Benutzer abfr\"agt. Dies bietet zum Faktor "`Besitz"' des Private Key den weiteren Faktor "`Wissen"' durch Eingabe des zus\"atzlichen Kennwortes beim \"Offnen des Passwortspeichers. Hierzu bietet sich der Passwortspeicher "`Pass"' an, welcher wie Wireguard ebenfalls von Jason A. Donenfeld entwickelt wurde. Beim initialisieren des Passwortspeichers wird dieser mit einem GPG-Zertifikat verknüpft. Das Zertifikat ist wiederum durch eine Passphrase gesch\"utz welche zum Entschlüssle eingegeben werden muss.
-Ein GPG-Zertifikat kann durch Eingabe des Befehls \mint{shell}|gpg --full-generate-key| erzeugt werden. Beim initialisieren des Passwortspeichers mit dem Befehl \mint{shell}|pass init zuvor-erstellter-gpg-key| wird im entsprechenden Verzeichnis ein Unterverzeichnis \enquote{ .password-store } erstellt. In der Wireguard-Konfiguration kann nun der zuvor gespeicherte Private Key beispielsweise mit 
+\noindent \\Der Private Key kann in einem Passwortspeicher gesichert werden, welcher beim \"Offnen ein Passwort vom Benutzer abfr\"agt. Dies bietet zum Faktor "`Besitz"' des Private Key den weiteren Faktor "`Wissen"' durch Eingabe des zus\"atzlichen Kennwortes beim \"Offnen des Passwortspeichers. Hierzu bietet sich der Passwortspeicher "`Pass"' an, welcher wie Wireguard ebenfalls von Jason A. Donenfeld entwickelt wurde. Beim Initialisieren des Passwortspeichers wird dieser mit einem GPG-Zertifikat verknüpft. Das Zertifikat ist wiederum durch eine Passphrase gesch\"utzt welche zum Entschlüsseln eingegeben werden muss.
+Ein GPG-Zertifikat kann durch Eingabe des Befehls \mint{shell}|gpg --full-generate-key| erzeugt werden. Beim Initialisieren des Passwortspeichers mit dem Befehl \mint{shell}|pass init zuvor-erstellter-gpg-key| wird im entsprechenden Verzeichnis ein Unterverzeichnis \enquote{.password-store} erstellt. In der Wireguard-Konfiguration kann nun der zuvor gespeicherte Private Key beispielsweise mit 
 \begin{minted}[breaklines=true]{shell}
    PostUp = wg set wg0 private-key <(sudo -u Benutzer pass wireguard/private-keys/wg0)
 \end{minted}
@@ -85,7 +85,7 @@ ausgelesen werden.
 ausgelesen werden. Auch hierbei wird die Passphrase des GPG-Zertifikats abgefragt. 
 
 \paragraph{Verwendung eines PIV-Slots auf einem Yubikey}
-\noindent \\Bei einem Yubikey handelt es sich um ein Security-Token, welcher an Schnittstellen wie Lightning oder USB verwendet wird. Ein Yubikey unterst\"utzt mehrere Protokolle zur Identifizierung und Authentifizierung von Benutzern. Auf einem Yubikey stehen so genante Personal Identity Verification Slots (PIV-Slots) zur Verf\"ugung, in denen private Schl\"ussel abgelegt werden k\"onnen. Hierf\"ur wird das Yubikey Command Line Interface ben\"otigt, welches mit \mint{shell}|sudo apt-get install yubikey-manager| installiert werden kann. Mit den Befehlen 
+\noindent \\Bei einem Yubikey handelt es sich um ein Security-Token, welcher an Schnittstellen wie Lightning oder USB verwendet wird. Ein Yubikey unterst\"utzt mehrere Protokolle zur Identifizierung und Authentifizierung von Benutzern. Auf einem Yubikey stehen so genannte Personal Identity Verification Slots (PIV-Slots) zur Verf\"ugung, in denen private Schl\"ussel abgelegt werden k\"onnen. Hierf\"ur wird das Yubikey Command Line Interface ben\"otigt, welches mit \mint{shell}|sudo apt-get install yubikey-manager| installiert werden kann. Mit den Befehlen 
 \begin{minted}{shell}
  gpg --encrypt --recipient 0x1234567890ABCDEF wg0.key
  ykman piv objects import 5f0000 wg0.key.gpg
@@ -94,7 +94,7 @@ wird ein key wg0.key mit dem Zertifikat 0x1234567890ABCDEF verschl\"usselt und i
 \begin{minted}[breaklines=true]{shell}
    PostUp = wg set wg0 private-key <(ykman piv objects export 5f0000 - | sudo -u Benutzer gpg -d)
 \end{minted}
-der Schl\"ussel aus dem Slot gelesen und entschl\"usselt werden. Der entschl\"usselte Private Key für wg0 wird nun nach dem Start der Schnittstelle gesetzt  und zu Aufbau der Verbindung verwendet. Die Verwendung eines zusätzlichen Token wie zum Beispiel einen Yubikey bietet den Vorteil, dass ein Zertifikat nicht auf dem selben System gesichert wird, auf dem auch der VPN-Tunnel hergestellt wird. Somit lässt sich der Faktor "`Besitz"' von einem auf dem Rechner gespeicherten Zertifikat auf ein Token auslagern. Zusätzlich zum Rechner, mit dem die Verbindung hergestellt werden soll, ist nun auch noch der "`Besitz"' des Tokens erforderlich. So lässt sich größtmögliche Sicherheit durch den ausgelagerten "`Besitz"' sowie die erforderliche Passphrase als Faktor "`Wissen"' erreichen.  
+der Schl\"ussel aus dem Slot gelesen und entschl\"usselt werden. Der entschl\"usselte Private Key für wg0 wird nun nach dem Start der Schnittstelle gesetzt  und zu Aufbau der Verbindung verwendet. Die Verwendung eines zusätzlichen Tokens wie zum Beispiel einen Yubikey bietet den Vorteil, dass ein Zertifikat nicht auf demselben System gesichert wird, auf dem auch der VPN-Tunnel hergestellt wird. Somit lässt sich der Faktor "`Besitz"' von einem auf dem Rechner gespeicherten Zertifikat auf ein Token auslagern. Zusätzlich zum Rechner, mit dem die Verbindung hergestellt werden soll, ist nun auch noch der "`Besitz"' des Tokens erforderlich. So lässt sich größtmögliche Sicherheit durch den ausgelagerten "`Besitz"' sowie die erforderliche Passphrase als Faktor "`Wissen"' erreichen.  
 
 
 
