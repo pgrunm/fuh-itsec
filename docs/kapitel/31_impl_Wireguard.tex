@@ -24,9 +24,24 @@ wg genkey | tee server_private.key | wg pubkey > server_public.key
 in die zwei Schl\"usseldateien mit den Namen \verb+server_private.key+ und \verb+server_public.key+ abgelegt.\\
 Beim Aufbau eines VPN-Netzes werden zwei verschiedene Netze mit häufig unterschiedlichen Adressen verbunden. Damit die Kommunikation über verschiedene Netze möglich ist, müssen entsprechende Firewall- und Routing-Regeln angelegt werden. Wireguard bietet hierfür die Möglichkeit, diese Konfiguration über ein sogenanntes PostUp- und PostDown-Script durchzuführen. Diese Scripte werden jeweils vor Aufbau des Tunnels beziehungsweise nach Beendigung des Tunnels ausgeführt. Die Schnittstelle, welche für die Verbindung benötigt wird, wird von Wireguard in den Parameter \%i eingesetzt. Vor dem Aufbau der Verbindung werden so die in der Konfigurationsdatei enthaltenen Firewall- und Routing-Regeln eingetragen, welche die ankommenden Pakete akzeptiert und durch Network-Address-Translation in das richtige Zielnetz weiterleitet.  
 
-\newpage
 \noindent Die Konfiguration des Server:
-\begin{minted}{shell}
+\begin{minted}[fontfamily=tt,
+   linenos=true,
+   numberblanklines=true,
+   numbersep=5pt,
+   gobble=0,
+   frame=leftline,
+   framerule=0.4pt,
+   framesep=2mm,
+   funcnamehighlighting=true,
+   tabsize=4,
+   obeytabs=false,
+   mathescape=false
+   samepage=false, %with this setting you can force the list to appear on the same page
+   showspaces=false,
+   showtabs =false,
+   texcl=false,
+   breaklines=true]{shell}
 [Interface]
 Address = 10.0.2.1/24
 ListenPort = 51820
@@ -47,7 +62,23 @@ AllowedIPs = 10.0.2.15/24
 \end{minted}
 \vspace{0.5cm}
 \noindent Die Konfiguration des Clients:
-\begin{minted}{shell}
+\begin{minted}[fontfamily=tt,
+   linenos=true,
+   numberblanklines=true,
+   numbersep=5pt,
+   gobble=0,
+   frame=leftline,
+   framerule=0.4pt,
+   framesep=2mm,
+   funcnamehighlighting=true,
+   tabsize=4,
+   obeytabs=false,
+   mathescape=false
+   samepage=false, %with this setting you can force the list to appear on the same page
+   showspaces=false,
+   showtabs =false,
+   texcl=false,
+   breaklines=true]{shell}
 [Interface]
 Address = 10.0.2.15/24
 PrivateKey = 'insert Key'
@@ -59,10 +90,9 @@ AllowedIPs = 0.0.0.0/0
 PersistentKeepAlive = 25
 \end{minted}
 
-\newpage
 \noindent Die Konfigurationsdateien sind jeweils im Verzeichnis /etc/wireguard abzulegen. Um die darin befindlichen Schl\"ussel vor unberechtigten Einblicken zu sch\"utzen, m\"ussen die Berechtigungen des Verzeichnisses entsprechen gew\"ahlt werden. \\
 
-\noindent Leider bietet Wireguard nicht selbst die M\"oglichkeit der Zwei-Faktor-Authentisierung (2FA). Diese kann nur \"uber Umwege mit Wireguard verwendet werden. Folgende M\"oglichkeiten stehen zur Verf\"ugung:
+\noindent Leider bietet Wireguard nicht selbst die M\"oglichkeit der \ac{2FA}. Diese kann nur \"uber Umwege mit Wireguard verwendet werden. Folgende M\"oglichkeiten stehen zur Verf\"ugung:
    \begin{itemize}
       \item Verwendung eines Passwortspeichers zur Ablage des Private Key
       \item Verschl\"usselung des Private Key auf einem Datentr\"ager

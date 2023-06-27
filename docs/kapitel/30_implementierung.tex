@@ -79,8 +79,8 @@ Anders als z. B. die bereitgestellten Python Applikationen handelt es bei einer 
 Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der MySQL-Server installiert, gefolgt von den erforderlichen Python-Paketen für die Datenbankverbindung. Die benötigten Befehle sind folgende:
 
 \begin{minted}{shell}
-    sudo apt install mysql-server python3-pip libmariadb-dev
-    sudo pip install mysql-connector mysql-connector-python mariadb
+sudo apt install mysql-server python3-pip libmariadb-dev
+sudo pip install mysql-connector mysql-connector-python mariadb
 \end{minted}
 
 Nach der Installation kann der MySQL-Server mit folgendem Befehl gestartet werden:
@@ -174,7 +174,23 @@ Eine Idee der Autoren, stellte die Kompilierung des vorhandenen Quellcodes in ei
 Stattdessen wird beim Bau des \enquote{Messages} Images auf ein sogenanntes \enquote{Multi-Stage-Build} Verfahren gesetzt. Im Rahmen dieses Prozesses wird zunächst ein Container für die Installation sämtlicher benötigter Pakete und zusätzlicher Software zur Installation gestartet. Im Anschluss werden die benötigten Dateien in ein noch leeres Image kopiert und dort als ausführender User \enquote{App} festgelegt. Dies verhindert, dass der Container mit Root Rechten läuft. Aufgrund dieser weiteren Abhängigkeiten für das Mariadb Modul wird in diesem Fall das größere \enquote{Python Slim} Image als Basis genutzt. Dies enthält alle benötigten Softwarebibliotheken zur Installation.
 
 % TODO: Dockerfile überarbeiten
-\begin{minted}[breaklines=true]{docker}
+\begin{minted}[fontfamily=tt,
+    linenos=true,
+    numberblanklines=true,
+    numbersep=5pt,
+    gobble=0,
+    frame=leftline,
+    framerule=0.4pt,
+    framesep=2mm,
+    funcnamehighlighting=true,
+    tabsize=4,
+    obeytabs=false,
+    mathescape=false
+    samepage=false, %with this setting you can force the list to appear on the same page
+    showspaces=false,
+    showtabs =false,
+    texcl=false,
+    breaklines=true]{docker}
 # Build image, used to build everything we need
 FROM python:3.11-slim as builder
 
@@ -184,7 +200,6 @@ WORKDIR /usr/src/app
 RUN apt update && apt install -y wget gcc
 
 # Install Mariadb connector, as it's required.
-# Source: https://stackoverflow.com/a/74452637
 RUN wget https://dlm.mariadb.com/2862620/Connectors/c/connector-c-3.3.4/mariadb-connector-c-3.3.4-debian-bullseye-amd64.tar.gz -O - | tar -zxf - --strip-components=1 -C /usr
 
 # Create a virtual Python environment
@@ -194,7 +209,6 @@ ENV PATH="/usr/src/app/venv/bin:$PATH"
 RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb mysql-connector-python
 COPY . .
 
-# https://pythonspeed.com/articles/multi-stage-docker-python/
 FROM python:3.11-slim
 
 RUN groupadd -r app && useradd -r -g app app app
@@ -212,6 +226,8 @@ CMD [ "python", "./messages.fernuni.py" ]
 \end{minted}
 
 Für die Bereitstellung des \enquote{Hello} Container Image werden keinerlei externe Abhängigkeiten außer Python benötigt. Deshalb dient die Python Variante des sicherheitsorientierten Alpine Linux als Basis für das Container Image. Dort wird lediglich Flask sowie das Python Skript installiert sowie die Ausführung unter einem nicht Root Benutzer eingerichtet. Weiterhin wird bei der Installation der Python Pakete via Pip wird auf ein Cache Verzichnis verzichtet, damit das finale Image möglichst klein ist.
+
+Für den Bau des Containers nutzten die Autoren u. a. insbesondere einen Eintrag zur Installation eines neueren MySQL Konnektors\footcite[Vgl.][]{Danblack_answer_2022} sowie eines Artikels von Multi Stage Images\footcite[Vgl.][]{turner-trauring_multi-stage_2019}.
 
 % Härtung erläutern
 Das Image für das Messages Programm hat noch externe Abhängigkeiten zu einer C-Bibliothek (MySQL Konnektor) und benötigt zum Download z. B. das Programm \enquote{wget}. Die Installation auf einem Distroless System war nicht möglich, sodass weiterhin das Python Slim Image genutzt wird.
