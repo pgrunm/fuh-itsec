@@ -35,3 +35,9 @@ tasks:
     cmds:
       - ansible-playbook docs/code/ansible/playbook.yaml -u {{.USER}} -i {{.INVENTORY}} --private-key {{.PK}} {{.CLI_ARGS}}
       - ansible-playbook docs/code/ansible/hardening.yaml -u {{.USER}} -i {{.INVENTORY}} --private-key {{.PK}} {{.CLI_ARGS}}
+
+  test:
+    desc: Runs tests
+    cmds:
+      - vagrant ssh-config > .vagrant/ssh-config
+      - py.test --hosts=default --ssh-config=.vagrant/ssh-config docs/code/python/test_server.py {{.CLI_ARGS}}
