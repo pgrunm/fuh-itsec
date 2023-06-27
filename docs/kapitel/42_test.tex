@@ -1,0 +1,29 @@
+\subsection{Test des Systems}
+
+Um die Funktionalität des Gesamtsystems zu gewährleisten, wurde die Konfiguration ausgiebig getestet. Dies geschah einerseits manuell durch die Autoren bei der Installation sowie Konfiguration des Systems.
+
+Zusätzlich zu manuell durchgeführten Tests haben die Autoren einige automatische Tests in Python konzipiert, die mittels des Moduls \enquote{Testinfa} einige Vorgaben verifizieren. Eine Ausgabe des Testskripts sieht wie folgt aus:
+
+\begin{minted}{text}
+    ============================= test session starts ==============================
+platform linux -- Python 3.11.3, pytest-7.4.0, pluggy-1.2.0
+rootdir: ~/fuh-itsec
+plugins: testinfra-8.1.0
+collected 11 items
+
+docs/code/python/test_server.py .......                                  [100%]
+
+============================== 11 passed in 1.30s ===============================
+\end{minted}
+
+Durch die in \autoref{kap:testskript_python} dargestellten Tests wird der Server automatisiert getestet. Dabei wird geprüft, ob:
+
+\begin{itemize}
+    \item Nginx installiert bzw. aktiviert ist und läuft.
+    \item Ein MariaDB Server installiert bzw. aktiviert ist und läuft.
+    \item Die Pakete SSHGuard, AppArmor, OSSEC, Docker und libmariadb-dev installiert sind.
+    \item Einige Dateien und Verzeichnisse existieren.
+    \item Verbindung auf den TCP Ports 80, 443 und 3306 möglich sind.
+\end{itemize}
+
+Die Tests sind dabei so konzipiert, dass direkt erkenntbar ist, falls einer fehlschlägt.

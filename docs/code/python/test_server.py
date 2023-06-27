@@ -21,9 +21,13 @@ def test_sshguard(host):
     "Check SSHguard installation"
     assert host.package("sshguard").is_installed
 
-def test_integrit(host):
-    "Check for Integrit installation"
-    assert host.package("integrit").is_installed
+def test_ossec(host):
+    "Check for OSSEC installation"
+    assert host.package("ossec").is_installed
+
+def test_ossec(host):
+    "Check for AppArmor installation"
+    assert host.package("apparmor").is_installed
 
 def test_docker(host):
     "Verify Docker is running, installed and enabled for startup."
