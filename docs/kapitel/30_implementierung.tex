@@ -121,14 +121,15 @@ Nun ist die Datenbank, die für \enquote{messages.fernuni} erforderlich ist, auf
 \subsubsection*{Erstellen eines automatischen Backups der MySQL-Datenbank}
 
 Das automatische Backup gewährleistet den Schutz wichtiger Daten und ermöglicht die Wiederherstellung im Falle eines Datenverlusts oder eines Systemfehlers. Die folgenden Schritte erläutern die Einrichtung des automatischen Backups für unsere Datenbank.
-Erstellen einer Skriptdatei für das Backup.
+
+\subsubsection*{Erstellen einer Skriptdatei für das Backup}
+
 Durch das Erstellen einer Skriptdatei können wir den Backup-Prozess automatisieren und die Ausführungsschritte zentralisieren.
 Im Verzeichnis \enquote{/etc/mysql} erstellt man eine Skriptdatei namens \verb+mysql_backup.sh+ mit dem folgenden Inhalt:
 
 \begin{minted}[breaklines=true]{shell}
     #!/bin/bash
-    % sudo mysqldump -u root messages > /etc/mysql/backup/backup_messages.sql
-    # Create a MySQL dum of the messages database, zip it and encrypt it.
+    # Create a MySQL dump of the messages database, zip it and encrypt it.
     file_name=$(date +%Y-%m-%d-%H.%M.%S).sql.bz2.enc
     sudo mysqldump -u root messages | bzip2 -c | age -e -R /etc/mysql/backup/encryption_key.txt -o /etc/mysql/backup/$file_name
     # Copy the file to remote
