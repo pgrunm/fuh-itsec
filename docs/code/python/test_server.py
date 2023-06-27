@@ -35,5 +35,11 @@ def test_libmariadb_dev(host):
     "Checks for libmariadb-dev installation"
     assert host.package("libmariadb-dev").is_installed
 
+def check_folders(host):
+    "Checks the existence of several folders"
+    assert host.file("/etc/mysql/backup").exists
+    assert host.file("/etc/mysql/backup").is_folder
+
 def check_files(host):
-    
+    assert host.file("/etc/mysql/backup/createsql.sql").exists
+    assert host.file("/etc/sshguard/whitelist").exists  
