@@ -26,11 +26,14 @@ def test_integrit(host):
     assert host.package("integrit").is_installed
 
 def test_docker(host):
-    # Verify Docker is running, installed and enabled for startup."
+    "Verify Docker is running, installed and enabled for startup."
     assert host.package("docker").is_installed
     assert host.service("docker").is_running
     assert host.service("docker").is_enabled
 
 def test_libmariadb_dev(host):
-    # Checks for libmariadb-dev installation
+    "Checks for libmariadb-dev installation"
     assert host.package("libmariadb-dev").is_installed
+
+def check_files(host):
+    
