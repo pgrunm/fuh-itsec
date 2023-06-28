@@ -225,7 +225,7 @@ EXPOSE 8080
 CMD [ "python", "./messages.fernuni.py" ]
 \end{minted}
 
-Für die Bereitstellung des \enquote{Hello} Container Image werden keinerlei externe Abhängigkeiten außer Python benötigt. Deshalb dient die Python Variante des sicherheitsorientierten Alpine Linux als Basis für das Container Image. Dort wird lediglich Flask sowie das Python Skript installiert sowie die Ausführung unter einem nicht Root Benutzer eingerichtet. Weiterhin wird bei der Installation der Python Pakete via Pip wird auf ein Cache Verzichnis verzichtet, damit das finale Image möglichst klein ist.
+Für die Bereitstellung des \enquote{Hello} Container Image werden keinerlei externe Abhängigkeiten außer Python benötigt. Deshalb dient die Python Variante des sicherheitsorientierten Alpine Linux als Basis für das Container Image. Dort wird lediglich Flask sowie das Python Skript installiert sowie die Ausführung unter einem nicht Root Benutzer eingerichtet. Weiterhin wird bei der Installation der Python Pakete via Pip auf ein Cache Verzichnis verzichtet, damit das finale Image möglichst klein ist.
 
 Für den Bau des Containers nutzten die Autoren u. a. insbesondere einen Eintrag zur Installation eines neueren MySQL Konnektors\footcite[Vgl.][]{Danblack_answer_2022} sowie eines Artikels von Multi Stage Images\footcite[Vgl.][]{turner-trauring_multi-stage_2019}.
 
@@ -234,7 +234,7 @@ Das Image für das Messages Programm hat noch externe Abhängigkeiten zu einer C
 
 Im Gegensatz dazu setzt das Hello Docker Image auf einen speziell gehärteten Distroless Container. Dieser besitzt keinen Paketmanager, sodass über die Entwicklungs Variante zunächst sämtliche Pakete installiert und anschließend in ein Image ohne Shell oder Paketmanager kopiert werden.
 
-Anders als übliche Docker Basis Images zeichnet sich dieses Image zusätzlich dadurch aus, dass es täglich neu erzeugt wird und in regelmäßigen Image Scans über keinerlei bekannte Sicherheitslücken verfügt, sogenannte \ac{CVE}, verfügt.
+Anders als übliche Docker Basis Images zeichnet sich dieses Image zusätzlich dadurch aus, dass es täglich neu erzeugt wird und in regelmäßigen Image Scans über keinerlei bekannte Sicherheitslücken, sogenannte \ac{CVE}, verfügt.
 
 \subsubsection{Umsetzung der Mandatory Access Control mittels AppArmor}\label{kap:installation_apparmor}
 
