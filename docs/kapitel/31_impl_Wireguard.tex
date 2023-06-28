@@ -1,9 +1,8 @@
-\newpage
 \subsubsection{Wireguard}
 
 Bei Wireguard handelt es sich um eine schlanke L\"osung, mit deren Hilfe ein \ac{VPN} betrieben werden kann. Im Vergleich zu openVPN mit ca. 70.000 Zeilen Quellcode kommt Wireguard mit weniger als 4.000 Zeilen Quellcode aus. 
 %Quelle einf\"ugen 1. https://www.wireguard.com/papers/wireguard.pdf 2. https://openvpn.net/blog/what-is-cloudflare-vpn/
-Demzufolge ist der Quellcode von openVPN anf\"alliger f\"ur Implementierungsfehler. W\"ahrend f\"ur die meisten VPN-Verbindungen der bew\"ahrte symmetrische Algorithmus AES256 verwendet wird, verwendet Wireguard den relativ neuen ChaCha20 Algorithmus. Damit besteht die M\"oglichkeit, dass zuk\"unftig noch unentdeckte Fehler in der Verschl\"usselung gefunden werden. Vom Bundesamt f\"ur Sicherheit in der Informationstechnik gibt es aktuell noch keine Empfehlung zu ChaCha20 wohingegen AES256 derzeit noch als sicher eingestuft ist.  
+Demzufolge ist der Quellcode von openVPN anf\"alliger f\"ur Implementierungsfehler. W\"ahrend f\"ur die meisten VPN-Verbindungen der bew\"ahrte symmetrische Algorithmus AES256 verwendet wird, verwendet Wireguard den relativ neuen ChaCha20-Algorithmus. Damit besteht die M\"oglichkeit, dass zuk\"unftig noch unentdeckte Fehler in der Verschl\"usselung gefunden werden. Vom Bundesamt f\"ur Sicherheit in der Informationstechnik gibt es aktuell noch keine Empfehlung zu ChaCha20 wohingegen AES256 derzeit noch als sicher eingestuft ist.  
 Durch den schlanken Quellcode und den k\"urzeren Schl\"ussel zeigt sich Wireguard jedoch performanter als andere VPN-Technologien.   
 
 \begin{table}[ht]
@@ -94,23 +93,23 @@ PersistentKeepAlive = 25
 
 \noindent Leider bietet Wireguard nicht selbst die M\"oglichkeit der \ac{2FA}. Diese kann nur \"uber Umwege mit Wireguard verwendet werden. Folgende M\"oglichkeiten stehen zur Verf\"ugung:
    \begin{itemize}
-      \item Verwendung eines Passwortspeichers zur Ablage des Private Key
-      \item Verschl\"usselung des Private Key auf einem Datentr\"ager
-			\item Verwendung eines PIV-Slots auf einem Yubikey
+      \item Verwendung eines Passwortspeichers zur Ablage des Private Key.
+      \item Verschl\"usselung des Private Key auf einem Datentr\"ager.
+			\item Verwendung eines PIV-Slots auf einem Yubikey.
    \end{itemize}
 
 \paragraph{Passwortspeicher} 
 \noindent \\Der Private Key kann in einem Passwortspeicher gesichert werden, welcher beim \"Offnen ein Passwort vom Benutzer abfragt. Dies bietet zum Faktor "`Besitz"' des Private Key den weiteren Faktor "`Wissen"' durch Eingabe des zus\"atzlichen Kennwortes beim \"Offnen des Passwortspeichers. Hierzu empfiehlt sich der Passwortspeicher "`Pass"', welcher wie Wireguard ebenfalls von Jason A. Donenfeld entwickelt wurde. Beim Initialisieren des Passwortspeichers wird dieser mit einem GPG-Zertifikat verknüpft. Das Zertifikat ist wiederum durch eine Passphrase gesch\"utzt, die zum Entschlüsseln eingegeben werden muss.
 Ein GPG-Zertifikat kann durch Eingabe des Befehls \mint{shell}|gpg --full-generate-key| erzeugt werden. Beim Initialisieren des Passwortspeichers mit dem Befehl \mint{shell}|pass init zuvor-erstellter-gpg-key| wird im entsprechenden Verzeichnis ein Unterverzeichnis \enquote{.password-store} erstellt. In der Wireguard-Konfiguration kann der zuvor gespeicherte Private Key beispielsweise mit 
 \begin{minted}[breaklines=true]{shell}
-   PostUp = wg set wg0 private-key <(sudo -u Benutzer pass wireguard/private-keys/wg0)
+PostUp = wg set wg0 private-key <(sudo -u Benutzer pass wireguard/private-keys/wg0)
 \end{minted}
 ausgelesen werden.
 
 \paragraph{Verschl\"usselung des Private Key auf einem Datentr\"ager}
 \noindent \\Wie zuvor kann der Private Key auch in einer verschl\"usselten Datei auf einem Datentr\"ager gesichert werden. Hierfür eignet sich beispielsweise die Verschl\"usselung mit GPG. In der Wireguard-Konfiguration kann nun der verschl\"usselte Private Key mit 
 \begin{minted}[breaklines=true]{shell}
-   PostUp = wg set wg0 private-key <(sudo -u Benutzer gpg -d /home/justin/.config/wireguard/wg0.key.gpg
+PostUp = wg set wg0 private-key <(sudo -u Benutzer gpg -d /home/justin/.config/wireguard/wg0.key.gpg
 \end{minted}
 ausgelesen werden. Auch hierbei wird die Passphrase des GPG-Zertifikats abgefragt. 
 
@@ -122,6 +121,6 @@ ausgelesen werden. Auch hierbei wird die Passphrase des GPG-Zertifikats abgefrag
 \end{minted}
 wird ein key wg0.key mit dem Zertifikat 0x1234567890ABCDEF verschl\"usselt und in den PIV-Slot 5f0000 geschrieben. In der Wireguard-Konfiguration kann nun mit
 \begin{minted}[breaklines=true]{shell}
-   PostUp = wg set wg0 private-key <(ykman piv objects export 5f0000 - | sudo -u Benutzer gpg -d)
+PostUp = wg set wg0 p°rivate-key <(ykman piv objects export 5f0000 - | sudo -u Benutzer gpg -d)
 \end{minted}
 der Schl\"ussel aus dem Slot gelesen und entschl\"usselt werden. Der entschl\"usselte Private Key für wg0 wird nun nach dem Start der Schnittstelle gesetzt  und zum Aufbau der Verbindung verwendet. Die Verwendung eines zusätzlichen Tokens, wie zum Beispiel einen Yubikey bietet den Vorteil, dass ein Zertifikat nicht auf demselben System gesichert wird, auf dem auch der VPN-Tunnel hergestellt wird. Somit lässt sich der Faktor "`Besitz"' von einem auf dem Rechner gespeicherten Zertifikat auf ein Token auslagern. Zusätzlich zum Rechner, mit dem die Verbindung hergestellt werden soll, ist nun auch noch der "`Besitz"' des Tokens erforderlich. So lässt sich größtmögliche Sicherheit durch den ausgelagerten "`Besitz"' sowie die erforderliche Passphrase als Faktor "`Wissen"' erreichen.  
