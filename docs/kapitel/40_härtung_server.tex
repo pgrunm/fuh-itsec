@@ -7,7 +7,7 @@
 
 \subsubsection{Empfehlungen aus dem BSI Grundschutz zur Härtung}
 
-F\"ur die H\"artung des Servers m\"ussen die einzelnen verwendeten Anwendungen und Services betrachtet werden. Im vorliegenden Fall wird ein Webserver mit einer relationalen Datenbank betrieben, welcher mit kritischer Infrastruktur in Ber\"uhrung kommt. Bei IT-Systemen aus Sektoren, welche unter \S2 Abs. 10 Nr. 1 des BSI-Gesetz fallen (kritische Infrastruktur), muss zweij\"ahrig eine Selbsterkl\"arung zur IT-Sicherheit abgeben werden. Dies umfasst beispielsweise die Sektoren Energie, Informationstechnik und Telekommunikation, Transport und Verkehr, Gesundheit und weitere. In dieser Selbsterkl\"arung m\"ussen Zertifizierungen, Audits und konkrete Systeme zur Sicherung besonders sch\"utzenswerter Daten angegeben werden. F\"ur Zertifizierungen ist ein Informationssicherheitsmanagementsystem (ISMS) nach DIN EN ISO/IEC 27000 oder BSI IT-Grundschutz erforderlich. Durch das Bundesamt f\"ur Sicherheit in der Informationstechnik wird das IT-Grundschutzkompendium zur Verf\"ugung gestellt.  Einzelne Themen der IT-Sicherheit werden in sogenannten Bausteinen behandelt, welche im Kompendium zusammengefasst werden. In jedem Baustein wird themenbezogen auf die Gef\"ahrdungen eingegangen und Anforderungen zu Absicherung empfohlen. Dadurch sollen die Grundwerte Vertraulichkeit, Verf\"ugbarkeit und Integrit\"at gew\"ahrleistet werden. Wichtig ist, dass die Ma{\ss}nahmen aus den Bausteinen des IT-Grundschutzes nicht als abschlie{\ss}end gesehen werden d\"urfen. Je nach Konfiguration und Gef\"ahrdungen m\"ussen weitere Ma{\ss}nahmen ber\"ucksichtigt werden. F\"ur die operative IT-Sicherheit k\"onnen diverse Onlinequellen wie beispielsweise https://dev-sec.io/ herangezogen werden. Die Ma{\ss}nahmen m\"ussen sich am Stand der Technik orientieren. \\
+F\"ur die H\"artung des Servers m\"ussen die einzelnen verwendeten Anwendungen und Services betrachtet werden. Im vorliegenden Fall wird ein Webserver mit einer relationalen Datenbank betrieben, welcher mit kritischer Infrastruktur in Ber\"uhrung kommt. Bei IT-Systemen aus Sektoren, welche unter \S2 Abs. 10 Nr. 1 des BSI-Gesetzes fallen (kritische Infrastruktur), muss zweij\"ahrig eine Selbsterkl\"arung zur IT-Sicherheit abgeben werden. Dies umfasst beispielsweise die Sektoren Energie, Informationstechnik und Telekommunikation, Transport und Verkehr, Gesundheit und weitere. In dieser Selbsterkl\"arung m\"ussen Zertifizierungen, Audits und konkrete Systeme zur Sicherung besonders sch\"utzenswerter Daten angegeben werden. F\"ur Zertifizierungen ist ein Informationssicherheitsmanagementsystem (ISMS) nach DIN EN ISO/IEC 27000 oder BSI IT-Grundschutz erforderlich. Durch das Bundesamt f\"ur Sicherheit in der Informationstechnik wird das IT-Grundschutzkompendium zur Verf\"ugung gestellt. Einzelne Themen der IT-Sicherheit werden in sogenannten Bausteinen behandelt, die im Kompendium zusammengefasst werden. In jedem Baustein wird themenbezogen auf die Gef\"ahrdungen eingegangen und Anforderungen zu Absicherung empfohlen. Dadurch sollen die Grundwerte Vertraulichkeit, Verf\"ugbarkeit und Integrit\"at gew\"ahrleistet werden. Wichtig ist, dass die Ma{\ss}nahmen aus den Bausteinen des IT-Grundschutzes nicht als abschlie{\ss}end gesehen werden d\"urfen. Je nach Konfiguration und Gef\"ahrdungen m\"ussen weitere Ma{\ss}nahmen ber\"ucksichtigt werden. F\"ur die operative IT-Sicherheit k\"onnen diverse Onlinequellen, wie beispielsweise https://dev-sec.io/, herangezogen werden. Die Ma{\ss}nahmen m\"ussen sich am Stand der Technik orientieren. \\
 
 Folgende Bausteine aus dem IT-Grundschutz werden als relevant angesehen:
   \begin{itemize}
@@ -17,13 +17,13 @@ Folgende Bausteine aus dem IT-Grundschutz werden als relevant angesehen:
 			\item SYS.1.6 Containerisierung
    \end{itemize} 
 
-Im Rahmen dieser Dokumentation werden die folgenden Anforderungen nur auszugsweise genannt. Die vollst\"andigen Bausteine mit den Anforderungen nach IT-Grundschutz werden vom Bundesamt f\"ur Sicherheit in der Informationstechnik kostenfrei zur Verf\"ugung gestellt.
+Im Rahmen dieser Dokumentation werden die folgenden Anforderungen nur auszugsweise genannt. Die vollst\"andigen Bausteine mit den Anforderungen nach IT-Grundschutz werden vom \ac{BSI} kostenfrei zur Verf\"ugung gestellt.
 
 \paragraph{Webserver}
-\noindent \\Der Webserver nimmt Anfrage eines Clients entgegen und liefert die angefragten Webseiten aus. Folgende Anforderungen werden an der Webserver gestellt:
+\noindent \\Der Webserver nimmt Anfrage eines Clients entgegen und liefert die angefragten Webseiten aus. Folgende Anforderungen werden an den Webserver gestellt:
   \begin{itemize}
       \item APP.3.2.A1 Sichere Konfiguration eines Webservers\\
-			Dazu muss man insbesondere den Webserver-Prozess einem Konto mit minimalen Rechten zuweisen. Der Webserver muss in einer gekapselten Umgebung ausgef\"uhrt werden, sofern dies vom Betriebssystem unterst\"utzt wird. Ist dies nicht m\"oglich, sollte jeder Webserver auf einem eigenen physischen oder virtuellen Server ausgef\"uhrt werden. Dem Webserver-Dienst m\"ussen alle nicht notwendige Schreibberechtigungen entzogen werden. Nicht ben\"otigte Module und Funktionen des Webservers m\"ussen deaktiviert werden.\cite{Grundschutz}\\
+			Dazu muss man insbesondere den Webserver-Prozess einem Konto mit minimalen Rechten zuweisen. Der Webserver muss in einer gekapselten Umgebung ausgef\"uhrt werden, sofern dies vom Betriebssystem unterst\"utzt wird. Ist dies nicht m\"oglich, sollte jeder Webserver auf einem eigenen physischen oder virtuellen Server ausgef\"uhrt werden. Dem Webserver-Dienst m\"ussen alle nicht notwendigen Schreibberechtigungen entzogen werden. Nicht ben\"otigte Module und Funktionen des Webservers m\"ussen deaktiviert werden.\cite{Grundschutz}\\
 			
 			\item APP.3.2.A2 Schutz der Webserver-Dateien\\
 			Der IT-Betrieb muss alle Dateien auf dem Webserver, insbesondere Skripte und Konfigurationsdateien, so sch\"utzen, dass sie nicht unbefugt gelesen und ge\"andert werden k\"onnen. Es muss sichergestellt werden, dass Webanwendungen nur auf einen definierten Verzeichnisbaum zugreifen k\"onnen (WWW-Wurzelverzeichnis). Der Webserver muss so konfiguriert sein, dass er nur Dateien ausliefert, die sich innerhalb des WWW-Wurzelverzeichnisses befinden. Der IT-Betrieb muss alle nicht ben\"otigten Funktionen, die Verzeichnisse auflisten, deaktivieren. Vertrauliche Daten m\"ussen vor unberechtigtem Zugriff gesch\"utzt werden. Insbesondere muss der
@@ -33,7 +33,7 @@ IT-Betrieb sicherstellen, dass vertrauliche Dateien nicht in \"offentlichen Verz
 			Der Webserver muss mindestens folgende Ereignisse protokollieren:
 \begin{itemize}
 \item erfolgreiche Zugriffe auf Ressourcen,
-\item fehlgeschlagene Zugriffe auf Ressourcen aufgrund von mangelnder Berechtigung, nicht vorhandenen Ressourcen und Server-Fehlern sowie
+\item fehlgeschlagene Zugriffe auf Ressourcen aufgrund von mangelnder Berechtigung, nicht vorhandenen Ressourcen und Server-Fehler sowie
 \item allgemeine Fehlermeldungen.
 \end{itemize}
 Die Protokollierungsdaten sollten regelm\"a{\ss}ig ausgewertet werden.\cite{Grundschutz}\\
@@ -51,7 +51,7 @@ Die Protokollierungsdaten sollten regelm\"a{\ss}ig ausgewertet werden.\cite{Grun
 
 \begin{itemize}
 			\item  APP.4.3.A13 Restriktive Handhabung von Datenbank-Links \\
-			Es sollte sichergestellt sein, dass nur Zust\"andige dazu berechtigt sind, Datenbank-Links (DB-Links) anzulegen. Werden solche Links angelegt, m\"ussen so genannte Private DB-Links vor Public DB-Links bevorzugt angelegt werden. Alle von den Zust\"andigen angelegten DB-Links SOLLTEN dokumentiert und regelm\"a{\ss}ig \"uberpr\"uft werden. Zudem sollten DB-Links mitber\"ucksichtigt werden, wenn das Datenbanksystem gesichert wird (siehe APP.4.3.A9 Datensicherung eines Datenbanksystems).\cite{Grundschutz}\\
+			Es sollte sichergestellt sein, dass nur Zust\"andige dazu berechtigt sind, Datenbank-Links (DB-Links) anzulegen. Werden solche Links angelegt, m\"ussen so genannte Private DB-Links vor Public DB-Links bevorzugt angelegt werden. Alle von den Zust\"andigen angelegten sollten dokumentiert und regelm\"a{\ss}ig \"uberpr\"uft werden. Zudem sollten DB-Links mitber\"ucksichtigt werden, wenn das Datenbanksystem gesichert wird (siehe APP.4.3.A9 Datensicherung eines Datenbanksystems).\cite{Grundschutz}\\
 
 			\item APP.4.3.A16 Verschl\"usselung der Datenbankanbindung \\
 			Das Datenbankmanagementsystem sollte so konfiguriert werden, dass Datenbankverbindungen immer verschl\"usselt werden. Die dazu eingesetzten kryptografischen Verfahren und Protokolle sollten den internen Vorgaben der Institution entsprechen (siehe CON.1 Krypto Konzept).\cite{Grundschutz}\\
@@ -66,7 +66,7 @@ Die Protokollierungsdaten sollten regelm\"a{\ss}ig ausgewertet werden.\cite{Grun
 \end{itemize}
 			
 			\item APP.4.3.A24 Datenverschl\"usselung in der Datenbank\\
-			Die Daten in den Datenbanken sollten verschl\"usselt werden. Dabei sollten vorher unter anderem folgende Faktoren betrachtet werden:
+			Die Daten in den Datenbanken sollten verschl\"usselt werden. Dabei sollten vorher folgende Faktoren betrachtet werden:
 \begin{itemize}
 	\item Einfluss auf die Performance,
 	\item Schl\"usselverwaltungsprozesse und -verfahren, einschlie{\ss}lich separater Schl\"usselaufbewahrung und -sicherung,
@@ -95,7 +95,7 @@ Die Protokollierungsdaten sollten regelm\"a{\ss}ig ausgewertet werden.\cite{Grun
  
 
 \paragraph{Containerisierung}
-\noindent \\Der Begriff Containerisierung bezeichnet ein Konzept, bei dem Ressourcen eines Betriebssystems partitioniert werden, um Ausf\"uhrungsumgebungen f\"ur Prozesse zu schaffen. Hierbei k\"onnen je nach verwendetem Betriebssystem unterschiedliche Techniken zum Einsatz kommen, die sich in Funktionsumfang und Sicherheitseigenschaften unterscheiden. Oft wird auch von einer "`Betriebssystemvirtualisierung"' gesprochen. Es wird jedoch kein vollst\"andiges Betriebssystem
+\noindent \\Der Begriff Containerisierung bezeichnet ein Konzept, bei dem Ressourcen eines Betriebssystems partitioniert werden, um Ausf\"uhrungsumgebungen f\"ur Prozesse zu schaffen. Hierbei k\"onnen je nach verwendetem Betriebssystem diverse Techniken zum Einsatz kommen, die sich in Funktionsumfang und Sicherheitseigenschaften unterscheiden. Oft wird auch von einer "`Betriebssystemvirtualisierung"' gesprochen. Es wird jedoch kein vollst\"andiges Betriebssystem
 virtualisiert, sondern es werden lediglich bestimmte Ressourcen durch einen geteilten Kernel zur Verf\"ugung gestellt. Folgende Anforderungen sind bei einer Containerisierung relevant:
 
 \begin{itemize}
@@ -121,53 +121,51 @@ virtualisiert, sondern es werden lediglich bestimmte Ressourcen durch einen gete
 \end{itemize}
 	
 \end{itemize}
-
-   
+ 
 \subsubsection{Härtung der installierten Software}
 
-% TODO: Guten Content niederschreiben.
-Die Härtung des Systems und der installierten Dienste erfolgt durch das im \autoref{listing:hardening} dargestellten Ansible Playbook. Bei der Härtung wird unter anderem auf eine Ansible Rolle des \enquote{Dev-Sec} Projekts gesetzt, welches eine grundsätzliche Härtung auf der Basis von Empfehlungen der Deutschen Telekom, der Webseite \href{https://bettercrypto.org/}{Bettercrypto} sowie der amerikanischen \ac{NSA}\footcite[Vgl.][]{OverviewDevSecBaselines}. 
+Die Härtung des Systems und der installierten Dienste erfolgt durch das im \autoref{listing:hardening} dargestellten Ansible Playbook. Bei der Härtung wird unter anderem auf eine Ansible Rolle des \enquote{Dev-Sec} Projekts gesetzt, welches eine grundsätzliche Härtung auf der Basis von Empfehlungen der Deutschen Telekom, der Webseite \href{https://bettercrypto.org/}{Bettercrypto} sowie der amerikanischen \ac{NSA}\footcite[Vgl.][]{OverviewDevSecBaselines} darstellt. 
 
 % Mehr vergleichen
-Eine Eigenentwicklung auf Basis der Vorgaben des \ac{BSI} oder anderer Empfehlungen wäre zwar auch möglich, jedoch weiter weniger umfassend und ausgiebig getestet. Es stünden auch alternative Projekte bereit, wie beispielsweise das \enquote{ComplianceAsCode} Projekt, dessen Installation bzw. Konfiguration mehr Aufwand beansprucht als eine Ansible Rolle.
+Eine Eigenentwicklung auf Basis der Vorgaben des \ac{BSI} oder anderer Empfehlungen wäre zwar möglich, jedoch weit weniger umfassend und ausgiebig getestet. Es stünden auch alternative Projekte bereit, wie beispielsweise das \enquote{ComplianceAsCode} Projekt, dessen Installation bzw. Konfiguration mehr Aufwand beansprucht als eine Ansible Rolle.
 
 % Ansible Rolle erläutern
 Das Dev-Sec Projekt bietet eine vorgefertigte Ansible Rolle an, welches exakt zu den Vorgaben der FernUni Inc. passt. Sämtliche ausgewählten Softwarekomponenten werden durch die Rolle unterstützt und können somit in eine umfassende und sichere Grundkonfiguration versetzt werden. 
 Eine ausführliche Auflistung sämtlicher Einstellungen ist auf der Seite des Dev-Sec Projekts ersichtlich\footcite[Vgl.][]{OverviewDevSecBaselines}.
 
-Die Ansible Rolle legt sichere Standard Konfigurationswerte unter anderem für das Betriebssystem, \ac{SSH}, \ac{TLS}, MySQL und Nginx fest, die wiederum durch eigene zusätzliche Einstellungen noch ergänzt werden. In Summe ergeben diese ein funktionierendes und sicheres Gesamtsystem. Durch die Kombination mit Ansible können die definierten Einstellungen schnell und unkompliziert auf einer Vielzahl von Server angewendet werden.
+Die Ansible Rolle legt sichere Standard-Konfigurationswerte unter anderem für das Betriebssystem, \ac{SSH}, \ac{TLS}, MySQL und Nginx fest, die wiederum durch eigene zusätzliche Einstellungen noch ergänzt werden. In Summe ergeben diese ein funktionierendes und sicheres Gesamtsystem. Durch die Kombination mit Ansible können die definierten Einstellungen schnell und unkompliziert auf einer Vielzahl von Server angewendet werden.
 
 % Betriebssystem
-Innerhalb des Betriebssystems werden durch die Ansible Rollen verschiede Einstellungen vorgenommen, darunter die folgenden besonders relevanten:
+Innerhalb des Betriebssystems werden durch die Ansible Rollen verschiede Einstellungen vorgenommen, darunter sind die Folgenden von Belang:
 
 \begin{itemize}
 	\item Änderung der Besitzerrechte am Verzeichnis \enquote{/var/log} auf Root, sodass nur dieser Benutzer dort Veränderungen vornehmen kann.
 	\item Installation des \enquote{Syslog} Dienstes, um eine Protokollierung zu ermöglichen.
 	\item Installation des \enquote{Auditd} Dienstes, um erweiterte Protokollierung zu ermöglichen.
-	\item Deaktivierung der Weiterleitung von \ac{IP} Paketen.
+	\item Deaktivierung der Weiterleitung von \ac{IP}-Paketen.
 	\item Überprüfung der Zugangsrechte für die Dateien \enquote{/etc/shadow} und \enquote{/etc/passwd}.
 \end{itemize}
 
-Die gelisteten Maßnahmen stellen lediglich einen Teil der Härtung innerhalb des Betriebssystems dar. Sie verdeutlichen jedoch die Notwendigkeit sichere Grundeinstellungen festzulegen. Insbesondere der Schutz der Protokollierungsdaten und deren Erstellung sind von einer hohen Bedeutung. Sollte einem Angreifer der Zugriff auf das System gelingen, wäre dies darüber nachvollziehbar.
+Die gelisteten Maßnahmen stellen lediglich einen Teil der Härtung innerhalb des Betriebssystems dar. Sie verdeutlichen jedoch die Notwendigkeit, sichere Grundeinstellungen festzulegen. Insbesondere der Schutz der Protokollierungsdaten und deren Erstellung sind von einer hohen Bedeutung. Sollte einem Angreifer der Zugriff auf das System gelingen, wäre dies darüber nachvollziehbar.
 
 % Weitere Erläuterungen zum Thema OS Härtung
-Weiterhin wird unter anderem verhindert, dass beispielsweise \ac{IP} Pakete weitergeleitet werden, um beispielsweise die Aufklärung des Netzwerks zu verhindern.
+Weiterhin wird verhindert, dass beispielsweise \ac{IP}-Pakete weitergeleitet werden, um beispielsweise die Aufklärung des Netzwerks zu verhindern.
 
 % Auf Härtung SSH eingehen
-Zusätzlich zur Härtung des Betriebssystems ist auch der Zugang zum Server von Interesse. Dieser erfolgt ausschließlich aus der Ferne via \ac{SSH}. Dieser Dienst ist selbstverständlich auch zu Härten, eine Auswahl der Maßnahmen bietet die folgende Übersicht:
+Zusätzlich zur Härtung des Betriebssystems ist auch der Zugang zum Server von Interesse. Dieser erfolgt ausschließlich aus der Ferne via \ac{SSH}. Dieser Dienst ist selbstverständlich auch zu Härten. Eine Auswahl der Maßnahmen bietet die folgende Übersicht:
 
 \begin{itemize}
 	\item Konfiguration der verwendeten SSH Version 2, weil Version 1 Sicherheitslücken aufweist.
-	\item Deaktivierung des Logins via Passwort, stattdessen ist lediglich ein Login via SSH Schlüssel erlaubt.
-	\item Die Deaktivierung von SSH Tunnels, sodass kein Port Forwarding möglich ist.
+	\item Deaktivierung des Logins via Passwort, stattdessen ist lediglich ein Login via SSH-Schlüssel erlaubt.
+	\item Die Deaktivierung von SSH-Tunnels, sodass kein Port Forwarding möglich ist.
 	\item Deaktivierung des Root Logins, sodass sich lediglich nicht Root Benutzer anmelden dürfen.
 \end{itemize}
 
 % SSH erläutern
-Die Härtung der SSH Konfiguration zielt darauf auf, beispielsweise sich per Root Benutzer anmelden zu können. Somit werden weitgehende Administratorrechte direkt ab der Anmeldung unterbunden. Zur Authentisierung werden lediglich \ac{SSH} Schlüssel zugelassen, sodass keine Anmeldung per Kennwort mehr möglich ist. Dies erschwert zusätzlich den Remote Zugang zum System und steigert insbesondere mit den vorgegebenen Firewall Regeln sowie SSHGuard die Hürde zum Zugriff beträchtlich.
+Die Härtung der SSH-Konfiguration zielt darauf auf, beispielsweise sich per Root Benutzer anmelden zu können. Somit werden weitgehende Administratorrechte direkt ab der Anmeldung unterbunden. Zur Authentisierung werden lediglich \ac{SSH} Schlüssel zugelassen, sodass keine Anmeldung per Kennwort mehr möglich ist. Dies erschwert zusätzlich den Remote Zugang zum System und steigert insbesondere mit den vorgegebenen Firewall Regeln sowie SSHGuard die Hürde zum Zugriff beträchtlich.
 
 % MySQL erläutern
-Zu guter Letzt steht noch die Härtung des Datenbankmanagementsystems an. Da dieses sämtliche Daten speichert, sind diese auch von großem Wert für einen Angreifer. Eine Auswahl der Maßnahmen zur Härtung stellen die folgenden dar:
+Zu guter Letzt steht noch die Härtung des Datenbankmanagementsystems an. Da dieses sämtliche Daten speichert, sind diese auch von großem Wert für einen Angreifer. Eine Auswahl der Maßnahmen zur Härtung stellen die folgenden Punkte dar:
 
 \begin{itemize}
 	\item MySQL Datenverzeichnis bzw. Log Verzeichnis gehört dem MySQL User.
@@ -195,7 +193,7 @@ In der Standardeinstellung werden weitere Anfragen mit dem Faktor 1.5 gesperrt, 
 
 In Verbindung mit der Firewall und SSHGuard stellen beide Maßnahmen bereits eine entscheidende Hürde für potenzielle Angreifer dar, deren Überwindung Zeit und Aufwand erfordern.
 
-Die einzigen anderen Möglichkeiten, Zugriff von außen zu erlangen stellen der Webserver Nginx sowie das \ac{VPN} Wireguard dar.
+Die einzigen anderen Möglichkeiten, Zugriff von außen zu erlangen, stellen der Webserver Nginx sowie das \ac{VPN} Wireguard dar.
 
 % TODO: Nginx auf non Root umstellen
 % s. hier: https://www.sherbers.de/running-nginx-without-root/
@@ -204,12 +202,12 @@ Standardmäßig läuft der Nginx Master Prozess unter dem Benutzer \enquote{Root
 Zusätzlich unterliegen sowohl Nginx als auch Wireguard einem AppArmor Profil, wie in \autoref{kap:installation_apparmor} beschrieben. Dies beschränkt den Zugang zum System im Falle einer Kompromittierung weiter.
 
 % Auf OSSEC eingehen.
-Zusätzlich zu den beschriebenen Härtungsmaßnahmen sind weitere Maßnahmen von \enquote{Innen} implementiert. Dazu zählen beispielsweise die Nutzung automatischer Aktualisierungen durch \enquote{Unattended Upgrades}, welches automatisch Sicherheitsupdates installiert.
+Zusätzlich zu den beschriebenen Härtungsmaßnahmen sind weitere Maßnahmen von \enquote{Innen} implementiert. Dazu zählt beispielsweise die Nutzung automatischer Aktualisierungen durch \enquote{Unattended Upgrades}, welches automatisch Sicherheitsupdates installiert.
 
 % https://www.redhat.com/sysadmin/configure-linux-auditing-auditd
-Sollte es dennoch einem Angreifer gelingen, Zugriff auf den Server zu erlangen, sind dort noch zusätzlich der Auditd Service und OSSEC als \ac{IDS} installiert. Auditd protokolliert sämtliche Aktionen in der Log Datei \mint[]{shell}|/var/log/audit/audit.log| sodass sämtliche Aktionen nachvollzogen werden können.
+Sollte es dennoch einem Angreifer gelingen, Zugriff auf den Server zu erlangen, sind dort zusätzlich der Auditd Service und OSSEC als \ac{IDS} installiert. Auditd protokolliert sämtliche Aktionen in der Log Datei \mint[]{shell}|/var/log/audit/audit.log|, sodass sämtliche Aktionen nachvollzogen werden können.
 
-Zusätzlich bietet OSSEC an, neben der Intrusion Detection, auch Dateien auf Änderungen zu Überwachen. Dies ermöglicht die Alarmierung eines Administrators, sofern Manipulationen festgestellt werden.
+Zudem bietet OSSEC an, neben der Intrusion Detection, auch Dateien auf Änderungen zu Überwachen. Dies ermöglicht die Alarmierung eines Administrators, sofern Manipulationen festgestellt werden.
 
 % TODO: Integration OSSEC mit Prometheus Node Exporter? Alternative: Eigener Exporter :think:
 % Dokumentation: https://www.ossec.net/docs/docs/manual/output/json-alert-log-output.html
