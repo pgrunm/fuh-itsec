@@ -205,7 +205,7 @@ Zusätzlich unterliegen sowohl Nginx als auch Wireguard einem AppArmor Profil, w
 Zusätzlich zu den beschriebenen Härtungsmaßnahmen sind weitere Maßnahmen von \enquote{Innen} implementiert. Dazu zählt beispielsweise die Nutzung automatischer Aktualisierungen durch \enquote{Unattended Upgrades}, welches automatisch Sicherheitsupdates installiert.
 
 % https://www.redhat.com/sysadmin/configure-linux-auditing-auditd
-Sollte es dennoch einem Angreifer gelingen, Zugriff auf den Server zu erlangen, sind dort zusätzlich der Auditd Service und OSSEC als \ac{IDS} installiert. Auditd protokolliert sämtliche Aktionen in der Log Datei \mint[]{shell}|/var/log/audit/audit.log|, sodass sämtliche Aktionen nachvollzogen werden können.
+Sollte es dennoch einem Angreifer gelingen, Zugriff auf den Server zu erlangen, sind dort zusätzlich der Auditd Service und OSSEC als \ac{IDS} installiert. Auditd protokolliert sämtliche Aktionen in der Log Datei, \mint[]{shell}|/var/log/audit/audit.log| sodass sämtliche Aktionen nachvollzogen werden können.
 
 Zudem bietet OSSEC an, neben der Intrusion Detection, auch Dateien auf Änderungen zu Überwachen. Dies ermöglicht die Alarmierung eines Administrators, sofern Manipulationen festgestellt werden.
 
