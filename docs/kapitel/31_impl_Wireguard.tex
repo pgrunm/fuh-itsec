@@ -4,7 +4,11 @@
 Bei Wireguard handelt es sich um eine schlanke L\"osung um ein \ac{VPN} zu betreiben. Im Vergleich zur Anwendung openVPN mit ca. 70.000 Zeilen Code kommt die Anwendung Wireguard mit weniger als 4.000 Zeilen Code aus. 
 %Quelle einf\"ugen 1. https://www.wireguard.com/papers/wireguard.pdf 2. https://openvpn.net/blog/what-is-cloudflare-vpn/
 Damit ist der Quellcode von openVPN anf\"alliger f\"ur Implementierungsfehler. W\"ahrend f\"ur die meisten VPN-Verbindungen der bew\"ahrte symmetrische Algorithmus AES256 verwendet wird, verwendet Wireguard den relativ neuen ChaCha20 Algorithmus. Damit besteht die M\"oglichkeit, dass zuk\"unftig noch unentdeckte Fehler in der Verschl\"usselung gefunden werden. Vom Bundesamt f\"ur Sicherheit in der Informationstechnik gibt es aktuell noch keine Empfehlung zu ChaCha20 wogegen AES256 derzeit noch als sicher eingestuft ist.  
+<<<<<<< HEAD
 Durch den schlanken Quellcode und einer guten Integration in Linux auf Kernel-Ebene zeigt sich Wireguard jedoch performanter als andere VPN-Technologien.   
+=======
+Durch den schlanken Quellcode und dem k\"urzeren Schl\"ussel zeigt sich Wireguard jedoch performanter als andere VPN-Technologien.   
+>>>>>>> 21e44faf9c7af3ee9b7ab7bc543060538028f60f
 
 \begin{table}[ht]
    \begin{center}
@@ -24,7 +28,7 @@ wg genkey | tee server_private.key | wg pubkey > server_public.key
 in die zwei Schl\"usseldateien mit den Namen \verb+server_private.key+ und \verb+server_public.key+ abgelegt.\\
 Beim Aufbau eines VPN-Netzes werden zwei verschiedene Netze mit häufig unterschiedlichen Adressen verbunden. Damit die Kommunikation über verschiedene Netze möglich ist, müssen entsprechende Firewall- und Routing-Regeln angelegt werden. Wireguard bietet hierfür die Möglichkeit, diese Konfiguration über ein sogenanntes PostUp- und PostDown-Script durchzuführen. Diese Scripte werden jeweils vor Aufbau des Tunnels beziehungsweise nach Beendigung des Tunnels ausgeführt. Die Schnittstelle, welche für die Verbindung benötigt wird, wird von Wireguard in den Parameter \%i eingesetzt. Vor dem Aufbau der Verbindung werden so die in der Konfigurationsdatei enthaltenen Firewall- und Routing-Regeln eingetragen, welche die ankommenden Pakete akzeptiert und durch Network-Address-Translation in das richtige Zielnetz weiterleitet.  
 
-\noindent Die Konfiguration des Server:
+\noindent Die Konfiguration des Servers:
 \begin{minted}[fontfamily=tt,
    linenos=true,
    numberblanklines=true,
@@ -100,7 +104,7 @@ PersistentKeepAlive = 25
    \end{itemize}
 
 \paragraph{Passwortspeicher} 
-\noindent \\Der Private Key kann in einem Passwortspeicher gesichert werden, welcher beim \"Offnen ein Passwort vom Benutzer abfr\"agt. Dies bietet zum Faktor "`Besitz"' des Private Key den weiteren Faktor "`Wissen"' durch Eingabe des zus\"atzlichen Kennwortes beim \"Offnen des Passwortspeichers. Hierzu bietet sich der Passwortspeicher "`Pass"' an, welcher wie Wireguard ebenfalls von Jason A. Donenfeld entwickelt wurde. Beim Initialisieren des Passwortspeichers wird dieser mit einem GPG-Zertifikat verknüpft. Das Zertifikat ist wiederum durch eine Passphrase gesch\"utzt welche zum Entschlüsseln eingegeben werden muss.
+\noindent \\Der Private Key kann in einem Passwortspeicher gesichert werden, welcher beim \"Offnen ein Passwort vom Benutzer abfragt. Dies bietet zum Faktor "`Besitz"' des Private Key den weiteren Faktor "`Wissen"' durch Eingabe des zus\"atzlichen Kennwortes beim \"Offnen des Passwortspeichers. Hierzu bietet sich der Passwortspeicher "`Pass"' an, welcher wie Wireguard ebenfalls von Jason A. Donenfeld entwickelt wurde. Beim Initialisieren des Passwortspeichers wird dieser mit einem GPG-Zertifikat verknüpft. Das Zertifikat ist wiederum durch eine Passphrase gesch\"utzt welche zum Entschlüsseln eingegeben werden muss.
 Ein GPG-Zertifikat kann durch Eingabe des Befehls \mint{shell}|gpg --full-generate-key| erzeugt werden. Beim Initialisieren des Passwortspeichers mit dem Befehl \mint{shell}|pass init zuvor-erstellter-gpg-key| wird im entsprechenden Verzeichnis ein Unterverzeichnis \enquote{.password-store} erstellt. In der Wireguard-Konfiguration kann nun der zuvor gespeicherte Private Key beispielsweise mit 
 \begin{minted}[breaklines=true]{shell}
    PostUp = wg set wg0 private-key <(sudo -u Benutzer pass wireguard/private-keys/wg0)
@@ -124,7 +128,7 @@ wird ein key wg0.key mit dem Zertifikat 0x1234567890ABCDEF verschl\"usselt und i
 \begin{minted}[breaklines=true]{shell}
    PostUp = wg set wg0 private-key <(ykman piv objects export 5f0000 - | sudo -u Benutzer gpg -d)
 \end{minted}
-der Schl\"ussel aus dem Slot gelesen und entschl\"usselt werden. Der entschl\"usselte Private Key für wg0 wird nun nach dem Start der Schnittstelle gesetzt  und zu Aufbau der Verbindung verwendet. Die Verwendung eines zusätzlichen Tokens wie zum Beispiel einen Yubikey bietet den Vorteil, dass ein Zertifikat nicht auf demselben System gesichert wird, auf dem auch der VPN-Tunnel hergestellt wird. Somit lässt sich der Faktor "`Besitz"' von einem auf dem Rechner gespeicherten Zertifikat auf ein Token auslagern. Zusätzlich zum Rechner, mit dem die Verbindung hergestellt werden soll, ist nun auch noch der "`Besitz"' des Tokens erforderlich. So lässt sich größtmögliche Sicherheit durch den ausgelagerten "`Besitz"' sowie die erforderliche Passphrase als Faktor "`Wissen"' erreichen.  
+der Schl\"ussel aus dem Slot gelesen und entschl\"usselt werden. Der entschl\"usselte Private Key für wg0 wird nun nach dem Start der Schnittstelle gesetzt  und zum Aufbau der Verbindung verwendet. Die Verwendung eines zusätzlichen Tokens wie zum Beispiel einen Yubikey bietet den Vorteil, dass ein Zertifikat nicht auf demselben System gesichert wird, auf dem auch der VPN-Tunnel hergestellt wird. Somit lässt sich der Faktor "`Besitz"' von einem auf dem Rechner gespeicherten Zertifikat auf ein Token auslagern. Zusätzlich zum Rechner, mit dem die Verbindung hergestellt werden soll, ist nun auch noch der "`Besitz"' des Tokens erforderlich. So lässt sich größtmögliche Sicherheit durch den ausgelagerten "`Besitz"' sowie die erforderliche Passphrase als Faktor "`Wissen"' erreichen.  
 
 
 
