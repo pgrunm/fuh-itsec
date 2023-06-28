@@ -15,7 +15,6 @@ RUN python -m venv /usr/src/app/venv
 ENV PATH="/usr/src/app/venv/bin:$PATH"
 
 RUN pip install --upgrade pip; pip install --no-cache-dir flask mariadb
-
 COPY . .
 
 # https://pythonspeed.com/articles/multi-stage-docker-python/
@@ -24,10 +23,8 @@ FROM python:3.11-slim
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app /usr/src/app
 COPY --from=builder /usr /usr
-
 USER app
 ENV PATH="/usr/src/app/venv/bin:$PATH"
-
 # Listen on TCP port 8080
 EXPOSE 8080
 CMD [ "python", "./messages.fernuni.py" ]

@@ -1,4 +1,3 @@
-\newpage
 \subsubsection{Intrusion Detection System}
 
 Intrusion Detection Systeme werden eingesetzt, um Angriffe auf Netzwerke und Computersysteme erkennen zu können. Dabei findet bei signaturbasierten Systemen eine Mustererkennung in Log-Dateien statt. Beispielsweise können drei fehlerhafte Anmeldeversuche als Muster in einer Log-Datei erkannt und gemeldet werden. Auch Systemmeldungen verschiedener Priorität oder Warnungen aus einer Integritätsprüfung sind Beispiele solcher Muster.\\
@@ -17,9 +16,10 @@ Grundsätzlich können \ac{IDS} in die folgenden drei Arten eingeteilt werden:
 
 \noindent Netzwerkbasierte \ac{IDS} erkennen Angreifer bereits bei netzbasierten Angriffen, wie das Auskundschaften der Infrastruktur oder bei Denial-of-Service Angriffen. Sie lassen sich für die Angreifer nahezu unsichtbar im Netzwerk installieren. Durch die Überwachung der Netzwerke werden die Clients nicht belastet. Netzwerkbasierte \ac{IDS} können jedoch keine Auskunft über den Zustand einzelner Systeme geben.\\ 
 
-\noindent Bei hybriden \ac{IDS} handelt es sich um eine Mischung der beiden zuvor genannten Systemen. Dies hat den Vorteil, dass Angreifer bereits auf Netzebene erkannt und gegebenenfalls auf einen Honeypot umgeleitet werden können. Gleichzeitig besteht jedoch auch ein erhöhter Schutz vor Angreifern, welche sich unerkannt durch das Netzwerk bewegen konnten. Diese können dann auf Clientebene beispielsweise durch auffällige Log-Dateien oder durch eine misslungene Integritätsprüfung erkannt werden.\\
+\noindent Bei hybriden \ac{IDS} handelt es sich um eine Mischung der beiden zuvor genannten Systemen. Dies hat den Vorteil, dass Angreifer bereits auf Netzebene erkannt und gegebenenfalls auf einen Honeypot umgeleitet werden können. Gleichzeitig besteht jedoch auch ein erhöhter Schutz vor Angreifern, welche sich unerkannt durch das Netzwerk bewegen konnten. Diese können dann auf Clientebene beispielsweise durch auffällige Log-Dateien oder durch eine misslungene Integritätsprüfung erkannt werden.
 
-\paragraph{Implementierung eines IDS}
+\paragraph{Implementierung eines Intrusion Detection Systems}
+
 \noindent \\Gegeben ist ein Server sowie ein Client unter Ubuntu Linux, auf denen das hostbasierte IDS OSSEC installiert werden soll. Dabei besteht die Installation aus zwei Teilen, einem Agenten und einem Server. Der Agent wird auf dem zu überwachenden System installiert und sammelt die Daten des jeweiligen Systems, um diese durch den Prozess "`logcollector"' an den Server zu senden. Der Server als zentraler Punkt speichert zum Beispiel die Log-Dateien, eine Integritätsdatenbank und ist für die Verwaltung der Agents zuständig. Für die Kommunikation zwischen Agent und Server wird das System Logging Protocol (syslog) verwendet. Die syslog-Telegramme werden über eine \ac{TLS}-verschlüsselte UDP Verbindung übertragen. Üblicherweise wird hierfür der Port 514 verwendet. Damit der Agent eine verschlüsselte \ac{TLS}-Verbindung zum Server aufbauen kann, muss zuvor ein Schlüssel auf dem Server extrahiert und auf den Agenten übertragen werden. Für jeden Agent wird ein eigener Schlüssel generiert. Auf dem Server werden die Logdateien durch den Prozess analysisd ausgewertet.\\
 
 \noindent Für die Installation des Severs muss die Quelle des OSSEC-Repository eingetragen werden. Im Anschluss kann mit \mint{shell}|sudo apt-get update| und \mint{shell}|sudo apt-get install ossec-hids-server| der Server installiert werden. 
@@ -31,9 +31,9 @@ Durch Auswahl im Menü kann nun ein Agent mit seiner IP-Adresse dem Server hinzu
 \noindent Die Anpassungen müssen wie folgt im Abschnitt <client> angepasst werden.   
 \begin{minted}{shell}
  <client>
-#Hier die IP-Adresse des Servers eintragen
-    <server-ip>10.0.2.15</server-ip> 
-  </client>
+   # Hier die IP-Adresse des Servers eintragen.
+   <server-ip>10.0.2.15</server-ip> 
+</client>
 \end{minted}
 
 \noindent Nach Abschluss der Einstellungen muss der Agent, falls dieser bereits gestartet wurde, mit \mint{shell}|./ossec-control restart| neu gestartet werden, damit die Einstellungen wirksam werden.
@@ -67,7 +67,7 @@ Integrity checking values:
 \paragraph{Regeln}
 \noindent \\Das Intrusion Detection System OSSEC bietet nach der Installation bereits Standardregeln für diverse Anwendungen an. Im vorliegenden Beispiel sind bereits Standardregeln für den Webserver NGINX vorhanden. Es werden standardmäßig Meldungen vom Typ "`error"', "`warning"' und "`critical"' ausgegeben. Daneben sind auch Meldungen wie "`Server returned 404"' oder "`authentication\_failed"' enthalten. 
 
-\paragraph{Benachrichtigung}
+\paragraph{Benachrichtigungen}
 \noindent \\Zur Benachrichtigung bei Ereignissen können beispielsweise Emails versandt werden. OSSEC bietet die Möglichkeit, innerhalb einer Domäne Emails an einem Email-Server per SMTP einzuliefern. Bei externen Benachrichtigungen kann beispielsweise ein Postfix Server als E-Mail-Relay-Server verwendet werden.  
 
 \paragraph{Vorliegender Anwendungsfall}

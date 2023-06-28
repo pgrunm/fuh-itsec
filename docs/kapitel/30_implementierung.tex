@@ -127,14 +127,34 @@ Das automatische Backup gewährleistet den Schutz wichtiger Daten und ermöglich
 Durch das Erstellen einer Skriptdatei können wir den Backup-Prozess automatisieren und die Ausführungsschritte zentralisieren.
 Im Verzeichnis \enquote{/etc/mysql} wird eine Skriptdatei namens \verb+mysql_backup.sh+ mit dem folgenden Inhalt erstellt:
 
-\begin{minted}[breaklines=true]{shell}
+\begin{listing}
+    
+    \begin{minted}[fontfamily=tt,
+        linenos=true,
+        numberblanklines=true,
+        numbersep=5pt,
+        gobble=0,
+        frame=leftline,
+        framerule=0.4pt,
+        framesep=2mm,
+        funcnamehighlighting=true,
+        tabsize=4,
+        obeytabs=false,
+        mathescape=false
+    samepage=false, %with this setting you can force the list to appear on the same page
+    showspaces=false,
+    showtabs =false,
+    texcl=false,
+    breaklines=true]{shell}
     #!/bin/bash
-    # Create a MySQL dump of the messages database, zip it and encrypt it.
+    # Create a MySQL dump of the messages database, zip and encrypt it.
     file_name=$(date +%Y-%m-%d-%H.%M.%S).sql.bz2.enc
     sudo mysqldump -u root messages | bzip2 -c | age -e -R /etc/mysql/backup/encryption_key.txt -o /etc/mysql/backup/$file_name
     # Copy the file to remote
     rsync -a /etc/mysql/backup/$file_name backup_user@backup_server:/var/backups/mysql/server01/$file_name
 \end{minted}
+\caption{MySQL Datenbankbackup Skript}
+\end{listing}
 
 Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie der Datenbank \enquote{messages} zu erstellen. 
 Die Backup-Datei wird im Verzeichnis /etc/mysql/backup/ mit dem Namen \verb+backup_messages.sql+ gespeichert.
@@ -173,23 +193,23 @@ Eine Idee der Autoren, stellte die Kompilierung des vorhandenen Quellcodes in ei
 
 Stattdessen wird beim Bau des \enquote{Messages} Images auf ein sogenanntes \enquote{Multi-Stage-Build} Verfahren gesetzt. Im Rahmen dieses Prozesses wird zunächst ein Container für die Installation sämtlicher benötigter Pakete und zusätzlicher Software zur Installation gestartet. Im Anschluss werden die benötigten Dateien in ein noch leeres Image kopiert und dort als ausführender User \enquote{App} festgelegt. Dies verhindert, dass der Container mit Root-Rechten läuft. Aufgrund dieser weiteren Abhängigkeiten für das Mariadb Modul wird in diesem Fall das größere \enquote{Python Slim} Image als Basis genutzt. Dies enthält alle benötigten Softwarebibliotheken zur Installation.
 
-% TODO: Dockerfile überarbeiten
-\begin{minted}[fontfamily=tt,
-    linenos=true,
-    numberblanklines=true,
-    numbersep=5pt,
-    gobble=0,
-    frame=leftline,
-    framerule=0.4pt,
-    framesep=2mm,
-    funcnamehighlighting=true,
-    tabsize=4,
-    obeytabs=false,
-    mathescape=false
-    samepage=false, %with this setting you can force the list to appear on the same page
-    showspaces=false,
-    showtabs =false,
-    texcl=false,
+\begin{longlisting}
+    \begin{minted}[fontfamily=tt,
+        linenos=true,
+        numberblanklines=true,
+        numbersep=5pt,
+        gobble=0,
+        frame=leftline,
+        framerule=0.4pt,
+        framesep=2mm,
+        funcnamehighlighting=true,
+        tabsize=4,
+        obeytabs=false,
+        mathescape=false
+        samepage=false, %with this setting you can force the list to appear on the same page
+        showspaces=false,
+        showtabs =false,
+        texcl=false,
     breaklines=true]{docker}
 # Build image, used to build everything we need
 FROM python:3.11-slim as builder
@@ -224,6 +244,8 @@ ENV PATH="/usr/src/app/venv/bin:$PATH"
 EXPOSE 8080
 CMD [ "python", "./messages.fernuni.py" ]
 \end{minted}
+\caption{Dockerfile Messages Programm}
+\end{longlisting}
 
 Für den Bau des Containers nutzten die Autoren u. a. insbesondere einen Eintrag zur Installation eines neueren MySQL Konnektors\footcite[Vgl.][]{Danblack_answer_2022} sowie eines Artikels von Multi Stage Images\footcite[Vgl.][]{turner-trauring_multi-stage_2019}.
 
@@ -295,4 +317,4 @@ Zugriff via \ac{SSH} ist lediglich aus dem internen Netzwerk (\enquote{Internal}
 % https://abuse.ch/#platforms
 Das Projekt \href{https://abuse.ch}{Abuse.ch} bietet eine regelmäßig aktualisierte Liste mit bösartigen IP-Adressen an, die in Verbindung mit der Verbreitung von Malware oder Botnets stehen. Folglich bietet es sich an, diese IP-Adressen zusätzlich in der Firewall zu blockieren, um weitere Angriffe einzuschränken.
 
-Das im Anhang unter \autoref{kap:fw_abuse} dargestellte Skript ruft die IP-Adressen ab, löscht zunächst sämtliche vorher eingetragenen Adressen und fügt dann neue Regeln in die lokale Firewall ein. Somit wird verhindert, dass der Server diese IP Adressen kontaktieren kann und die Kompromittierung durch bösartige weiter Akteure verringert.
+Das im Anhang unter \autoref{kap:fw_abuse} dargestellte Skript ruft die IP-Adressen ab, löscht zunächst sämtliche vorher eingetragenen Adressen und fügt dann neue Regeln in die lokale Firewall ein. Somit wird verhindert, dass der Server diese IP Adressen kontaktieren kann und die Kompromittierung durch bösartige Akteure weiter verringert.

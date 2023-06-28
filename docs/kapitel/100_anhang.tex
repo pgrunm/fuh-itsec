@@ -3,7 +3,7 @@
 \subsection{Containerisierung der Python Programme}
 
 \subsubsection{Hello Programm}
-
+\begin{longlisting}    
 \inputminted[fontfamily=tt,
 linenos=true,
 numberblanklines=true,
@@ -21,8 +21,11 @@ showspaces=false,
 showtabs =false,
 texcl=false,
 breaklines=true]{docker}{code/docker/hello/Dockerfile}
+\caption{Dockerfile des Messages Programms}
+\end{longlisting}
 
 \subsubsection{Messages Programm}
+\begin{longlisting}
 \inputminted[fontfamily=tt,
 linenos=true,
 numberblanklines=true,
@@ -40,23 +43,36 @@ showspaces=false,
 showtabs =false,
 texcl=false,
 breaklines=true]{docker}{code/docker/messages/Dockerfile}
-
+\caption{Dockerfile des Hello Programms}
+\end{longlisting}
 \subsection{Konfigurationsdateien Nginx}\label{kap:nginx}
 
 \subsubsection{Konfiguration \enquote{hello.fernuni}}
-\nginxcode[]{code/nginx/sites-available/hello.fernuni.conf}
+\begin{longlisting}
+    \nginxcode[]{code/nginx/sites-available/hello.fernuni.conf}
+    \caption{Nginx Konfiguration für \enquote{hello.fernuni}}
+\end{longlisting}
 
 \subsubsection{Konfiguration \enquote{messages.fernuni}}
-\nginxcode[]{code/nginx/sites-available/messages.fernuni.conf}
+\begin{longlisting}
+    \nginxcode[]{code/nginx/sites-available/messages.fernuni.conf}
+    \caption{Nginx Konfiguration für \enquote{messages.fernuni}}
+\end{longlisting}
 
 \subsubsection{Konfiguration Nginx}
-\nginxcode[]{code/nginx/nginx.conf}
+\begin{longlisting}
+    \nginxcode[]{code/nginx/nginx.conf}
+    \caption{Konfigurationsdatei Nginx}
+\end{longlisting}
 
 \subsection{AppArmor}
-\subsubsection{Installationsskript AppArmor}
+\begin{longlisting}
+    \subsubsection{Installationsskript AppArmor}
+    \caption{Installationsskript AppArmor}
+\end{longlisting}
 
 
-\begin{longlisting}[ht]{}
+\begin{longlisting}{}
     \shellcode{code/shell/apparmor_profile.sh}
     \caption{Installation der AppArmor Profile}
     \label{listing:installation_apparmor}
@@ -114,7 +130,7 @@ breaklines=true]{docker}{code/docker/messages/Dockerfile}
 \subsection{Ausgabe von Konfigurations- und Logdateien}
 
 \subsubsection{Blockierung bösartiger IP Adressen}\label{kap:fw_abuse}
-
+\begin{longlisting}   
 \inputminted[fontfamily=tt,
 linenos=true,
 numberblanklines=true,
@@ -132,10 +148,14 @@ showspaces=false,
 showtabs =false,
 texcl=false,
 breaklines=true]{docker}{code/shell/fw_abuse.sh}
+\caption{Skript zum Import von IP-Adressen in die Firewall}
+\end{longlisting}
 
 \subsubsection{Ausgabe eines unterbundenen SSH Brute Force Angriffs}
 \inputminted[breaklines=true,firstline=34, lastline=42]{text}{code/output/sshguard.txt}\label{listing:sshguard_log}
 
 \subsection{Python Testskript}\label{kap:testskript_python}
-
-\pythoncode{code/python/test_server.py}
+\begin{longlisting}
+    \pythoncode{code/python/test_server.py}
+    \caption{Python Testskript}
+\end{longlisting}
