@@ -4,11 +4,7 @@
 Bei Wireguard handelt es sich um eine schlanke L\"osung um ein \ac{VPN} zu betreiben. Im Vergleich zur Anwendung openVPN mit ca. 70.000 Zeilen Code kommt die Anwendung Wireguard mit weniger als 4.000 Zeilen Code aus. 
 %Quelle einf\"ugen 1. https://www.wireguard.com/papers/wireguard.pdf 2. https://openvpn.net/blog/what-is-cloudflare-vpn/
 Damit ist der Quellcode von openVPN anf\"alliger f\"ur Implementierungsfehler. W\"ahrend f\"ur die meisten VPN-Verbindungen der bew\"ahrte symmetrische Algorithmus AES256 verwendet wird, verwendet Wireguard den relativ neuen ChaCha20 Algorithmus. Damit besteht die M\"oglichkeit, dass zuk\"unftig noch unentdeckte Fehler in der Verschl\"usselung gefunden werden. Vom Bundesamt f\"ur Sicherheit in der Informationstechnik gibt es aktuell noch keine Empfehlung zu ChaCha20 wogegen AES256 derzeit noch als sicher eingestuft ist.  
-<<<<<<< HEAD
-Durch den schlanken Quellcode und einer guten Integration in Linux auf Kernel-Ebene zeigt sich Wireguard jedoch performanter als andere VPN-Technologien.   
-=======
 Durch den schlanken Quellcode und dem k\"urzeren Schl\"ussel zeigt sich Wireguard jedoch performanter als andere VPN-Technologien.   
->>>>>>> 21e44faf9c7af3ee9b7ab7bc543060538028f60f
 
 \begin{table}[ht]
    \begin{center}
