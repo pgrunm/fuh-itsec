@@ -2,34 +2,34 @@
 
 \subsection{Auswahl und Installation der einzusetzenden Software}
 
-\subsubsection{Auswahl eines geeigneten Webserver}
+\subsubsection{Auswahl eines geeigneten Webservers}
 
 Zur Auswahl eines Webservers muss dieser mindestens die folgenden Anforderungen erfüllen:
 
 \begin{itemize}
     \item Unterstützung für die vom \ac{BSI} empfohlenen \ac{TLS} Versionen 1.2 und 1.3\footcite[Vgl.][S. 6 ff., S. 13 ff.]{bsi}.
     \item Support des Let's Encrypt Certbot für die Ausstellung von Webserver Zertifikaten und automatischen Verlängerung.
-    \item Möglichkeit zum Einsatz als Reverse Proxy, um Verbindungen für die Python Applikationen zu terminieren.
+    \item Möglichkeit zum Einsatz als Reverse Proxy, um Verbindungen für die Python-Applikationen zu terminieren.
     \item Idealerweise gehärtet ab Werk oder Unterstützung zur einfachen Härtung der Konfiguration.
     \item Verfügbarkeit einer hochwertigen Dokumentation.
 \end{itemize}
 
 % Allgemeiner Überblick
-Zur Auswahl stehen verschiedenste Webserver wie z. B. Apache2, Nginx sowie Caddy. Sämtliche dieser Webserver stehen als quelloffene Software zur Verfügung.
+Zur Auswahl stehen zahlreiche Webserver wie z. B. Apache2, Nginx sowie Caddy. Sämtliche dieser Webserver stehen als quelloffene Software zur Verfügung.
 
 % Überblick Caddy
-Caddy unterstützt als einziger der genannten Webserver nicht den Certbot für die automatische Ausstellung von Webserver Zertifikaten und bringt eine eigene Lösung mit. Caddy unterstützt ab Werk \ac{TLS} 1.2 und 1.3, arbeitet als Reverse Proxy und das jüngste Webserver Projekt, welches auf der Programmiersprache Go basiert.
+Caddy unterstützt als einziger der genannten Webserver nicht den Certbot für die automatische Ausstellung von Webserver Zertifikaten und bringt eine eigene Lösung mit. Caddy unterstützt ab Werk \ac{TLS} 1.2 und \ac{TLS} 1.3, arbeitet als Reverse Proxy und das jüngste Webserver Projekt, welches auf der Programmiersprache Go basiert.
 
 % Apache
-Der Webserver Apache2 hingegen existiert bereits seit dem Jahr 1995 und ist hauptsächlich in der Programmiersprache C programmiert. Apache wird von Certbot vollständig unterstützt und kann ebenfalls als Reverse Proxy genutzt werden.
+Der Webserver Apache2 existiert hingegen bereits seit dem Jahr 1995 und ist hauptsächlich in der Programmiersprache C programmiert. Apache wird von Certbot vollständig unterstützt und kann ebenfalls als Reverse Proxy genutzt werden.
 
 % Nginx
-Nginx ist von allen drei Webserver der am meisten verbreitete und kommt auch im Cloud Umfeld z. B. als Ingress Controller für Kubernetes vor. Nginx ist ebenfalls in C programmiert und unterstützt die geforderten \ac{TLS} Versionen und verfügt über eine hochwertige Dokumentation sowie Unterstützung des Certbot.
+Nginx ist von allen drei Webservern der am meisten verbreitete und kommt auch im Cloud Umfeld z. B. als Ingress Controller für Kubernetes vor. Nginx ist ebenfalls in C programmiert, unterstützt die geforderten \ac{TLS} Versionen und verfügt über eine hochwertige Dokumentation sowie Unterstützung des Certbot\footcite[Vgl.][]{certbot}.
 
 % Finale Bemerkungen
 Sämtliche Webserver verfügen über eine hochwertige Dokumentation und unterstützen die geforderten Anforderungen. Aufgrund der weiten Verbreitung und Tools zur Härtung setzen die Autoren auf Nginx als Reverse Proxy.
 
-Allerdings ist es erforderlich, dass der Nginx Master Prozess als Root Benutzer läuft, denn nur auf diese Weise ist es möglich auf den Port 80 bzw. 443 zu lauschen. Diese werden als priviligierte Ports betrachtet und sind standardmäßig nur für administrative Benutzer verfügbar.
+Allerdings ist es erforderlich, dass der Nginx Master Prozess als Root Benutzer läuft, denn nur auf diese Weise ist es möglich, auf den Port 80 bzw. 443 zu lauschen. Diese werden als priviligierte Ports betrachtet und sind standardmäßig lediglich für administrative Benutzer verfügbar.
 
 % Implementierung und Härtung
 Die eigentliche Installation des Webservers erfolgt über das im Anhang dargestellte Ansible Playbook (siehe \autoref{listing:ansible_playbook}).
@@ -61,7 +61,7 @@ Bei der Härtung sind sowohl die Anforderungen hinsichtlich der kryptografischen
     \label{listing:nginx_config_hello}
 \end{listing}
 
-Der relevante Teil der Nginx Konfiguration für das Reverse Proxying wird in \autoref{listing:nginx_config_hello} dargestellt. Diese Konfiguration sorgt dafür, dass beim Aufruf der Domain \url{https://hello.fernuni} die eingehende Anfrage auf den auf Localhost lauschenden Docker Container auf den \ac{TCP} Port 3001 weitergeleitet wird. Ein identisches Verfahren wird für die Domain \url{https://messages.fernuni} angewendet. Der Einsatz eines Reverse Proxys ermöglicht die TLS Terminierung und sorgt dafür, dass ein Webserver Zertifikat lediglich im Webserver einzurichten ist. Dies verhindert jedoch eine vollständige Ende zu Ende Verschlüsselung. Die vollständige Konfiguration des Nginx ist im Anhang in \autoref{kap:nginx} ersichtlich.
+Der relevante Teil der Nginx Konfiguration für das Reverse Proxying wird in \autoref{listing:nginx_config_hello} dargestellt. Diese Konfiguration sorgt dafür, dass beim Aufruf der Domain \url{https://hello.fernuni} die eingehende Anfrage auf den auf Localhost lauschenden Docker Container auf den \ac{TCP} Port 3001 weitergeleitet wird. Ein identisches Verfahren wird für die Domain \url{https://messages.fernuni} angewendet. Der Einsatz eines Reverse Proxys ermöglicht die TLS Terminierung und sorgt dafür, dass ein Webserver Zertifikat lediglich im Webserver einzurichten ist. Dies verhindert jedoch eine vollständige Ende-zu-Ende-Verschlüsselung. Die vollständige Konfiguration des Nginx ist im Anhang in \autoref{kap:nginx} ersichtlich.
 
 Da die vollständige Ende-zu-Ende-Verschlüsselung nicht gewährleistet werden kann, gibt es mehrere Risiken im Zusammenhang mit der Sicherheit. So besteht die Möglichkeit zum Abhören sensibler Daten. Die Angreifer können sensible Informationen wie Benutzernamen, Passwörter, Kreditkarteninformationen oder andere vertrauliche Daten aus dem Datenverkehr extrahieren.
 
@@ -74,7 +74,7 @@ Nicht zu unterschätzen ist das Risiko zur Verletzung der Compliance-Anforderung
 Die Webseite \enquote{messages.fernuni} erfordert eine Datenbank. Zur Erfüllung dieser Aufgabe wird eine MySQL-Datenbank aufgesetzt. Dabei werden die erforderlichen Installationsschritte für MySQL, Python-Pakete und die Konfiguration der Datenbank beschrieben und durchgeführt.
 
 % Begründung warum nicht wir keine Container nutzen
-Anders als z. B. die bereitgestellten Python Applikationen handelt es bei einer Datenbank nicht um eine zustandslose Anwendung. Bei Containern handelt es sich meist um zustandslose Anwendungen wie Webserver o. ä., die beliebig skalierbar sind. Durch die Containerisierung wird noch eine zusätzliche Isolationsschicht zwischen dem Host und dem Container implementiert. Durch diese zusätzliche Isolation steigt der Overhead bei der Verwaltung der Datenbank und es werden mehr Ressourcen zur Verwaltung benötigt. Aus diesen Gründen findet keine Containerisierung der Datenbank statt. Bei Bedarf könnten stattdessen die Docker Container auf einen separaten Server oder sogar via Kubernetes bereitgestellt werden, sodass auf dem vServer lediglich das Datenbankmanagementsystem installiert ist.
+Anders als z. B. die bereitgestellten Python Applikationen handelt es bei einer Datenbank nicht um eine zustandslose Anwendung. Bei Containern handelt es sich meist um zustandslose Anwendungen wie Webserver o. ä., die beliebig skalierbar sind. Durch die Containerisierung wird zudem eine zusätzliche Isolationsschicht zwischen dem Host und dem Container implementiert. Durch diese zusätzliche Isolation steigt der Overhead bei der Verwaltung der Datenbank und es werden mehr Ressourcen zur Verwaltung benötigt. Aus diesen Gründen findet keine Containerisierung der Datenbank statt. Bei Bedarf könnten stattdessen die Docker Container auf einen separaten Server oder sogar via Kubernetes bereitgestellt werden, sodass auf dem vServer lediglich das Datenbankmanagementsystem installiert ist.
 
 Die Installation von MySQL erfolgt über den Paketmanager von Ubuntu. Zunächst wird der MySQL-Server installiert, gefolgt von den erforderlichen Python-Paketen für die Datenbankverbindung. Die benötigten Befehle sind folgende:
 
@@ -112,7 +112,7 @@ Als Erstes wechseln wir zur Datenbank \enquote{messages} und erstellen dort die 
     ALTER TABLE messagestorage ADD COLUMN timestamp TIMESTAMP;
 \end{minted}
 
-Falls erforderlich, kann der MySQL-Server mit dem folgenden Befehl neu gestartet werden:
+Falls erforderlich kann der MySQL-Server mit dem folgenden Befehl neu gestartet werden:
 
 \mint{shell}|sudo service mysql restart|
 
@@ -125,7 +125,7 @@ Das automatische Backup gewährleistet den Schutz wichtiger Daten und ermöglich
 \subsubsection*{Erstellen einer Skriptdatei für das Backup}
 
 Durch das Erstellen einer Skriptdatei können wir den Backup-Prozess automatisieren und die Ausführungsschritte zentralisieren.
-Im Verzeichnis \enquote{/etc/mysql} erstellt man eine Skriptdatei namens \verb+mysql_backup.sh+ mit dem folgenden Inhalt:
+Im Verzeichnis \enquote{/etc/mysql} wird eine Skriptdatei namens \verb+mysql_backup.sh+ mit dem folgenden Inhalt erstellt:
 
 \begin{minted}[breaklines=true]{shell}
     #!/bin/bash
@@ -140,17 +140,17 @@ Dieses Skript verwendet den Befehl \enquote{mysqldump}, um eine Sicherungskopie 
 Die Backup-Datei wird im Verzeichnis /etc/mysql/backup/ mit dem Namen \verb+backup_messages.sql+ gespeichert.
 
 % Backup erläutern.
-Zusätzlich wird das Datenbankbackup komprimiert und mittels asymmetrischer Verschlüsselung durch die Verschlüsselungssoftware \enquote{age} verschlüsselt. Da es sich um eine asymmetrische Verschlüsselung handelt, muss der öffentliche Schlüssel nicht geschützt werden und kann lokal auf dem virtuellen Server liegen. Die gesicherte und verschlüsselte Datei wird im Anschluss noch auf einen Remote Server kopiert, auf dem sie archiviert wird.
+Zusätzlich wird das Datenbankbackup komprimiert und mittels asymmetrischer Verschlüsselung durch die Verschlüsselungssoftware \enquote{age} verschlüsselt. Da es sich um eine asymmetrische Verschlüsselung handelt, muss der öffentliche Schlüssel nicht geschützt werden und kann lokal auf dem virtuellen Server liegen. Die gesicherte und verschlüsselte Datei wird im Anschluss noch auf einen Remote Server kopiert, auf dem sie anschließend archiviert wird.
 
 \subsubsection*{Ausführbarkeit der Skriptdatei gewährleisten}
 
-Um die Skriptdatei ausführbar zu machen, gibt man den folgenden Befehl ein:
+Um die Skriptdatei ausführbar zu machen, wird der folgende Befehl benötigt:
 \begin{verbatim}sudo chmod +x mysql_backup.sh \end{verbatim}
 Dadurch wird die Ausführungsberechtigung für die Skriptdatei aktiviert.
-Ausführen des Skripts im Terminal, um sicherzustellen, dass es ordnungsgemäß funktioniert:
+Die Ausführung des Skripts im Terminal, um sicherzustellen, dass es ordnungsgemäß funktioniert:
 \mint{shell}|sudo ./mysql_backup.sh|
 
-\subsubsection*{Einrichten eines regelmäßigen automatischen Updates}
+\subsubsection*{Einrichten eines regelmäßigen automatischen Backups}
 
 Dazu gibt man den folgenden Befehl ein, um den Crontab-Editor zu öffnen:
 \mint{shell}|sudo crontab -e|
@@ -166,12 +166,12 @@ Eine der gestellten Anforderungen der \enquote{Fernuni Inc.} stellt die Containe
 
 Bei Python handelt es sich um eine interpretierte Programmiersprache, sodass eine Laufzeitumgebung zur Ausführung erforderlich ist. Diese muss zusätzlich mit in das Container Image installiert werden, damit das Programm lauffähig ist.
 
-Eine Überlegung zur Härtung der Docker Images wäre die Verwendung eines sogenannten \enquote{Distroless Image}, dass ohne ein Betriebssystem bereitgestellt wird. Allerdings wird der Einsatz eines solchen Images für Python im Produktivbetrieb bislang abgeraten, sodass dies im Kritis-Umfeld nicht möglich ist.
+Eine Überlegung zur Härtung der Docker Images wäre die Verwendung eines sogenannten \enquote{Distroless Image}, dass ohne ein Betriebssystem bereitgestellt wird. Allerdings wird vom Einsatz eines solchen Images für Python im Produktivbetrieb bislang abgeraten, sodass dies im Kritis-Umfeld nicht möglich ist.
 
 % Kompilierung erwähnen
-Eine Idee der Autoren, stellte die Kompilierung des vorhandenen Quellcodes in eine native ausführbare Datei dar, sodass lediglich diese Datei in einen Distroless Image zu kopieren wäre. Einige Versuche mit dem experimenten Compiler \href{https://github.com/exaloop/codon}{Codon} schlugen leider fehl, aufgrund fehlender Unterstützung für weitere Module wie beispielsweise Flask. Leider existiert bislang kein ausgereifter Python Compiler, der dies unterstützt, sodass diese Möglichkeit verworfen wurde.
+Eine Idee der Autoren, stellte die Kompilierung des vorhandenen Quellcodes in eine native ausführbare Datei dar, sodass lediglich diese Datei in einen Distroless Image zu kopieren wäre. Einige Versuche mit dem experimentellen Compiler \href{https://github.com/exaloop/codon}{Codon} schlugen leider fehl, aufgrund fehlender Unterstützung für weitere Module wie beispielsweise Flask. Leider existiert bislang kein ausgereifter Python Compiler, der dies unterstützt, sodass diese Möglichkeit verworfen wurde.
 
-Stattdessen wird beim Bau des \enquote{Messages} Images auf ein sogenanntes \enquote{Multi-Stage-Build} Verfahren gesetzt. Im Rahmen dieses Prozesses wird zunächst ein Container für die Installation sämtlicher benötigter Pakete und zusätzlicher Software zur Installation gestartet. Im Anschluss werden die benötigten Dateien in ein noch leeres Image kopiert und dort als ausführender User \enquote{App} festgelegt. Dies verhindert, dass der Container mit Root Rechten läuft. Aufgrund dieser weiteren Abhängigkeiten für das Mariadb Modul wird in diesem Fall das größere \enquote{Python Slim} Image als Basis genutzt. Dies enthält alle benötigten Softwarebibliotheken zur Installation.
+Stattdessen wird beim Bau des \enquote{Messages} Images auf ein sogenanntes \enquote{Multi-Stage-Build} Verfahren gesetzt. Im Rahmen dieses Prozesses wird zunächst ein Container für die Installation sämtlicher benötigter Pakete und zusätzlicher Software zur Installation gestartet. Im Anschluss werden die benötigten Dateien in ein noch leeres Image kopiert und dort als ausführender User \enquote{App} festgelegt. Dies verhindert, dass der Container mit Root-Rechten läuft. Aufgrund dieser weiteren Abhängigkeiten für das Mariadb Modul wird in diesem Fall das größere \enquote{Python Slim} Image als Basis genutzt. Dies enthält alle benötigten Softwarebibliotheken zur Installation.
 
 % TODO: Dockerfile überarbeiten
 \begin{minted}[fontfamily=tt,
@@ -225,14 +225,12 @@ EXPOSE 8080
 CMD [ "python", "./messages.fernuni.py" ]
 \end{minted}
 
-Für die Bereitstellung des \enquote{Hello} Container Image werden keinerlei externe Abhängigkeiten außer Python benötigt. Deshalb dient die Python Variante des sicherheitsorientierten Alpine Linux als Basis für das Container Image. Dort wird lediglich Flask sowie das Python Skript installiert sowie die Ausführung unter einem nicht Root Benutzer eingerichtet. Weiterhin wird bei der Installation der Python Pakete via Pip auf ein Cache Verzichnis verzichtet, damit das finale Image möglichst klein ist.
-
 Für den Bau des Containers nutzten die Autoren u. a. insbesondere einen Eintrag zur Installation eines neueren MySQL Konnektors\footcite[Vgl.][]{Danblack_answer_2022} sowie eines Artikels von Multi Stage Images\footcite[Vgl.][]{turner-trauring_multi-stage_2019}.
 
 % Härtung erläutern
 Das Image für das Messages Programm hat noch externe Abhängigkeiten zu einer C-Bibliothek (MySQL Konnektor) und benötigt zum Download z. B. das Programm \enquote{wget}. Die Installation auf einem Distroless System war nicht möglich, sodass weiterhin das Python Slim Image genutzt wird.
 
-Im Gegensatz dazu setzt das Hello Docker Image auf einen speziell gehärteten Distroless Container. Dieser besitzt keinen Paketmanager, sodass über die Entwicklungs Variante zunächst sämtliche Pakete installiert und anschließend in ein Image ohne Shell oder Paketmanager kopiert werden.
+Für die Bereitstellung des \enquote{Hello} Container Image werden keinerlei externe Abhängigkeiten außer Python benötigt. Deshalb dient das Distroless Python Image als Basis für das Container Image. Dort wird lediglich Flask sowie das Python Skript installiert sowie die Ausführung unter einem nicht Root Benutzer eingerichtet. Weiterhin wird bei der Installation der Python-Pakete via Pip auf ein Cache Verzichnis verzichtet, damit das finale Image möglichst klein ist. Das Distroless Image verzichtet in Gänze auf ein Betriebssystem oder einen Paketmanager und steigert die Sicherheit immens.
 
 Anders als übliche Docker Basis Images zeichnet sich dieses Image zusätzlich dadurch aus, dass es täglich neu erzeugt wird und in regelmäßigen Image Scans über keinerlei bekannte Sicherheitslücken, sogenannte \ac{CVE}, verfügt.
 
@@ -245,10 +243,10 @@ Im Fokus der Betrachtung stehen insbesondere Anwendungen mit Netzwerkzugriff, da
 Dies betrifft insbesondere die Dienste \ac{SSH}, \ac{HTTP} bzw. \ac{HTTPS} sowie Wireguard. Auf Github existieren mehrere Projekte, die fertige Profile für AppArmor anbieten, insbesondere das \enquote{apparmor.d}-Projekt, welches nach eigenen Angaben etwa 1400 Profile bereitstellt. Dabei werden auch Dienste erfasst, welche unter dem \enquote{root} Benutzer ausgeführt werden und folglich besonders anfällig für eine Rechteausweitung sind.
 
 % Begründen, warum ausgerechnet apparmor.d
-Das \enquote{apparmor.d}-Projekt eignet sich am ehesten zur Umsetzung umfassender AppArmor Profile, weil dies sowohl aktiv weiterentwickelt wird als auch über eine umfassende Dokumentation verfügt. Es existieren zwar noch andere Projekt, dies ist nach der Anzahl der Beitragenden sowie Commits am weitesten entwickelt.
+Das \enquote{apparmor.d}-Projekt eignet sich am ehesten zur Umsetzung umfassender AppArmor Profile, weil dies sowohl aktiv weiterentwickelt wird als auch über eine umfassende Dokumentation verfügt. Es existieren zwar auch andere Projekt, dies ist jedoch nach der Anzahl der Beitragenden sowie Commits am weitesten entwickelt.
 
 % Installation kurz beschreiben
-Die konkrete Installation der AppArmor Profile ist im Anhang in \autoref{listing:installation_apparmor} beschrieben. In der Dokumentation des Projekts wird explizit darauf hingewiesen, zunächst die Lauffähigkeit des Systems zuprüfen, bevor der Enforce Mode aktiviert wird.
+Die konkrete Installation der AppArmor Profile ist im Anhang in \autoref{listing:installation_apparmor} beschrieben. In der Dokumentation des Projekts wird explizit darauf hingewiesen, zunächst die Lauffähigkeit des Systems zu prüfen, bevor der Enforce Mode aktiviert wird.
 
 % Auf Tests eingehen.
 Die Überprüfung möglicher Probleme bei der Durchsetzung der Profile erfolgt über den Befehl \mint{shell}|sudo aa-log|
@@ -260,18 +258,18 @@ ALLOWED dockerd mount /var/lib/docker/check-overlayfs-support2956447284/merged/ 
 ALLOWED dockerd umount /var/lib/docker/check-overlayfs-support2956447284/merged/ comm=dockerd
 \end{minted}
 
-Eine ausführliche Ausgabe dieses Befehls ist im Anhang in \autoref{listing:log_apparmor} ersichtlich. Zur Aktivierung des Enforce Mode genügt es im Verzeichnis \enquote{debian/rules} die folgenden Zeilen im Makefile zu ergänzen:
+Eine ausführliche Ausgabe dieses Befehls ist im Anhang in \autoref{listing:log_apparmor} ersichtlich. Zur Aktivierung des Enforce Mode genügt es, im Verzeichnis \enquote{debian/rules} die folgenden Zeilen im Makefile zu ergänzen:
 
 \begin{minted}{makefile}
 override_dh_auto_build:
     make enforce
 \end{minted}
 
-Nach diesen Änderung ist statt des Complain Mode der Enforce Mode nach der Installation aktiv.
+Durch diese Änderung ist statt des Complain Mode der Enforce Mode nach der Installation aktiv.
 
 \subsubsection{Konfiguration der lokalen Firewall}
 
-Zur Konfiguration der Firewall wird das Programm \enquote{ufw} genutzt, welches als einfach zu nutzendes Kommandozeilenwerkzeug zur Verwaltung der Netfilter Firewall unter Linux dient. \enquote{ufw} dient dabei als einfachere Alternative zu \enquote{iptables} und ist standardmäßig in Ubuntu als Paket installiert.
+Zur Konfiguration der Firewall wird das Programm \enquote{ufw} genutzt, welches als einfach zu nutzendes Kommandozeilenwerkzeug zur Verwaltung der Netfilter Firewall unter Linux dient. \enquote{ufw} gilt dabei als einfachere Alternative zu \enquote{iptables} und ist standardmäßig in Ubuntu als Paket installiert.
 
 \begin{table}[!ht]
     \centering
@@ -290,7 +288,7 @@ Zur Konfiguration der Firewall wird das Programm \enquote{ufw} genutzt, welches 
 \end{table}
 % Tabelle erstellen: \url{https://tableconvert.com/latex-generator}
 
-Eine MySQL Regel entfällt, weil lediglich vom lokalen System Verbindungen hergestellt werden. Andernfalls sollte dies ebenfalls auf nur erforderliche Adressen eingerichtet werden. MySQL lauscht in der Standardeinstellung lediglich auf Localhost und externe Verbindungen sind in der derzeitigen Konfiguration nicht vorgesehen. Dementsprechend ist dies die sicherste Variante zum Schutz des Datenbankservers.
+Eine MySQL Regel entfällt, weil lediglich vom lokalen System Verbindungen hergestellt werden. Andernfalls sollte dies ebenfalls auf nur erforderliche Adressen eingerichtet werden. MySQL lauscht in der Standardeinstellung lediglich auf Localhost und externe Verbindungen sind in der derzeitigen Konfiguration nicht vorgesehen. Dementsprechend ist dies folglich als die sicherste Variante zum Schutz des Datenbankservers anzusehen.
 
 Zugriff via \ac{SSH} ist lediglich aus dem internen Netzwerk (\enquote{Internal}, was hier als Platzhalter dient) gestattet, sodass Zugriff aus dem öffentlichen Internet in Gänze unterbunden werden, wie dies auch das Cyber-Killchain Modell vorsieht.
 
